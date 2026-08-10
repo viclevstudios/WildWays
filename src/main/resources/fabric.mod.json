@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "wildways",
+	"version": "${version}",
+	"name": "Wildways",
+	"description": "A quiet vanilla-style mod that reshapes Minecraft's rhythm toward slower exploration, building, travel, and everyday survival.",
+	"authors": ["Viclev"],
+	"contact": {
+		"homepage": "https://viclev.com/",
+		"sources": "https://github.com/viclevstudios/WildWays"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/wildways/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.viclev.wildways.Wildways"
+		],
+		"client": [
+			"com.viclev.wildways.client.WildwaysClient"
+		],
+		"fabric-datagen": [
+			"com.viclev.wildways.client.WildwaysDataGenerator"
+		]
+	},
+	"mixins": [
+		"wildways.mixins.json",
+		{
+			"config": "wildways.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
