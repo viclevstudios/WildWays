@@ -1,52 +1,54 @@
-# AGENTS.md
+# Wildways - Codex Instructions
 
-Guidance for Codex and other coding agents working on WildWays.
+## Project
 
-## Project Context
+Wildways is a Fabric mod for Minecraft 26.2.
 
-WildWays is a Fabric mod for Minecraft 26.2. Its goal is to make vanilla progression slower, less grind-driven, and more exploration-oriented while preserving a quiet vanilla feel.
+The mod should feel like vanilla Minecraft with a different rhythm: slower, warmer, more exploratory, less grindy, and less focused on rushing progression.
 
-Use the existing Fabric/Loom layout:
+## Technical baseline
 
-- Common code: `src/main/java`
-- Common resources: `src/main/resources`
-- Client-only code: `src/client/java`
-- Client-only resources: `src/client/resources`
-- Mod metadata: `src/main/resources/fabric.mod.json`
+- Language: Java
+- Loader: Fabric
+- Minecraft version: 26.2
+- Required Java release: 25
+- Mod ID: `wildways`
+- Main package: `com.viclev.wildways`
 
-## Build Environment
+## Development rules
 
-- Use Java 25.
-- Use the Gradle wrapper, not a globally installed Gradle.
-- Preferred Windows build command: `.\gradlew.bat build`
-- Preferred client run command: `.\gradlew.bat runClient`
-- Keep Fabric, Loom, Loader, and Fabric API versions centralized in `gradle.properties`.
+- Make small, testable changes.
+- Prefer data-driven solutions first:
+  1. JSON recipes, loot tables, tags, advancements
+  2. Fabric API events
+  3. Access wideners
+  4. Mixins only when necessary
+- Do not introduce large systems unless the design document calls for them.
+- Keep client-only code in `src/client/java`.
+- Keep shared gameplay code in `src/main/java`.
+- After implementation, run `.\gradlew.bat build`.
+- For gameplay changes, explain how to test them in-game.
 
-## Coding Rules
+## Design rules
 
-- Keep changes scoped to the requested feature or fix.
-- Preserve vanilla-style behavior unless the task explicitly calls for a stronger gameplay change.
-- Put shared gameplay logic in `src/main`; put rendering, keybinds, screens, and other client-only code in `src/client`.
-- Do not introduce broad abstractions until there is repeated code or a clear API boundary.
-- Avoid adding dependencies unless they are necessary and appropriate for a Fabric mod.
-- Keep comments short and useful. Prefer clear names over explanatory comments.
+- Changes should feel vanilla-adjacent, not like a large modpack.
+- Avoid feature bloat.
+- Encourage:
+  - exploration
+  - road and rail building
+  - slower survival pacing
+  - building and settling
+  - use of underused vanilla items/features
+- Avoid:
+  - mandatory grind
+  - overly complex tech trees
+  - big UI systems
+  - hard progression gates unless they feel natural
 
-## Minecraft/Fabric Rules
+## Before editing
 
-- Keep `fabric.mod.json` entrypoints aligned with actual package/class names.
-- Keep mixin config package names aligned with Java package names.
-- Treat mixins as high-risk changes: keep injection points narrow and document why the injection is needed.
-- Prefer Fabric API hooks and events over mixins when they cleanly support the behavior.
-- Be careful with server/client boundaries. Common code must not reference client-only Minecraft classes.
-
-## Testing And Verification
-
-- For code changes, run `.\gradlew.bat build` when feasible.
-- For client-facing behavior, also run `.\gradlew.bat runClient` when feasible and manually check the affected flow.
-- For data generation changes, run the configured datagen task before committing generated resources.
-- If a check cannot be run, mention that clearly in the final response.
-
-## Documentation
-
-- Update `README.md` or files in `docs/` when a change affects project goals, build steps, testing, or player-visible behavior.
-- Keep documentation practical and current. Avoid promising features that are not implemented unless they are clearly marked as planned.
+When asked to implement a feature:
+1. Summarize the intended gameplay effect.
+2. Identify the smallest technical approach.
+3. Mention whether the change is data-driven, event-based, or mixin-based.
+4. Then implement.s
