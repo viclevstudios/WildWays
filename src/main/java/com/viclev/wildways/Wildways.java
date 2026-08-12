@@ -17,6 +17,9 @@ public class Wildways implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModBlocks.initialize();
+		ModBlockEntities.initialize();
+		ModMenuTypes.initialize();
 		ModItems.initialize();
 	}
 

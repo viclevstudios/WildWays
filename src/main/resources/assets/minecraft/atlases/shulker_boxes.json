@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:directory",
+      "prefix": "entity/shulker/",
+      "source": "entity/shulker"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "wildways:entity/shulker/endermite_box"
+    }
+  ]
+}

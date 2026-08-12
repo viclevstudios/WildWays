@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "wildways:endermite_shell",
+    "C": "minecraft:chest"
+  },
+  "pattern": [
+    "SCS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "wildways:endermite_box"
+  }
+}
