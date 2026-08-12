@@ -116,6 +116,11 @@ public class EndermiteBoxBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		// Mobile containers retain their contents on removal, like vanilla shulker boxes.
+	}
+
+	@Override
 	public boolean triggerEvent(int type, int data) {
 		if (type == 1) {
 			this.openCount = data;

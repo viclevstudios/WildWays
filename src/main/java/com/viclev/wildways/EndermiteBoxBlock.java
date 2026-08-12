@@ -3,6 +3,7 @@ package com.viclev.wildways;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.phys.AABB;
@@ -38,6 +41,7 @@ import java.util.Map;
 
 public class EndermiteBoxBlock extends BaseEntityBlock {
 	public static final EnumProperty<Direction> FACING = DirectionalBlock.FACING;
+	private static final Identifier CONTENTS = Identifier.withDefaultNamespace("contents");
 	private static final Map<Direction, VoxelShape> OPEN_SUPPORT_SHAPES = Shapes.rotateAll(Block.boxZ(16.0, 0.0, 1.0));
 
 	public EndermiteBoxBlock(BlockBehaviour.Properties properties) {
@@ -92,15 +96,32 @@ public class EndermiteBoxBlock extends BaseEntityBlock {
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (level.getBlockEntity(pos) instanceof EndermiteBoxBlockEntity endermiteBox && !level.isClientSide() && player.preventsBlockDrops() && !endermiteBox.isEmpty()) {
-			ItemStack stack = new ItemStack(state.getBlock());
-			stack.applyComponents(endermiteBox.collectComponents());
-			ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
-			itemEntity.setDefaultPickUpDelay();
-			level.addFreshEntity(itemEntity);
+		if (level.getBlockEntity(pos) instanceof EndermiteBoxBlockEntity endermiteBox) {
+			if (!level.isClientSide() && player.preventsBlockDrops() && !endermiteBox.isEmpty()) {
+				ItemStack stack = new ItemStack(state.getBlock());
+				stack.applyComponents(endermiteBox.collectComponents());
+				ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
+				itemEntity.setDefaultPickUpDelay();
+				level.addFreshEntity(itemEntity);
+			} else {
+				endermiteBox.unpackLootTable(player);
+			}
 		}
 
 		return super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	protected java.util.List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+		if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof EndermiteBoxBlockEntity endermiteBox) {
+			params = params.withDynamicDrop(CONTENTS, consumer -> {
+				for (int slot = 0; slot < endermiteBox.getContainerSize(); slot++) {
+					consumer.accept(endermiteBox.getItem(slot));
+				}
+			});
+		}
+
+		return super.getDrops(state, params);
 	}
 
 	@Override

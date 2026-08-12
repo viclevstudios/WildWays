@@ -6,7 +6,9 @@
     "C": "minecraft:chest"
   },
   "pattern": [
-    "SCS"
+    "S",
+    "C",
+    "S"
   ],
   "result": {
     "count": 1,
