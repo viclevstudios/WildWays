@@ -16,7 +16,7 @@ public class EndermiteBoxMenu extends AbstractContainerMenu {
 	private static final int CONTAINER_END = SLOT_COUNT;
 	private static final int INVENTORY_START = CONTAINER_END;
 	private static final int INVENTORY_END = INVENTORY_START + Inventory.INVENTORY_SIZE;
-	private static final int CONTAINER_START_X = 44;
+	private static final int CONTAINER_START_X = 52;
 	private static final int CONTAINER_START_Y = 18;
 	private static final int INVENTORY_START_X = 8;
 	private static final int INVENTORY_START_Y = 84;

@@ -15,7 +15,7 @@ public class EndermiteBoxScreen extends AbstractContainerScreen<EndermiteBoxMenu
 	private static final int SLOT_SIZE = 18;
 	private static final int SLOT_COLUMNS = 4;
 	private static final int SLOT_ROWS = 3;
-	private static final int CONTAINER_START_X = 44;
+	private static final int CONTAINER_START_X = 52;
 	private static final int CONTAINER_START_Y = 18;
 	private static final int VANILLA_SLOT_TEXTURE_X = 7;
 	private static final int VANILLA_SLOT_TEXTURE_Y = 17;
