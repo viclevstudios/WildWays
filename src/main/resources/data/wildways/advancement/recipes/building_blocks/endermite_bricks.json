@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_endermite_shell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wildways:endermite_shell"
+            ]
+          }
+        ]
+      }
+    },
+    "has_stone_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:stone_bricks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_endermite_shell"
+    ],
+    [
+      "has_stone_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "wildways:endermite_bricks"
+    ]
+  }
+}

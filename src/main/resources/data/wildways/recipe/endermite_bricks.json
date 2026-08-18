@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": "minecraft:stone_bricks",
+    "S": "wildways:endermite_shell"
+  },
+  "pattern": [
+    " B ",
+    "BSB",
+    " B "
+  ],
+  "result": {
+    "count": 4,
+    "id": "wildways:endermite_bricks"
+  }
+}

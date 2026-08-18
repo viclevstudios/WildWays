@@ -1,5 +1,9 @@
 {
   "item.wildways.endermite_shell": "Endermite Shell",
   "block.wildways.endermite_box": "Endermite Nest",
-  "block.wildways.endermite_nest": "Endermite Nest"
+  "block.wildways.endermite_nest": "Endermite Nest",
+  "block.wildways.endermite_bricks": "Endermite Bricks",
+  "block.wildways.endermite_brick_wall": "Endermite Brick Wall",
+  "block.wildways.endermite_brick_stairs": "Endermite Brick Stairs",
+  "block.wildways.endermite_brick_slab": "Endermite Brick Slab"
 }

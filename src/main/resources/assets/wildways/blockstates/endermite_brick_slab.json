@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wildways:block/endermite_brick_slab"
+    },
+    "type=double": {
+      "model": "wildways:block/endermite_bricks"
+    },
+    "type=top": {
+      "model": "wildways:block/endermite_brick_slab_top"
+    }
+  }
+}

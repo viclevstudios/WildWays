@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_endermite_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wildways:endermite_bricks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_endermite_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "wildways:endermite_brick_wall",
+      "wildways:endermite_brick_stairs",
+      "wildways:endermite_brick_stairs_mirrored",
+      "wildways:endermite_brick_slab",
+      "wildways:endermite_brick_wall_stonecutting",
+      "wildways:endermite_brick_stairs_stonecutting",
+      "wildways:endermite_brick_slab_stonecutting"
+    ]
+  }
+}

@@ -9,6 +9,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class EndermiteBoxBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
@@ -45,7 +45,7 @@ public class EndermiteBoxBlock extends BaseEntityBlock implements SimpleWaterlog
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final Identifier CONTENTS = Identifier.withDefaultNamespace("contents");
-	private static final VoxelShape NEST_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
+	private static final VoxelShape NEST_SHAPE = Block.column(12.0, 0.0, 12.0);
 
 	public EndermiteBoxBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -142,12 +142,22 @@ public class EndermiteBoxBlock extends BaseEntityBlock implements SimpleWaterlog
 
 	@Override
 	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return Shapes.block();
+		return NEST_SHAPE;
+	}
+
+	@Override
+	protected VoxelShape getEntityInsideCollisionShape(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+		return NEST_SHAPE;
 	}
 
 	@Override
 	protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter level, BlockPos pos) {
 		return NEST_SHAPE;
+	}
+
+	@Override
+	protected boolean isCollisionShapeFullBlock(BlockState state, BlockGetter level, BlockPos pos) {
+		return false;
 	}
 
 	@Override

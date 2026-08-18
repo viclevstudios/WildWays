@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "wildways:endermite_bricks",
+  "result": {
+    "count": 2,
+    "id": "wildways:endermite_brick_slab"
+  }
+}
