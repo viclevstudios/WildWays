@@ -21,6 +21,9 @@ public class Wildways implements ModInitializer {
 		ModBlockEntities.initialize();
 		ModMenuTypes.initialize();
 		ModItems.initialize();
+		ModEffects.initialize();
+		ModPotions.initialize();
+		UneaseBlockBreakHandler.initialize();
 	}
 
 	public static Identifier id(String path) {
