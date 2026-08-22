@@ -3,7 +3,8 @@
 	"package": "com.viclev.wildways.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"EndermiteMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
