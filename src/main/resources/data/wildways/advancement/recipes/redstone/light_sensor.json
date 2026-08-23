@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_daylight_detector": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:daylight_detector"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_daylight_detector"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "wildways:light_sensor"
+    ]
+  }
+}

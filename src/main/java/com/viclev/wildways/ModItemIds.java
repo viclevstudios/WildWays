@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 
 public final class ModItemIds {
 	public static final ResourceKey<Item> ENDERMITE_SHELL = create("endermite_shell");
+	public static final ResourceKey<Item> BIOME_COMPASS = create("biome_compass");
 
 	private ModItemIds() {
 	}

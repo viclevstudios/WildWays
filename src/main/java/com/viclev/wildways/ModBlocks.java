@@ -51,6 +51,11 @@ public final class ModBlocks {
 		SlabBlock::new,
 		BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_SLAB)
 	);
+	public static final Block LIGHT_SENSOR = registerBlock(
+		ModBlockItemIds.LIGHT_SENSOR,
+		LightSensorBlock::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.DAYLIGHT_DETECTOR)
+	);
 
 	private ModBlocks() {
 	}
@@ -78,7 +83,10 @@ public final class ModBlocks {
 
 	public static void initialize() {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
-			.register(output -> output.accept(ENDERMITE_BOX));
+			.register(output -> {
+				output.accept(ENDERMITE_BOX);
+				output.accept(LIGHT_SENSOR);
+			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS)
 			.register(output -> {
 				output.accept(ENDERMITE_BRICKS);

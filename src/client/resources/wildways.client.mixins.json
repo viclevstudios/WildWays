@@ -3,7 +3,8 @@
 	"package": "com.viclev.wildways.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+		"ExampleClientMixin",
+		"HudMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

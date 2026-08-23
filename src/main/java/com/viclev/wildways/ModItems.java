@@ -15,6 +15,11 @@ public final class ModItems {
 		Item::new,
 		new Item.Properties()
 	);
+	public static final Item BIOME_COMPASS = register(
+		ModItemIds.BIOME_COMPASS,
+		Item::new,
+		new Item.Properties()
+	);
 
 	private ModItems() {
 	}
@@ -31,5 +36,7 @@ public final class ModItems {
 	public static void initialize() {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS)
 			.register(output -> output.accept(ENDERMITE_SHELL));
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
+			.register(output -> output.accept(BIOME_COMPASS));
 	}
 }

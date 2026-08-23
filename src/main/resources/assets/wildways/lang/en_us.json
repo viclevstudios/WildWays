@@ -1,5 +1,7 @@
 {
   "item.wildways.endermite_shell": "Endermite Shell",
+	"item.wildways.biome_compass": "Biome Compass",
+	"block.wildways.light_sensor": "Light Sensor",
   "effect.wildways.unease": "Unease",
   "item.minecraft.potion.effect.unease": "Potion of Unease",
   "item.minecraft.splash_potion.effect.unease": "Splash Potion of Unease",

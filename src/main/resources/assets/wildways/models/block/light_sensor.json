@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "wildways:block/light_sensor_bottom",
+    "up": "wildways:block/light_sensor_top",
+    "north": "wildways:block/light_sensor_north",
+    "south": "wildways:block/light_sensor_south",
+    "east": "wildways:block/light_sensor_east",
+    "west": "wildways:block/light_sensor_west"
+  }
+}
