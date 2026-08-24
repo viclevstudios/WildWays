@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.monster.Endermite;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public final class UneaseBlockBreakHandler {
@@ -18,6 +19,10 @@ public final class UneaseBlockBreakHandler {
 	public static void initialize() {
 		PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
 			if (!(level instanceof ServerLevel serverLevel)) {
+				return;
+			}
+
+			if (!canSpawnFrom(state)) {
 				return;
 			}
 
@@ -37,6 +42,10 @@ public final class UneaseBlockBreakHandler {
 
 	public static float getSpawnChance(MobEffectInstance unease) {
 		return Math.min(1.0F, SPAWN_CHANCE * (unease.getAmplifier() + 1));
+	}
+
+	public static boolean canSpawnFrom(BlockState state) {
+		return state.isSolidRender();
 	}
 
 	public static void spawnEndermite(ServerLevel level, BlockPos pos) {

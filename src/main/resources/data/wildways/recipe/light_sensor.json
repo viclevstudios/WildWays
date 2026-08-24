@@ -4,12 +4,13 @@
   "key": {
     "D": "minecraft:daylight_detector",
     "I": "minecraft:iron_ingot",
+	  "P": "#minecraft:planks",
     "R": "minecraft:redstone",
     "C": "minecraft:copper_ingot"
   },
   "pattern": [
     "IDI",
-    "IRI",
+	  "PRP",
     "ICI"
   ],
   "result": {

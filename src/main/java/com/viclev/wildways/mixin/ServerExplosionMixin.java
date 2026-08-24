@@ -30,7 +30,7 @@ public class ServerExplosionMixin {
 		ServerLevel level = explosion.level();
 		float spawnChance = UneaseBlockBreakHandler.getSpawnChance(unease);
 		for (BlockPos pos : positions) {
-			if (!level.getBlockState(pos).isSolid()) {
+			if (!UneaseBlockBreakHandler.canSpawnFrom(level.getBlockState(pos))) {
 				continue;
 			}
 
