@@ -2,7 +2,7 @@
   "type": "minecraft:jigsaw",
   "biomes": "#wildways:has_structure/quarantine_grounds",
   "step": "surface_structures",
-  "terrain_adaptation": "none",
+  "terrain_adaptation": "beard_thin",
   "start_pool": "wildways:quarantine_grounds_anchor",
   "size": 3,
   "start_height": { "absolute": 0 },

@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,6 +26,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 /** Positions quarantine grounds templates against natural ground and optionally fills exposed supports with earth. */
 public final class QuarantineFoundationProcessor implements StructureProcessor {
 	private static final Map<StructurePlaceSettings, Integer> ENTITY_OFFSETS = Collections.synchronizedMap(new WeakHashMap<>());
+	private static final Map<Object, Map<PlacementKey, GroundProfile>> GROUND_PROFILES = Collections.synchronizedMap(new WeakHashMap<>());
 	public static final MapCodec<QuarantineFoundationProcessor> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.BOOL.optionalFieldOf("terrain_following", false).forGetter(processor -> processor.terrainFollowing),
 		Codec.BOOL.optionalFieldOf("align_to_ground", false).forGetter(processor -> processor.alignToGround),
@@ -68,12 +68,13 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		if (bounds == null) {
 			return processedBlocks;
 		}
+		GroundProfile groundProfile = groundProfile(level, templateOrigin, referencePos, processedBlocks, bounds);
 
 		List<StructureTemplate.StructureBlockInfo> positionedBlocks;
 		if (terrainFollowing) {
-			positionedBlocks = followTerrain(level, processedBlocks, bounds);
+			positionedBlocks = followTerrain(level, processedBlocks, bounds, groundProfile);
 		} else if (alignToGround) {
-			int offsetY = findAverageGroundY(level, processedBlocks, bounds) + surfaceOffset - bounds.minY;
+			int offsetY = findAverageGroundY(groundProfile, processedBlocks, bounds) + surfaceOffset - bounds.minY;
 			positionedBlocks = moveAll(processedBlocks, offsetY);
 			if (offsetY != 0) {
 				ENTITY_OFFSETS.put(settings, offsetY);
@@ -104,7 +105,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		List<StructureTemplate.StructureBlockInfo> withFoundations = new ArrayList<>(positionedBlocks);
 		for (Map.Entry<Long, Integer> entry : baseColumns.entrySet()) {
 			BlockPos columnPos = BlockPos.of(entry.getKey());
-			int groundY = findGroundY(level, columnPos.getX(), columnPos.getZ());
+			int groundY = groundProfile.heightAt(columnPos.getX(), columnPos.getZ());
 			int lowestFoundationY = Math.max(groundY + 1, entry.getValue() - maxFoundationDepth);
 			for (int y = entry.getValue() - 1; y >= lowestFoundationY; y--) {
 				BlockPos supportPos = new BlockPos(columnPos.getX(), y, columnPos.getZ());
@@ -144,7 +145,8 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 	private List<StructureTemplate.StructureBlockInfo> followTerrain(
 		ServerLevelAccessor level,
 		List<StructureTemplate.StructureBlockInfo> blocks,
-		Bounds bounds
+		Bounds bounds,
+		GroundProfile groundProfile
 	) {
 		Map<BlockPos, StructureTemplate.StructureBlockInfo> aboveSurface = new java.util.HashMap<>();
 		List<StructureTemplate.StructureBlockInfo> movedBlocks = new ArrayList<>(blocks.size());
@@ -152,7 +154,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 			if (blockInfo.state().isAir()) {
 				movedBlocks.add(blockInfo);
 			} else if (blockInfo.pos().getY() <= bounds.minY) {
-				int groundY = findGroundY(level, blockInfo.pos().getX(), blockInfo.pos().getZ());
+				int groundY = groundProfile.heightAt(blockInfo.pos().getX(), blockInfo.pos().getZ());
 				int relativeY = blockInfo.pos().getY() - bounds.minY;
 				movedBlocks.add(move(blockInfo, new BlockPos(blockInfo.pos().getX(), groundY + surfaceOffset + relativeY, blockInfo.pos().getZ())));
 			} else {
@@ -184,7 +186,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 			}
 
 			BlockPos anchor = nearestSurfaceColumn(decoration, blocks, bounds.minY);
-			int offsetY = findGroundY(level, anchor.getX(), anchor.getZ()) + surfaceOffset - bounds.minY;
+			int offsetY = groundProfile.heightAt(anchor.getX(), anchor.getZ()) + surfaceOffset - bounds.minY;
 			for (StructureTemplate.StructureBlockInfo blockInfo : decoration) {
 				movedBlocks.add(move(blockInfo, blockInfo.pos().offset(0, offsetY, 0)));
 			}
@@ -224,16 +226,6 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 	}
 
 	private static int findGroundY(ServerLevelAccessor level, int x, int z) {
-		if (level instanceof WorldGenRegion worldGenRegion) {
-			return worldGenRegion.getLevel().getChunkSource().getGenerator().getBaseHeight(
-				x,
-				z,
-				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				worldGenRegion,
-				worldGenRegion.getLevel().getChunkSource().randomState()
-			) - 1;
-		}
-
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
 		while (y >= level.getMinY() && isTreeBlock(level.getBlockState(new BlockPos(x, y, z)))) {
 			y--;
@@ -243,7 +235,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 
 	/** Uses the same average-ground-level idea as vanilla village pieces, but ignores canopy blocks. */
 	private static int findAverageGroundY(
-		ServerLevelAccessor level,
+		GroundProfile groundProfile,
 		List<StructureTemplate.StructureBlockInfo> blocks,
 		Bounds bounds
 	) {
@@ -254,15 +246,34 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 			}
 		}
 		if (footprint.isEmpty()) {
-			return findGroundY(level, (bounds.minX + bounds.maxX) / 2, (bounds.minZ + bounds.maxZ) / 2);
+			return groundProfile.heightAt((bounds.minX + bounds.maxX) / 2, (bounds.minZ + bounds.maxZ) / 2);
 		}
 
 		long totalHeight = 0;
 		for (long column : footprint) {
 			BlockPos pos = BlockPos.of(column);
-			totalHeight += findGroundY(level, pos.getX(), pos.getZ());
+			totalHeight += groundProfile.heightAt(pos.getX(), pos.getZ());
 		}
 		return (int) Math.floorDiv(totalHeight, footprint.size());
+	}
+
+	/**
+	 * Structure templates are placed once per intersecting chunk. Capturing the natural ground profile on
+	 * the first pass prevents blocks placed in an earlier chunk from changing the height of later passes.
+	 */
+	private static GroundProfile groundProfile(
+		ServerLevelAccessor level,
+		BlockPos templateOrigin,
+		BlockPos referencePos,
+		List<StructureTemplate.StructureBlockInfo> blocks,
+		Bounds bounds
+	) {
+		Object worldKey = level instanceof net.minecraft.server.level.WorldGenRegion region ? region.getLevel() : level;
+		PlacementKey key = new PlacementKey(templateOrigin.immutable(), referencePos.immutable(), bounds);
+		synchronized (GROUND_PROFILES) {
+			Map<PlacementKey, GroundProfile> profiles = GROUND_PROFILES.computeIfAbsent(worldKey, ignored -> new java.util.HashMap<>());
+			return profiles.computeIfAbsent(key, ignored -> GroundProfile.capture(level, blocks));
+		}
 	}
 
 	private static boolean isTreeBlock(BlockState state) {
@@ -289,6 +300,30 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 			}
 
 			return minY == Integer.MAX_VALUE ? null : new Bounds(minX, maxX, minY, minZ, maxZ);
+		}
+	}
+
+	private record PlacementKey(BlockPos templateOrigin, BlockPos referencePos, Bounds bounds) {
+	}
+
+	private record GroundProfile(Map<Long, Integer> heights) {
+		private static GroundProfile capture(ServerLevelAccessor level, List<StructureTemplate.StructureBlockInfo> blocks) {
+			Map<Long, Integer> heights = new java.util.HashMap<>();
+			for (StructureTemplate.StructureBlockInfo blockInfo : blocks) {
+				if (!blockInfo.state().isAir()) {
+					long column = BlockPos.asLong(blockInfo.pos().getX(), 0, blockInfo.pos().getZ());
+					heights.computeIfAbsent(column, ignored -> findGroundY(level, blockInfo.pos().getX(), blockInfo.pos().getZ()));
+				}
+			}
+			return new GroundProfile(Map.copyOf(heights));
+		}
+
+		private int heightAt(int x, int z) {
+			Integer height = heights.get(BlockPos.asLong(x, 0, z));
+			if (height == null) {
+				throw new IllegalStateException("Missing cached terrain height for structure column " + x + "," + z);
+			}
+			return height;
 		}
 	}
 }
