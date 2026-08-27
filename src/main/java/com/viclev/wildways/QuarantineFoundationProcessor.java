@@ -68,7 +68,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		if (bounds == null) {
 			return processedBlocks;
 		}
-		GroundProfile groundProfile = groundProfile(level, templateOrigin, referencePos, processedBlocks, bounds);
+		GroundProfile groundProfile = groundProfile(level, templateOrigin, processedBlocks, bounds);
 
 		List<StructureTemplate.StructureBlockInfo> positionedBlocks;
 		if (terrainFollowing) {
@@ -264,12 +264,11 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 	private static GroundProfile groundProfile(
 		ServerLevelAccessor level,
 		BlockPos templateOrigin,
-		BlockPos referencePos,
 		List<StructureTemplate.StructureBlockInfo> blocks,
 		Bounds bounds
 	) {
 		Object worldKey = level instanceof net.minecraft.server.level.WorldGenRegion region ? region.getLevel() : level;
-		PlacementKey key = new PlacementKey(templateOrigin.immutable(), referencePos.immutable(), bounds);
+		PlacementKey key = new PlacementKey(templateOrigin.immutable(), bounds);
 		synchronized (GROUND_PROFILES) {
 			Map<PlacementKey, GroundProfile> profiles = GROUND_PROFILES.computeIfAbsent(worldKey, ignored -> new java.util.HashMap<>());
 			return profiles.computeIfAbsent(key, ignored -> GroundProfile.capture(level, blocks));
@@ -303,7 +302,11 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		}
 	}
 
-	private record PlacementKey(BlockPos templateOrigin, BlockPos referencePos, Bounds bounds) {
+	/**
+	 * The template origin and its bounds identify a jigsaw piece. The reference position deliberately does
+	 * not belong here: Minecraft changes it for every chunk passed to PoolElementStructurePiece#postProcess.
+	 */
+	private record PlacementKey(BlockPos templateOrigin, Bounds bounds) {
 	}
 
 	private record GroundProfile(Map<Long, Integer> heights) {
