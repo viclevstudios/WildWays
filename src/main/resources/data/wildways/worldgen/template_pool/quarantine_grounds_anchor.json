@@ -1,0 +1,15 @@
+{
+  "name": "wildways:quarantine_grounds_anchor",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "wildways:quarantine_grounds/quarantine_grounds_anchor",
+        "processors": "wildways:quarantine_grounds_building",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

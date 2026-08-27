@@ -1,0 +1,10 @@
+{
+  "name": "wildways:quarantine_grounds_hospital_graveyard_optional",
+  "fallback": "minecraft:empty",
+  "elements": [
+    { "weight": 3, "element": { "element_type": "minecraft:empty_pool_element", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_grave_small", "processors": "wildways:quarantine_grounds_grave_foundation", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_grave_medium", "processors": "wildways:quarantine_grounds_grave_foundation", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_grave_large", "processors": "wildways:quarantine_grounds_grave_foundation", "projection": "rigid" } }
+  ]
+}

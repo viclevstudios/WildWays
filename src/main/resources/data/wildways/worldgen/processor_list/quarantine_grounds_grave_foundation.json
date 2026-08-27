@@ -1,0 +1,11 @@
+{
+  "processors": [
+    {
+      "processor_type": "wildways:quarantine_grounds_foundation",
+      "align_to_ground": true,
+      "foundation": true,
+      "max_foundation_depth": 2,
+      "surface_offset": 0
+    }
+  ]
+}

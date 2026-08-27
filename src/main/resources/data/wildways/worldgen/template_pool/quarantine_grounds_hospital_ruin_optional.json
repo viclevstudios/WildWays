@@ -1,0 +1,8 @@
+{
+  "name": "wildways:quarantine_grounds_hospital_ruin_optional",
+  "fallback": "minecraft:empty",
+  "elements": [
+    { "weight": 1, "element": { "element_type": "minecraft:empty_pool_element", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_ruin_infested", "processors": "wildways:quarantine_grounds_building_foundation", "projection": "rigid" } }
+  ]
+}

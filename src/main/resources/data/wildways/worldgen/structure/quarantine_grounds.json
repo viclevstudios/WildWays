@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#wildways:has_structure/quarantine_grounds",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "start_pool": "wildways:quarantine_grounds_anchor",
+  "size": 3,
+  "start_height": { "absolute": 0 },
+  "max_distance_from_center": 80,
+  "spawn_overrides": {},
+  "use_expansion_hack": false,
+  "project_start_to_heightmap": "MOTION_BLOCKING_NO_LEAVES"
+}

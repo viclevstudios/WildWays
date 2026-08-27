@@ -1,0 +1,11 @@
+{
+  "structures": [
+    { "structure": "wildways:quarantine_grounds", "weight": 1 }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 8,
+    "salt": 29472019
+  }
+}

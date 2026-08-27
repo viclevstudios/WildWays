@@ -1,0 +1,9 @@
+{
+  "name": "wildways:quarantine_grounds_farm_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_farm_small", "processors": "wildways:quarantine_grounds_farm_foundation", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_farm_medium", "processors": "wildways:quarantine_grounds_farm_foundation", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_farm_large", "processors": "wildways:quarantine_grounds_farm_foundation", "projection": "rigid" } }
+  ]
+}

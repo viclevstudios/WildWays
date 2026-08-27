@@ -1,0 +1,24 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:chest", "probability": 0.5 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:air" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:stone_bricks", "probability": 0.15 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:cracked_stone_bricks" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:stone_bricks", "probability": 0.11764706 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:mossy_stone_bricks" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:stone_bricks", "probability": 0.13333334 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:air" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:stone_brick_slab", "probability": 0.3 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:mossy_stone_brick_slab" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:spruce_log", "probability": 0.1 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:air" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:stripped_spruce_log", "probability": 0.1 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:air" } }
+      ]
+    },
+    { "processor_type": "wildways:quarantine_grounds_mossify_stairs" },
+    {
+      "processor_type": "wildways:quarantine_grounds_foundation",
+      "align_to_ground": true,
+      "foundation": true,
+      "max_foundation_depth": 4,
+      "surface_offset": 0
+    }
+  ]
+}

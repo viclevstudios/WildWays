@@ -1,0 +1,23 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:wheat", "probability": 0.2 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:air" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:wheat", "probability": 0.125 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:beetroots" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:wheat", "probability": 0.14285715 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:carrots" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:wheat", "probability": 0.16666667 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:potatoes" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:farmland", "probability": 0.2 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:dirt" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:cobblestone", "probability": 0.25 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:mossy_cobblestone" } },
+        { "input_predicate": { "predicate_type": "minecraft:random_block_match", "block": "minecraft:cobblestone_slab", "probability": 0.2 }, "location_predicate": { "predicate_type": "minecraft:always_true" }, "output_state": { "Name": "minecraft:mossy_cobblestone_slab" } }
+      ]
+    },
+    {
+      "processor_type": "wildways:quarantine_grounds_foundation",
+      "align_to_ground": true,
+      "foundation": true,
+      "max_foundation_depth": 4,
+      "surface_offset": 0
+    }
+  ]
+}

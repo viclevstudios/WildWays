@@ -1,0 +1,17 @@
+{
+  "name": "wildways:quarantine_grounds_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    { "weight": 20, "element": { "element_type": "minecraft:empty_pool_element", "projection": "rigid" } },
+    { "weight": 4, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_graveyard_normal", "processors": "wildways:quarantine_grounds_path", "projection": "rigid" } },
+    { "weight": 4, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_graveyard_curved1", "processors": "wildways:quarantine_grounds_path", "projection": "rigid" } },
+    { "weight": 4, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_graveyard_curved2", "processors": "wildways:quarantine_grounds_path", "projection": "rigid" } },
+    { "weight": 15, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_hospital_path1", "processors": "wildways:quarantine_grounds_path", "projection": "rigid" } },
+    { "weight": 15, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_hospital_path2", "processors": "wildways:quarantine_grounds_path", "projection": "rigid" } },
+    { "weight": 14, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_farm", "processors": "wildways:quarantine_grounds_path", "projection": "rigid" } },
+    { "weight": 6, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_ruin_generic", "processors": "wildways:quarantine_grounds_building_foundation", "projection": "rigid" } },
+    { "weight": 6, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_ruin_kitchen", "processors": "wildways:quarantine_grounds_building_foundation", "projection": "rigid" } },
+    { "weight": 6, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_ruin_storage", "processors": "wildways:quarantine_grounds_building_foundation", "projection": "rigid" } },
+    { "weight": 6, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_ruin_infested", "processors": "wildways:quarantine_grounds_building_foundation", "projection": "rigid" } }
+  ]
+}

@@ -5,7 +5,9 @@
 	"mixins": [
 		"ExampleMixin",
 		"EndermiteMixin",
-		"ServerExplosionMixin"
+		"ServerExplosionMixin",
+		"StructureTemplateEntityOffsetMixin",
+		"StructureTemplateEntityInvoker"
 	],
 	"injectors": {
 		"defaultRequire": 1
