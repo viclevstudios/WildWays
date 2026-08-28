@@ -6,6 +6,7 @@
 		"ExampleMixin",
 		"EndermiteMixin",
 		"ServerExplosionMixin",
+		"JigsawPlacementLocalTerrainMixin",
 		"PoolElementStructurePieceGroundAlignmentMixin",
 		"SinglePoolElementProcessorAccessor",
 		"StructureTemplateEntityOffsetMixin",
