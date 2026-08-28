@@ -54,6 +54,10 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		return MAP_CODEC;
 	}
 
+	public boolean alignsToGround() {
+		return alignToGround;
+	}
+
 	@Override
 	public List<StructureTemplate.StructureBlockInfo> finalizeProcessing(
 		ServerLevelAccessor level,
@@ -74,10 +78,14 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		if (terrainFollowing) {
 			positionedBlocks = followTerrain(level, processedBlocks, bounds, groundProfile);
 		} else if (alignToGround) {
-			int offsetY = findAverageGroundY(groundProfile, processedBlocks, bounds) + surfaceOffset - bounds.minY;
-			positionedBlocks = moveAll(processedBlocks, offsetY);
-			if (offsetY != 0) {
-				ENTITY_OFFSETS.put(settings, offsetY);
+			if (QuarantinePiecePlacementContext.isActive()) {
+				positionedBlocks = processedBlocks;
+			} else {
+				int offsetY = findAverageGroundY(groundProfile, processedBlocks, bounds) + surfaceOffset - bounds.minY;
+				positionedBlocks = moveAll(processedBlocks, offsetY);
+				if (offsetY != 0) {
+					ENTITY_OFFSETS.put(settings, offsetY);
+				}
 			}
 		} else {
 			positionedBlocks = processedBlocks;
@@ -225,7 +233,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 			|| !baseColumns.containsKey(BlockPos.asLong(columnPos.getX(), 0, columnPos.getZ() - 1));
 	}
 
-	private static int findGroundY(ServerLevelAccessor level, int x, int z) {
+	public static int findNaturalGroundY(ServerLevelAccessor level, int x, int z) {
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
 		while (y >= level.getMinY() && isTreeBlock(level.getBlockState(new BlockPos(x, y, z)))) {
 			y--;
@@ -315,7 +323,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 			for (StructureTemplate.StructureBlockInfo blockInfo : blocks) {
 				if (!blockInfo.state().isAir()) {
 					long column = BlockPos.asLong(blockInfo.pos().getX(), 0, blockInfo.pos().getZ());
-					heights.computeIfAbsent(column, ignored -> findGroundY(level, blockInfo.pos().getX(), blockInfo.pos().getZ()));
+					heights.computeIfAbsent(column, ignored -> findNaturalGroundY(level, blockInfo.pos().getX(), blockInfo.pos().getZ()));
 				}
 			}
 			return new GroundProfile(Map.copyOf(heights));

@@ -6,8 +6,11 @@
 		"ExampleMixin",
 		"EndermiteMixin",
 		"ServerExplosionMixin",
+		"PoolElementStructurePieceGroundAlignmentMixin",
+		"SinglePoolElementProcessorAccessor",
 		"StructureTemplateEntityOffsetMixin",
-		"StructureTemplateEntityInvoker"
+		"StructureTemplateEntityInvoker",
+		"StructureTemplatePaletteAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
