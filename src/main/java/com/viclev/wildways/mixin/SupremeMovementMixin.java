@@ -34,7 +34,7 @@ public class SupremeMovementMixin {
 		LivingEntity entity = (LivingEntity) (Object) this;
 		if (!entity.onGround() && entity.hasEffect(ModEffects.SUPREME_SLOW_FALLING)) {
 			Vec3 movement = entity.getDeltaMovement();
-			entity.setDeltaMovement(movement.x * 1.03D, movement.y, movement.z * 1.03D);
+			entity.setDeltaMovement(movement.x * 1.04D, movement.y, movement.z * 1.04D);
 		}
 	}
 }

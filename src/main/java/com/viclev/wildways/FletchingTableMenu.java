@@ -55,7 +55,6 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 
 	@Override
 	public void slotsChanged(Container container) {
-		super.slotsChanged(container);
 		if (container == this.input) {
 			Recipe recipe = this.findRecipe();
 			ItemStack output = recipe == null ? ItemStack.EMPTY : recipe.output();
