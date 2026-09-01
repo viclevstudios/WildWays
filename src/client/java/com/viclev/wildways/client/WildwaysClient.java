@@ -9,6 +9,7 @@ public class WildwaysClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		MenuScreens.register(ModMenuTypes.ENDERMITE_BOX, EndermiteBoxScreen::new);
+		MenuScreens.register(ModMenuTypes.FLETCHING_TABLE, FletchingTableScreen::new);
 		ClientTickEvents.END_CLIENT_TICK.register(HeldItemInfoHud::updateActionBar);
 	}
 }

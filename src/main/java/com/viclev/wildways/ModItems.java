@@ -6,6 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ArrowItem;
 
 import java.util.function.Function;
 
@@ -20,6 +21,9 @@ public final class ModItems {
 		Item::new,
 		new Item.Properties()
 	);
+	public static final ArrowItem TURTLE_ARROW = register(ModItemIds.TURTLE_ARROW, TurtleArrowItem::new, new Item.Properties());
+	public static final ArrowItem RANGE_ARROW = register(ModItemIds.RANGE_ARROW, RangeArrowItem::new, new Item.Properties());
+	public static final ArrowItem EXPLOSIVE_ARROW = register(ModItemIds.EXPLOSIVE_ARROW, ExplosiveArrowItem::new, new Item.Properties());
 
 	private ModItems() {
 	}
@@ -38,5 +42,11 @@ public final class ModItems {
 			.register(output -> output.accept(ENDERMITE_SHELL));
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(output -> output.accept(BIOME_COMPASS));
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT)
+			.register(output -> {
+				output.accept(TURTLE_ARROW);
+				output.accept(RANGE_ARROW);
+				output.accept(EXPLOSIVE_ARROW);
+			});
 	}
 }

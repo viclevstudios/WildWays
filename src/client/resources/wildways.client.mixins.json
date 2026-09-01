@@ -4,7 +4,10 @@
 	"compatibilityLevel": "JAVA_25",
 	"client": [
 		"ExampleClientMixin",
-		"HudMixin"
+		"HudMixin",
+		"SupremeNightVisionMixin",
+		"SupremeNightVisionLightmapMixin",
+		"SupremeFireResistanceFogMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

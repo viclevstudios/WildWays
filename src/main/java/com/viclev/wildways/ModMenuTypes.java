@@ -11,6 +11,11 @@ public final class ModMenuTypes {
 		Wildways.id("endermite_box"),
 		new MenuType<>(EndermiteBoxMenu::new, FeatureFlagSet.of())
 	);
+	public static final MenuType<FletchingTableMenu> FLETCHING_TABLE = Registry.register(
+		BuiltInRegistries.MENU,
+		Wildways.id("fletching_table"),
+		new MenuType<>(FletchingTableMenu::new, FeatureFlagSet.of())
+	);
 
 	private ModMenuTypes() {
 	}

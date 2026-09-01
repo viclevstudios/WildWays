@@ -11,7 +11,15 @@
 		"SinglePoolElementProcessorAccessor",
 		"StructureTemplateEntityOffsetMixin",
 		"StructureTemplateEntityInvoker",
-		"StructureTemplatePaletteAccessor"
+		"StructureTemplatePaletteAccessor",
+		"PotionItemStackSizeMixin",
+		"SplashPotionItemStackSizeMixin",
+		"LingeringPotionItemStackSizeMixin",
+		"PotionContentsColorMixin",
+		"SupremeFireResistanceMixin",
+		"SupremeEffectPriorityMixin",
+		"SupremeMovementMixin",
+		"LivingEntityVisibilityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

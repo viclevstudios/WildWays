@@ -23,6 +23,7 @@ public class Wildways implements ModInitializer {
 		ModItems.initialize();
 		ModEffects.initialize();
 		ModPotions.initialize();
+		FletchingTableInteraction.initialize();
 		ModStructureProcessors.initialize();
 		UneaseBlockBreakHandler.initialize();
 	}
