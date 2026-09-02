@@ -12,6 +12,7 @@
 		"StructureTemplateEntityOffsetMixin",
 		"StructureTemplateEntityInvoker",
 		"StructureTemplatePaletteAccessor",
+		"AbstractArrowAccessor",
 		"PotionItemStackSizeMixin",
 		"SplashPotionItemStackSizeMixin",
 		"LingeringPotionItemStackSizeMixin",
