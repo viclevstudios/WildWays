@@ -145,6 +145,11 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 	}
 
 	@Override
+	public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
+		return slot.container != this.result && super.canTakeItemForPickAll(stack, slot);
+	}
+
+	@Override
 	public void removed(Player player) {
 		super.removed(player);
 		this.clearContainer(player, this.input);
