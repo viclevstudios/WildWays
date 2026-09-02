@@ -4,6 +4,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 
 /** Projectile launch speed is scaled here, so bows and crossbows use the same rule. */
 public class RangeArrowEntity extends Arrow {
@@ -17,5 +18,11 @@ public class RangeArrowEntity extends Arrow {
 	@Override
 	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
 		super.shoot(x, y, z, velocity * 1.5F, inaccuracy);
+	}
+
+	@Override
+	protected void onHitEntity(EntityHitResult hitResult) {
+		super.onHitEntity(hitResult);
+		SpecialArrowAdvancements.triggerTakeAim(this.getOwner(), hitResult.getEntity(), this.damageSources().arrow(this, this.getOwner()));
 	}
 }

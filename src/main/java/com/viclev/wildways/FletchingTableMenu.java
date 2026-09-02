@@ -1,8 +1,6 @@
 package com.viclev.wildways;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,7 +30,6 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 	private static final int INVENTORY_END = INVENTORY_START + Inventory.INVENTORY_SIZE;
 
 	private final ContainerLevelAccess access;
-	private final Player player;
 	private final InputContainer input;
 	private final ResultContainer result = new ResultContainer();
 
@@ -43,7 +40,6 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 	public FletchingTableMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
 		super(ModMenuTypes.FLETCHING_TABLE, containerId);
 		this.access = access;
-		this.player = inventory.player;
 		this.input = new InputContainer(this::slotsChanged);
 
 		this.addSlot(new InputSlot(this.input, LEFT, 26, 35));
@@ -59,19 +55,6 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 			Recipe recipe = this.findRecipe();
 			ItemStack output = recipe == null ? ItemStack.EMPTY : recipe.output();
 			this.result.setItem(0, output);
-			this.sendResultUpdate(output);
-		}
-	}
-
-	private void sendResultUpdate(ItemStack output) {
-		if (this.player instanceof ServerPlayer serverPlayer) {
-			this.setRemoteSlot(RESULT, output);
-			serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(
-				this.containerId,
-				this.incrementStateId(),
-				RESULT,
-				output
-			));
 		}
 	}
 
