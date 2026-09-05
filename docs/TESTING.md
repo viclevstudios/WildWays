@@ -41,6 +41,17 @@ Suggested smoke checks:
 - The changed feature behaves as expected in survival-like conditions.
 - Logs do not show mixin, registry, or missing-resource errors.
 
+### Current Feature Checks
+
+- Hold a compass and verify that the action bar shows `X`, `Y`, `Z`, and the current cardinal or intercardinal direction.
+- Hold the clock, Biome Compass, and Light Sensor in turn and verify their action-bar information.
+- Open a Fletching Table. Verify the title and feather placeholder, then place a feather, stick, and flint to receive five arrows. Confirm that no placeholder is shown for the stick, flint, or result slots. Test each special-arrow conversion recipe.
+- Test Turtle, Range, and Explosive Arrows in a safe world to verify their increased damage, faster flight, and small explosion respectively.
+- Open an Endermite Nest with contents and verify its inventory, comparator output, and portable contents. Verify Endermite Brick recipes and shapes.
+- Brew Unease and Strong Unease, then test their Endermite-spawning behaviour while mining or around an affected creeper. Check representative Supreme and Fatal potion upgrades with Popped Chorus Fruit.
+- Generate or locate a new Quarantine Grounds. Check that its Endermites remain present and that weathered spruce logs in the hospital houses become stripped spruce logs without changing their horizontal or vertical orientation.
+- Place a Light Sensor below changing light levels and verify that its redstone output follows the light above it.
+
 ## Dedicated Server Check
 
 For common-code or progression changes, run a server check when feasible:

@@ -42,10 +42,10 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 		this.access = access;
 		this.input = new InputContainer(this::slotsChanged);
 
-		this.addSlot(new InputSlot(this.input, LEFT, 26, 35));
-		this.addSlot(new InputSlot(this.input, MIDDLE, 44, 35));
-		this.addSlot(new InputSlot(this.input, RIGHT, 62, 35));
-		this.addSlot(new ResultSlot(this.result, 0, 116, 35));
+		this.addSlot(new InputSlot(this.input, LEFT, 26, 45));
+		this.addSlot(new InputSlot(this.input, MIDDLE, 44, 45));
+		this.addSlot(new InputSlot(this.input, RIGHT, 62, 45));
+		this.addSlot(new ResultSlot(this.result, 0, 116, 45));
 		this.addStandardInventorySlots(inventory, 8, 84);
 	}
 
@@ -64,7 +64,7 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 		ItemStack right = this.input.getItem(RIGHT);
 
 		if (left.is(Items.FEATHER) && middle.is(Items.STICK) && right.is(Items.FLINT)) {
-			return new Recipe(new ItemStack(Items.ARROW, 4), 1, 1, 1);
+			return new Recipe(new ItemStack(Items.ARROW, 5), 1, 1, 1);
 		}
 		if (!left.isEmpty()) {
 			return null;

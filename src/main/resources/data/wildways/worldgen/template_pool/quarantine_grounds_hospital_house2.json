@@ -2,6 +2,6 @@
   "name": "wildways:quarantine_grounds_hospital_house2",
   "fallback": "minecraft:empty",
   "elements": [
-    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_hospital_house2", "processors": "wildways:quarantine_grounds_building_foundation", "projection": "rigid" } }
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "wildways:quarantine_grounds/quarantine_grounds_hospital_house2", "processors": "wildways:quarantine_grounds_hospital_foundation", "projection": "rigid" } }
   ]
 }

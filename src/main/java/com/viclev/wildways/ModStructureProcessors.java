@@ -15,6 +15,11 @@ public final class ModStructureProcessors {
 		Wildways.id("quarantine_grounds_mossify_stairs"),
 		MossifyStoneBrickStairsProcessor.MAP_CODEC
 	);
+	public static final MapCodec<StripSpruceLogProcessor> STRIP_SPRUCE_LOG = Registry.register(
+		BuiltInRegistries.STRUCTURE_PROCESSOR,
+		Wildways.id("quarantine_grounds_strip_spruce_log"),
+		StripSpruceLogProcessor.MAP_CODEC
+	);
 
 	private ModStructureProcessors() {
 	}

@@ -26,6 +26,10 @@ To fix this, this mod aims to make the Progression less rush able while also mak
 - mobs getting stronger while you progress so that your world isn't completely free of threats in the late game
 - more use cases for lesser used items / mobs like Sniffer, Fletching Tables, Endermites or certain food items
 
+## Current Features
+
+WildWays currently includes exploration utilities, Quarantine Grounds, Endermite-themed building and storage, Fletching Table recipes, special arrows, potion changes, and redstone tools. See [the complete feature list](docs/FEATURES.md).
+
 ## Development
 
 - Minecraft: 26.2

@@ -36,7 +36,7 @@ public final class HeldItemInfoHud {
 		Item item = getInformationItem(player);
 		BlockPos pos = player.blockPosition();
 		if (item == Items.COMPASS) {
-			return Component.literal("X: " + pos.getX() + "  Y: " + pos.getY() + "  Z: " + pos.getZ());
+			return Component.literal("X:" + pos.getX() + " Y:" + pos.getY() + " Z:" + pos.getZ() + " | " + getDirection(player.getYRot()));
 		}
 		if (item == Items.CLOCK) {
 			return Component.literal("Day: " + player.level().getOverworldClockTime() / 24000L);
@@ -51,6 +51,12 @@ public final class HeldItemInfoHud {
 			return Component.literal("Light: " + player.level().getMaxLocalRawBrightness(pos));
 		}
 		return null;
+	}
+
+	private static String getDirection(float yaw) {
+		String[] directions = { "South", "South-West", "West", "North-West", "North", "North-East", "East", "South-East" };
+		int index = Math.floorMod((int) Math.floor((yaw + 22.5F) / 45.0F), directions.length);
+		return directions[index];
 	}
 
 	public static boolean isInformationMessage(Component message) {
