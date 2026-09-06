@@ -27,6 +27,9 @@ public class Wildways implements ModInitializer {
 		FletchingTableInteraction.initialize();
 		ModStructureProcessors.initialize();
 		UneaseBlockBreakHandler.initialize();
+		PortalEyeManager.initialize();
+		ModLootTables.initialize();
+		EyeTransformations.initialize();
 	}
 
 	public static Identifier id(String path) {

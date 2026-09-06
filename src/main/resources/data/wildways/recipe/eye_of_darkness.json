@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:echo_shard",
+    "O": "minecraft:ender_eye"
+  },
+  "pattern": [
+    " E ",
+    "EOE",
+    " E "
+  ],
+  "result": {
+    "count": 1,
+    "id": "wildways:eye_of_darkness"
+  }
+}

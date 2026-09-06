@@ -1,42 +1,18 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_endermite_shell": {
+    "has_all_ingredients": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          {
-            "items": [
-              "wildways:endermite_shell"
-            ]
-          }
-        ]
-      }
-    },
-    "has_chest": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:chest"
-            ]
-          }
+          { "items": ["wildways:endermite_shell"] },
+          { "items": ["minecraft:chest"] }
         ]
       }
     }
   },
-  "requirements": [
-    [
-      "has_endermite_shell"
-    ],
-    [
-      "has_chest"
-    ]
-  ],
+  "requirements": [["has_all_ingredients"]],
   "rewards": {
-    "recipes": [
-      "wildways:endermite_box"
-    ]
+    "recipes": ["wildways:endermite_box"]
   }
 }

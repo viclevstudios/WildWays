@@ -1,42 +1,18 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_map": {
+    "has_all_ingredients": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          {
-            "items": [
-              "minecraft:map"
-            ]
-          }
-        ]
-      }
-    },
-    "has_iron_ingot": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:iron_ingot"
-            ]
-          }
+          { "items": ["minecraft:map"] },
+          { "items": ["minecraft:iron_ingot"] }
         ]
       }
     }
   },
-  "requirements": [
-    [
-      "has_map"
-    ],
-    [
-      "has_iron_ingot"
-    ]
-  ],
+  "requirements": [["has_all_ingredients"]],
   "rewards": {
-    "recipes": [
-      "wildways:biome_compass"
-    ]
+    "recipes": ["wildways:biome_compass"]
   }
 }

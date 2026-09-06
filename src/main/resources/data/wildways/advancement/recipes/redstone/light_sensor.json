@@ -1,27 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_daylight_detector": {
+    "has_all_ingredients": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          {
-            "items": [
-              "minecraft:daylight_detector"
-            ]
-          }
+          { "items": ["minecraft:daylight_detector"] },
+          { "items": ["minecraft:iron_ingot"] },
+          { "items": "#minecraft:planks" },
+          { "items": ["minecraft:redstone"] },
+          { "items": ["minecraft:copper_ingot"] }
         ]
       }
     }
   },
-  "requirements": [
-    [
-      "has_daylight_detector"
-    ]
-  ],
+  "requirements": [["has_all_ingredients"]],
   "rewards": {
-    "recipes": [
-      "wildways:light_sensor"
-    ]
+    "recipes": ["wildways:light_sensor"]
   }
 }

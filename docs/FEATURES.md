@@ -23,7 +23,16 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Endermites no longer use vanilla's fixed despawn timer.
 - Endermites drop Endermite Shells, which support the Unease brewing path and Endermite-themed recipes.
 - Endermite Bricks are available as full blocks, slabs, stairs, and walls.
-- The Endermite Nest is a waterloggable, portable twelve-slot container. Opening it has a 5% chance to spawn an Endermite nearby, and its inventory fullness supplies a comparator signal.
+- The Endermite Nest is a waterloggable, portable twelve-slot container. Opening it has a 5% chance to spawn an Endermite nearby, its inventory fullness supplies a comparator signal, and a vanilla Eye of Ender left inside transforms at a random time averaging about ten minutes.
+
+## End progression
+
+- End Portal Frames generate empty and no longer accept vanilla Eyes of Ender.
+- Opening an End Portal requires one each of the twelve WildWays portal eyes. Duplicate eye types are rejected.
+- Left-clicking a filled End Portal Frame returns its stored eye and closes the nearby portal if it was already open.
+- Eyes are found through snowy villages, igloos, Trail Ruins archaeology, Piglin Brutes, Creakings, crafting, enchanting, Evokers, active Conduits, and Endermite Nests. The Eye of the Tiger is registered for the planned Jungle Temple room but is not yet assigned to loot.
+- The Eye of Brewing chain is performed in a Brewing Stand: Eye of Ender with Nether Wart, Awkward Eye with Phantom Membrane, then Thick Eye with a Ghast Tear.
+- WildWays crafting recipes unlock in the recipe book once all of their distinct ingredient types are present in the inventory at the same time.
 
 ## Potions and effects
 

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "E": "minecraft:ender_eye",
+    "L": "minecraft:lapis_lazuli"
+  },
+  "pattern": [
+    "ALA",
+    "LEL",
+    "ALA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "wildways:enchanted_eye"
+  }
+}

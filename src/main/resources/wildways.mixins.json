@@ -20,7 +20,14 @@
 		"SupremeFireResistanceMixin",
 		"SupremeEffectPriorityMixin",
 		"SupremeMovementMixin",
-		"LivingEntityVisibilityMixin"
+		"LivingEntityVisibilityMixin",
+		"EnderEyeItemMixin",
+		"StrongholdPortalRoomMixin",
+		"ConduitBlockEntityMixin",
+		"CreakingEyeDropMixin",
+		"PotionBrewingMixin",
+		"BrewingStandPotionSlotMixin",
+		"BrewingStandBlockEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

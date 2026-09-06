@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:breeze_rod",
+    "E": "minecraft:ender_eye",
+    "W": "minecraft:wind_charge"
+  },
+  "pattern": [
+    "BWB",
+    "WEW",
+    "BWB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "wildways:eye_of_storm"
+  }
+}

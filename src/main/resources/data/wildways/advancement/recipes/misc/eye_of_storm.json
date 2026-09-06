@@ -5,14 +5,15 @@
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          { "items": ["wildways:endermite_shell"] },
-          { "items": ["minecraft:stone_bricks"] }
+          { "items": ["minecraft:ender_eye"] },
+          { "items": ["minecraft:breeze_rod"] },
+          { "items": ["minecraft:wind_charge"] }
         ]
       }
     }
   },
   "requirements": [["has_all_ingredients"]],
   "rewards": {
-    "recipes": ["wildways:endermite_bricks"]
+    "recipes": ["wildways:eye_of_storm"]
   }
 }

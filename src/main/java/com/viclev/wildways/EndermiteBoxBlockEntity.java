@@ -36,12 +36,29 @@ public class EndermiteBoxBlockEntity extends RandomizableContainerBlockEntity im
 	private static final int[] SLOTS = IntStream.range(0, CONTAINER_SIZE).toArray();
 	private static final float OPEN_SPAWN_CHANCE = 0.05F;
 	private static final int OPEN_SPAWN_RADIUS = 2;
+	private static final int AVERAGE_EYE_TRANSFORMATION_TICKS = 20 * 60 * 10;
 
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private int openCount;
 
 	public EndermiteBoxBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.ENDERMITE_BOX, pos, state);
+	}
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, EndermiteBoxBlockEntity blockEntity) {
+		boolean changed = false;
+		for (int slot = 0; slot < blockEntity.items.size(); slot++) {
+			ItemStack stack = blockEntity.items.get(slot);
+			if (stack.is(net.minecraft.world.item.Items.ENDER_EYE)
+				&& level.getRandom().nextInt(AVERAGE_EYE_TRANSFORMATION_TICKS) == 0) {
+				blockEntity.items.set(slot, stack.transmuteCopy(ModItems.EYE_OF_ENDERMITES));
+				level.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.7F, 1.4F);
+				changed = true;
+			}
+		}
+		if (changed) {
+			blockEntity.setChanged();
+		}
 	}
 
 	@Override
