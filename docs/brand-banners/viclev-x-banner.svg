@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" role="img" aria-labelledby="title desc">
+  <title id="title">Viclev banner for X</title>
+  <desc id="desc">A clean navy banner with the Viclev wordmark, flowing blue lines, and the friendly blue ghost mascot.</desc>
+  <rect width="1500" height="500" fill="#071A3D"/>
+  <path d="M-120 458C205 95 475 72 790 390" fill="none" stroke="#0F4077" stroke-width="68" stroke-linecap="round" opacity=".58"/>
+  <path d="M-95 445C220 120 468 110 755 405" fill="none" stroke="#1679D9" stroke-width="16" stroke-linecap="round" opacity=".82"/>
+  <path d="M665 555C905 260 1150 145 1575 30" fill="none" stroke="#0D3568" stroke-width="44" stroke-linecap="round" opacity=".72"/>
+  <g transform="translate(850 -70) scale(.65)">
+    <path d="M512 256C369 256 280 350 280 493V686C280 714 312 730 334 714L397 668C414 656 435 659 449 673L486 711C500 725 524 725 538 711L575 673C589 659 610 656 627 668L690 714C712 730 744 714 744 686V493C744 350 655 256 512 256Z" fill="#258BE3" stroke="#06152F" stroke-width="28" stroke-linejoin="round"/>
+    <path d="M354 397C385 318 445 284 512 284C579 284 639 318 670 397C624 363 570 346 512 346C454 346 400 363 354 397Z" fill="#2DD3EB"/>
+    <ellipse cx="433" cy="474" rx="29" ry="36" fill="#D5F9FB"/>
+    <ellipse cx="591" cy="474" rx="29" ry="36" fill="#D5F9FB"/>
+    <path d="M461 532C470 575 554 575 563 532" fill="none" stroke="#D5F9FB" stroke-width="20" stroke-linecap="round"/>
+    <path d="M480 622L512 647L544 622" fill="none" stroke="#176FC1" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="410" y="292" fill="#D5F9FB" font-family="Bahnschrift, Segoe UI, sans-serif" font-size="116" font-weight="600" letter-spacing="7">Viclev</text>
+  <rect x="416" y="327" width="122" height="12" rx="6" fill="#2DD3EB"/>
+  <rect x="551" y="327" width="55" height="12" rx="6" fill="#258BE3"/>
+</svg>

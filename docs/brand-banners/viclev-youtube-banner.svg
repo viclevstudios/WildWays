@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" role="img" aria-labelledby="title desc">
+  <title id="title">Viclev channel banner for YouTube</title>
+  <desc id="desc">A clean navy channel banner with a centered Viclev wordmark and the friendly blue ghost mascot inside the multi-device safe zone.</desc>
+  <rect width="2560" height="1440" fill="#071A3D"/>
+  <path d="M-180 1260C440 460 980 365 1515 995" fill="none" stroke="#0D376D" stroke-width="150" stroke-linecap="round" opacity=".62"/>
+  <path d="M-145 1235C460 500 955 430 1475 1025" fill="none" stroke="#1679D9" stroke-width="34" stroke-linecap="round" opacity=".78"/>
+  <path d="M1130 1580C1550 950 2030 565 2740 330" fill="none" stroke="#0C3365" stroke-width="110" stroke-linecap="round" opacity=".7"/>
+  <path d="M1185 1580C1590 1010 2050 660 2700 440" fill="none" stroke="#2DD3EB" stroke-width="22" stroke-linecap="round" opacity=".55"/>
+  <g transform="translate(350 340) scale(.65)">
+    <path d="M512 256C369 256 280 350 280 493V686C280 714 312 730 334 714L397 668C414 656 435 659 449 673L486 711C500 725 524 725 538 711L575 673C589 659 610 656 627 668L690 714C712 730 744 714 744 686V493C744 350 655 256 512 256Z" fill="#258BE3" stroke="#06152F" stroke-width="28" stroke-linejoin="round"/>
+    <path d="M354 397C385 318 445 284 512 284C579 284 639 318 670 397C624 363 570 346 512 346C454 346 400 363 354 397Z" fill="#2DD3EB"/>
+    <ellipse cx="433" cy="474" rx="29" ry="36" fill="#D5F9FB"/>
+    <ellipse cx="591" cy="474" rx="29" ry="36" fill="#D5F9FB"/>
+    <path d="M461 532C470 575 554 575 563 532" fill="none" stroke="#D5F9FB" stroke-width="20" stroke-linecap="round"/>
+    <path d="M480 622L512 647L544 622" fill="none" stroke="#176FC1" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="1060" y="805" fill="#D5F9FB" font-family="Bahnschrift, Segoe UI, sans-serif" font-size="188" font-weight="600" letter-spacing="11">Viclev</text>
+  <rect x="1073" y="860" width="205" height="18" rx="9" fill="#2DD3EB"/>
+  <rect x="1300" y="860" width="90" height="18" rx="9" fill="#258BE3"/>
+</svg>
