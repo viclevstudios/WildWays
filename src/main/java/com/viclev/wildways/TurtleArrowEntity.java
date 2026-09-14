@@ -3,6 +3,7 @@ package com.viclev.wildways;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.core.Position;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -16,6 +17,12 @@ public class TurtleArrowEntity extends WildwaysArrowEntity {
 	public TurtleArrowEntity(Level level, LivingEntity shooter, ItemStack stack, ItemStack weapon) {
 		this(ModEntityTypes.TURTLE_ARROW, level);
 		this.initializeFromShooter(shooter, stack, weapon);
+		this.setBaseDamage(3.0D);
+	}
+
+	public TurtleArrowEntity(Level level, Position position, ItemStack stack) {
+		this(ModEntityTypes.TURTLE_ARROW, level);
+		this.initializeFromDispenser(position, stack);
 		this.setBaseDamage(3.0D);
 	}
 

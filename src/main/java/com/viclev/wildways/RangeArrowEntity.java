@@ -3,6 +3,7 @@ package com.viclev.wildways;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.core.Position;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -18,6 +19,12 @@ public class RangeArrowEntity extends WildwaysArrowEntity {
 		this.initializeFromShooter(shooter, stack, weapon);
 		// Arrow damage scales with flight speed. Compensate the 1.5x launch speed
 		// so this arrow still deals the same damage as a normal arrow.
+		this.setBaseDamage(4.0D / 3.0D);
+	}
+
+	public RangeArrowEntity(Level level, Position position, ItemStack stack) {
+		this(ModEntityTypes.RANGE_ARROW, level);
+		this.initializeFromDispenser(position, stack);
 		this.setBaseDamage(4.0D / 3.0D);
 	}
 

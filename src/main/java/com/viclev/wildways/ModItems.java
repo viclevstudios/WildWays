@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.level.block.DispenserBlock;
 
 import java.util.function.Function;
 import java.util.List;
@@ -84,6 +85,10 @@ public final class ModItems {
 	}
 
 	public static void initialize() {
+		DispenserBlock.registerProjectileBehavior(TURTLE_ARROW);
+		DispenserBlock.registerProjectileBehavior(RANGE_ARROW);
+		DispenserBlock.registerProjectileBehavior(EXPLOSIVE_ARROW);
+
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS)
 			.register(output -> {
 				output.accept(ENDERMITE_SHELL);

@@ -3,6 +3,7 @@ package com.viclev.wildways;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.core.Position;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
@@ -25,6 +26,11 @@ public class ExplosiveArrowEntity extends WildwaysArrowEntity {
 	public ExplosiveArrowEntity(Level level, LivingEntity shooter, ItemStack stack, ItemStack weapon) {
 		this(ModEntityTypes.EXPLOSIVE_ARROW, level);
 		this.initializeFromShooter(shooter, stack, weapon);
+	}
+
+	public ExplosiveArrowEntity(Level level, Position position, ItemStack stack) {
+		this(ModEntityTypes.EXPLOSIVE_ARROW, level);
+		this.initializeFromDispenser(position, stack);
 	}
 
 	@Override

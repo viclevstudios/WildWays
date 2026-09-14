@@ -1,6 +1,9 @@
 package com.viclev.wildways;
 
+import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
@@ -14,5 +17,10 @@ public class TurtleArrowItem extends ArrowItem {
 	@Override
 	public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter, ItemStack weapon) {
 		return new TurtleArrowEntity(level, shooter, stack, weapon);
+	}
+
+	@Override
+	public Projectile asProjectile(Level level, Position position, ItemStack stack, Direction direction) {
+		return new TurtleArrowEntity(level, position, stack);
 	}
 }

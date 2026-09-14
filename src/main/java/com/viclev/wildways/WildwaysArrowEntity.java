@@ -1,6 +1,7 @@
 package com.viclev.wildways;
 
 import com.viclev.wildways.mixin.AbstractArrowAccessor;
+import net.minecraft.core.Position;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,5 +28,11 @@ public abstract class WildwaysArrowEntity extends Arrow {
 				accessor.wildways$setPierceLevel((byte) piercing);
 			}
 		}
+	}
+
+	protected void initializeFromDispenser(Position position, ItemStack projectile) {
+		this.setPickupItemStack(projectile.copyWithCount(1));
+		this.setPos(position.x(), position.y(), position.z());
+		this.pickup = Pickup.ALLOWED;
 	}
 }
