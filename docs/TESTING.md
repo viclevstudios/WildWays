@@ -52,12 +52,12 @@ Suggested smoke checks:
 - Generate or locate a new Quarantine Grounds. Check that its Endermites remain present and that weathered spruce logs in the hospital houses become stripped spruce logs without changing their horizontal or vertical orientation.
 - Place a Light Sensor below changing light levels and verify that its redstone output follows the light above it.
 - Locate a newly generated Stronghold and verify that all twelve End Portal Frames are empty. Confirm that a vanilla Eye of Ender cannot be inserted.
-- Insert the twelve different WildWays eyes in any order. Confirm that a duplicate is rejected, an unenchanted Enchanted Eye is rejected, and the portal opens only after all twelve valid eyes are present.
+- Insert the twelve different WildWays eyes in any order. Confirm that a duplicate is rejected, an unenchanted Eye of Enchanting is rejected, and the portal opens only after all twelve valid eyes are present.
 - Left-click a filled frame and verify that the exact eye is returned. If the portal was open, verify that the portal blocks disappear and that reinserting the eye opens it again.
 - Verify the acquisition paths: guaranteed Eye of Ice in an igloo, roughly 10% in snowy-village chests, roughly one-third Piglin Brute drops, 2/47 Lost Eye weight in common Trail Ruins suspicious gravel, and 5% per accepted Creaking hit with no more than one drop per Creaking.
-- Drop an Eye of Ender in water inside an active Conduit's range, and near an idle Evoker. Verify conversion to Eye of Water and, after the Evoker's short warmup, Eye of Illagers.
+- Drop an Eye of Ender in water inside an active Conduit's range, and near an idle Evoker. Verify conversion to Eye of Water and, after the Evoker's short warmup, Eye of the Illagers.
 - Leave several Eyes of Ender in separate Endermite Nest slots and verify that they transform at different random times, averaging about ten minutes over many trials.
-- Craft the Storm, Darkness, and Enchanted Eye paths. Brew Eye of Ender + Nether Wart into Awkward Eye, Awkward Eye + Phantom Membrane into Thick Eye, and Thick Eye + Ghast Tear into Eye of Brewing. Enchant the Enchanted Eye at an Enchanting Table and verify that it receives Attunement and can then be inserted.
+- Craft the Storm, Darkness, and Eye of Enchanting paths. Brew Eye of Ender + Nether Wart into Awkward Eye, Awkward Eye + Phantom Membrane into Thick Eye, and Thick Eye + Ghast Tear into Eye of Brewing. Enchant the Eye of Enchanting at an Enchanting Table and verify that it receives Attunement and can then be inserted.
 - For each WildWays crafting recipe, place all distinct ingredients in the inventory at the same time and verify that the recipe appears in the recipe book. Check that partial ingredient sets do not unlock it.
 
 ## Dedicated Server Check
