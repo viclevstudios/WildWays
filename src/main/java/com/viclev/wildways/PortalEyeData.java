@@ -6,12 +6,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public final class PortalEyeData extends SavedData {
 	private record PlacedEye(long pos, ItemStack stack) {
@@ -50,6 +52,15 @@ public final class PortalEyeData extends SavedData {
 	public ItemStack get(BlockPos pos) {
 		ItemStack stack = this.eyes.get(pos.asLong());
 		return stack == null ? ItemStack.EMPTY : stack.copy();
+	}
+
+	public void forEachInChunk(ChunkPos chunk, BiConsumer<BlockPos, ItemStack> consumer) {
+		this.eyes.forEach((packedPos, stack) -> {
+			BlockPos pos = BlockPos.of(packedPos);
+			if (ChunkPos.containing(pos).equals(chunk)) {
+				consumer.accept(pos, stack);
+			}
+		});
 	}
 
 	public void put(BlockPos pos, ItemStack stack) {

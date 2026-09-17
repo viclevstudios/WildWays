@@ -1,6 +1,7 @@
 package com.viclev.wildways;
 
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -30,6 +31,21 @@ public final class PortalEyeManager {
 	}
 
 	public static void initialize() {
+		ServerChunkEvents.CHUNK_LOAD.register((level, chunk, generated) -> {
+			if (generated) {
+				return;
+			}
+			data(level).forEachInChunk(chunk.getPos(), (pos, stack) -> {
+				BlockState state = chunk.getBlockState(pos);
+				if (state.is(Blocks.END_PORTAL_FRAME)
+					&& state.getValue(EndPortalFrameBlock.HAS_EYE)
+					&& state.getValue(PortalEyeStates.EYE_TYPE) == 0
+					&& ModItems.isPortalEye(stack.getItem())) {
+					level.setBlock(pos, state.setValue(PortalEyeStates.EYE_TYPE, PortalEyeStates.typeFor(stack.getItem())), Block.UPDATE_CLIENTS);
+				}
+			});
+		});
+
 		AttackBlockCallback.EVENT.register((player, level, hand, pos, direction) -> {
 			BlockState state = level.getBlockState(pos);
 			if (!state.is(Blocks.END_PORTAL_FRAME) || !state.getValue(EndPortalFrameBlock.HAS_EYE) || player.isSpectator()) {
@@ -79,7 +95,8 @@ public final class PortalEyeManager {
 			return InteractionResult.FAIL;
 		}
 
-		BlockState newState = state.setValue(EndPortalFrameBlock.HAS_EYE, true);
+		BlockState newState = state.setValue(EndPortalFrameBlock.HAS_EYE, true)
+			.setValue(PortalEyeStates.EYE_TYPE, PortalEyeStates.typeFor(placedStack.getItem()));
 		Block.pushEntitiesUp(state, newState, level, pos);
 		level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
 		level.updateNeighbourForOutputSignal(pos, Blocks.END_PORTAL_FRAME);
@@ -97,7 +114,8 @@ public final class PortalEyeManager {
 			stack = new ItemStack(Items.ENDER_EYE);
 		}
 
-		level.setBlock(pos, state.setValue(EndPortalFrameBlock.HAS_EYE, false), Block.UPDATE_ALL);
+		level.setBlock(pos, state.setValue(EndPortalFrameBlock.HAS_EYE, false)
+			.setValue(PortalEyeStates.EYE_TYPE, 0), Block.UPDATE_ALL);
 		level.updateNeighbourForOutputSignal(pos, Blocks.END_PORTAL_FRAME);
 		closeNearbyPortal(level, pos);
 		if (!player.getInventory().add(stack)) {

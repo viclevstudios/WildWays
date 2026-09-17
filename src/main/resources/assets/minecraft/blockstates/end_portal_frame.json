@@ -1,0 +1,21 @@
+{
+  "multipart": [
+    { "when": { "facing": "south" }, "apply": { "model": "minecraft:block/end_portal_frame" } },
+    { "when": { "facing": "west" }, "apply": { "model": "minecraft:block/end_portal_frame", "y": 90 } },
+    { "when": { "facing": "north" }, "apply": { "model": "minecraft:block/end_portal_frame", "y": 180 } },
+    { "when": { "facing": "east" }, "apply": { "model": "minecraft:block/end_portal_frame", "y": 270 } },
+    { "when": { "eye": "true", "wildways_eye_type": "0" }, "apply": { "model": "wildways:block/portal_eye/vanilla" } },
+    { "when": { "eye": "true", "wildways_eye_type": "1" }, "apply": { "model": "wildways:block/portal_eye/eye_of_ice" } },
+    { "when": { "eye": "true", "wildways_eye_type": "2" }, "apply": { "model": "wildways:block/portal_eye/eye_of_the_brute" } },
+    { "when": { "eye": "true", "wildways_eye_type": "3" }, "apply": { "model": "wildways:block/portal_eye/eye_of_storm" } },
+    { "when": { "eye": "true", "wildways_eye_type": "4" }, "apply": { "model": "wildways:block/portal_eye/eye_of_water" } },
+    { "when": { "eye": "true", "wildways_eye_type": "5" }, "apply": { "model": "wildways:block/portal_eye/lost_eye" } },
+    { "when": { "eye": "true", "wildways_eye_type": "6" }, "apply": { "model": "wildways:block/portal_eye/eye_of_illagers" } },
+    { "when": { "eye": "true", "wildways_eye_type": "7" }, "apply": { "model": "wildways:block/portal_eye/eye_of_the_tiger" } },
+    { "when": { "eye": "true", "wildways_eye_type": "8" }, "apply": { "model": "wildways:block/portal_eye/eye_of_darkness" } },
+    { "when": { "eye": "true", "wildways_eye_type": "9" }, "apply": { "model": "wildways:block/portal_eye/eye_of_the_creaking" } },
+    { "when": { "eye": "true", "wildways_eye_type": "10" }, "apply": { "model": "wildways:block/portal_eye/eye_of_brewing" } },
+    { "when": { "eye": "true", "wildways_eye_type": "11" }, "apply": { "model": "wildways:block/portal_eye/enchanted_eye" } },
+    { "when": { "eye": "true", "wildways_eye_type": "12" }, "apply": { "model": "wildways:block/portal_eye/eye_of_endermites" } }
+  ]
+}

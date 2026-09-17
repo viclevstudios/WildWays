@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "minecraft:block/end_portal_frame_side",
+    "eye": "minecraft:block/end_portal_frame_eye"
+  },
+  "elements": [
+    {
+      "from": [4, 13, 4],
+      "to": [12, 16, 12],
+      "faces": {
+        "up": { "uv": [4, 4, 12, 12], "texture": "#eye" },
+        "north": { "uv": [4, 0, 12, 3], "texture": "#eye" },
+        "south": { "uv": [4, 0, 12, 3], "texture": "#eye" },
+        "west": { "uv": [4, 0, 12, 3], "texture": "#eye" },
+        "east": { "uv": [4, 0, 12, 3], "texture": "#eye" }
+      }
+    }
+  ]
+}
