@@ -1,7 +1,6 @@
 {
   "parent": "wildways:block/portal_eye/overlay",
   "textures": {
-    "eye_top": "wildways:item/eye_of_endermites",
-    "eye_side": "wildways:item/eye_of_endermites"
+    "eye": "wildways:block/portal_eye/eye_of_endermites"
   }
 }

@@ -1,7 +1,6 @@
 {
   "parent": "wildways:block/portal_eye/overlay",
   "textures": {
-    "eye_top": "wildways:item/enchanted_eye",
-    "eye_side": "wildways:item/enchanted_eye"
+    "eye": "wildways:block/portal_eye/enchanted_eye"
   }
 }
