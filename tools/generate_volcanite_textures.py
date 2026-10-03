@@ -24,13 +24,15 @@ PALETTE = {
     "6": "#858680", "7": "#aaa397", "8": "#c7b49b",
     "a": "#894425", "b": "#b9662f", "c": "#da9250",
     "d": "#ecc078",
+    "e": "#4e171d", "f": "#711f25", "g": "#992b32",
+    "h": "#c23d41",
 }
 
 RAW = [
-    "................", "................", "......233.......", "....2345332.....",
-    "...235666432....", "..2356b543332...", "..346bc643321...", ".2354bb7633211..",
-    ".2455a33543211..", ".1343333553211..", "..133245453211..", "..12333443311...",
-    "...122333211....", "....1122211.....", "......111.......", "................",
+    "................", "................", "........06......", "......635020....",
+    ".....246100e0...", "...00520100g0...", "..031gh12400....", "..400ffe00411...",
+    "..2000ehe20140..", "...0334ehe1000..", "...5300h00e10...", "...0212013f0....",
+    "....030030......", ".....00.........", "................", "................",
 ]
 
 INGOT = [
@@ -201,6 +203,12 @@ def main():
     destination = ROOT / "docs/volcanite-texture-preview.png"
     preview.save(destination)
     print(destination.relative_to(ROOT))
+
+    raw_preview = Image.new("RGBA", (16, 16), "#202126")
+    raw_preview.alpha_composite(Image.open(ASSETS / "item/raw_volcanite.png").convert("RGBA"))
+    raw_destination = ROOT / "docs/raw-volcanite-preview.png"
+    raw_preview.resize((256, 256), Image.Resampling.NEAREST).save(raw_destination)
+    print(raw_destination.relative_to(ROOT))
 
 
 if __name__ == "__main__":

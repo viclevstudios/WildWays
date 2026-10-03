@@ -21,7 +21,7 @@ These are prototype choices, not values specified in Notion:
 
 - Fourteen vein attempts per chunk, vein size six, uniformly between Y=8 and Y=112, with no discard for ore exposed to air. The lower limit matches Ancient Debris and allows stripmining through the lower basalt layers. The attempt count is slightly lower than the previous sixteen; actual yields still depend on basalt coverage in the chunk.
 - A 10% chance per Bastion chest for 1-2 refined Volcanite.
-- Volcanite has a first-pass 16×16 texture set for the ore, raw item, refined ingot, equipment icons, and worn armor. The ore uses separate side and top textures. The equipment sprites reuse vanilla diamond silhouettes with a slate-and-ember palette; the ore and material items are drawn pixel by pixel. The texture files were generated with `tools/generate_volcanite_textures.py` and are not AI-generated. A larger [preview sheet](volcanite-texture-preview.png) shows the inventory sprites.
+- Volcanite has a first-pass 16×16 texture set for the ore, raw item, refined ingot, equipment icons, and worn armor. The ore uses separate side and top textures. The equipment sprites reuse vanilla diamond silhouettes with a slate-and-ember palette. The Raw Volcanite sprite is a 16×16 palette reduction of an AI-edited reference image supplied by the user, with its orange veins changed to red; the other sprites are code-generated pixel art, not AI-generated. The texture files are reproducible with `tools/generate_volcanite_textures.py`. A larger [preview sheet](volcanite-texture-preview.png) shows the inventory sprites.
 - No fire immunity or special abilities; this is a diamond-level alternative.
 
 ## In-game test

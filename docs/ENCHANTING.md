@@ -70,7 +70,7 @@ The Attunement book is always available at master level, without a donation or o
 ## Open planning and assets
 
 - Other enchanted-book loot is not relocated in this prototype. Existing vanilla loot sources remain until the new locations are planned.
-- Runes and catalysts use vanilla placeholder artwork. Volcanite has first-pass pixel textures. The menu uses the gray vanilla container style with separate, replaceable placeholder sprites in its five input slots. No AI-generated images were added.
+- Runes and catalysts use vanilla placeholder artwork. Volcanite has first-pass pixel textures; Raw Volcanite is derived from an AI-edited reference image. The menu uses the gray vanilla container style with separate, replaceable placeholder sprites in its five input slots.
 
 ## Technical approach
 
