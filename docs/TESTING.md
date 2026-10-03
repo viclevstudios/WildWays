@@ -25,6 +25,10 @@ Run from the project root:
 
 This should compile the mod, process resources, validate mixins through Loom tasks, and produce jars under `build/libs/`.
 
+## Server Integration Tests
+
+Run `.\gradlew.bat runGameTest` for the Fabric test server. This uses a separate test mod and run directory; the test classes are not included in the distributable mod JAR. Tests cover real enchanting/anvil transactions and librarian offers. Compilation alone does not validate gameplay behavior or mixin invocation targets.
+
 ## Client Smoke Test
 
 For gameplay or client-visible changes, run:
@@ -42,6 +46,9 @@ Suggested smoke checks:
 - Logs do not show mixin, registry, or missing-resource errors.
 
 ### Current Feature Checks
+
+- Follow the [Volcanite prototype checks](VOLCANITE.md) for basalt-only ore generation (including visible air-exposed ore in fresh Basalt Deltas), mining tiers, Fortune/Silk Touch, smelting, diamond-equivalent equipment, Volcanite repairs, Netherite upgrades, and rare Bastion loot.
+- Follow the [Enchanting prototype checks](ENCHANTING.md) for the seven rune/catalyst recipes, reusable books, the universal catalyst, shelves, Attunement, Mending, anvil costs and librarian donations. Rune 5 must use refined Volcanite, not copper stairs or Raw Volcanite. Book acquisition changes are deferred.
 
 - Hold a compass and verify that the action bar shows `X`, `Y`, `Z`, and the current cardinal or intercardinal direction.
 - Hold the clock, Biome Compass, and Light Sensor in turn and verify their action-bar information.

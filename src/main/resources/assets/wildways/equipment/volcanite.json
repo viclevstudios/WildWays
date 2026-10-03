@@ -1,0 +1,13 @@
+{
+  "layers": {
+    "humanoid": [
+      { "texture": "wildways:volcanite" }
+    ],
+    "humanoid_baby": [
+      { "texture": "wildways:volcanite" }
+    ],
+    "humanoid_leggings": [
+      { "texture": "wildways:volcanite" }
+    ]
+  }
+}

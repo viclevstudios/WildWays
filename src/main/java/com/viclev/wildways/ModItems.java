@@ -7,6 +7,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.DispenserBlock;
 
 import java.util.function.Function;
@@ -14,6 +18,17 @@ import java.util.List;
 import java.util.Set;
 
 public final class ModItems {
+	public static final Item RAW_VOLCANITE = register(ModItemIds.RAW_VOLCANITE, Item::new, new Item.Properties());
+	public static final Item VOLCANITE = register(ModItemIds.VOLCANITE, Item::new, new Item.Properties());
+	public static final Item VOLCANITE_SWORD = register(ModItemIds.VOLCANITE_SWORD, Item::new, new Item.Properties().sword(VolcaniteMaterials.TOOL, 3.0F, -2.4F));
+	public static final Item VOLCANITE_PICKAXE = register(ModItemIds.VOLCANITE_PICKAXE, Item::new, new Item.Properties().pickaxe(VolcaniteMaterials.TOOL, 1.0F, -2.8F));
+	public static final Item VOLCANITE_SHOVEL = register(ModItemIds.VOLCANITE_SHOVEL, properties -> new ShovelItem(VolcaniteMaterials.TOOL, 1.5F, -3.0F, properties), new Item.Properties());
+	public static final Item VOLCANITE_AXE = register(ModItemIds.VOLCANITE_AXE, properties -> new AxeItem(VolcaniteMaterials.TOOL, 5.0F, -3.0F, properties), new Item.Properties());
+	public static final Item VOLCANITE_HOE = register(ModItemIds.VOLCANITE_HOE, properties -> new HoeItem(VolcaniteMaterials.TOOL, -3.0F, 0.0F, properties), new Item.Properties());
+	public static final Item VOLCANITE_HELMET = register(ModItemIds.VOLCANITE_HELMET, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.HELMET));
+	public static final Item VOLCANITE_CHESTPLATE = register(ModItemIds.VOLCANITE_CHESTPLATE, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.CHESTPLATE));
+	public static final Item VOLCANITE_LEGGINGS = register(ModItemIds.VOLCANITE_LEGGINGS, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.LEGGINGS));
+	public static final Item VOLCANITE_BOOTS = register(ModItemIds.VOLCANITE_BOOTS, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.BOOTS));
 	public static final Item ENDERMITE_SHELL = register(
 		ModItemIds.ENDERMITE_SHELL,
 		Item::new,
@@ -91,15 +106,28 @@ public final class ModItems {
 
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS)
 			.register(output -> {
+				output.accept(RAW_VOLCANITE);
+				output.accept(VOLCANITE);
 				output.accept(ENDERMITE_SHELL);
 				output.accept(AWKWARD_EYE);
 				output.accept(THICK_EYE);
 				PORTAL_EYES.forEach(output::accept);
 			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
-			.register(output -> output.accept(BIOME_COMPASS));
+			.register(output -> {
+				output.accept(BIOME_COMPASS);
+				output.accept(VOLCANITE_PICKAXE);
+				output.accept(VOLCANITE_AXE);
+				output.accept(VOLCANITE_SHOVEL);
+				output.accept(VOLCANITE_HOE);
+			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT)
 			.register(output -> {
+				output.accept(VOLCANITE_SWORD);
+				output.accept(VOLCANITE_HELMET);
+				output.accept(VOLCANITE_CHESTPLATE);
+				output.accept(VOLCANITE_LEGGINGS);
+				output.accept(VOLCANITE_BOOTS);
 				output.accept(TURTLE_ARROW);
 				output.accept(RANGE_ARROW);
 				output.accept(EXPLOSIVE_ARROW);

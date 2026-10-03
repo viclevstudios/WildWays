@@ -21,6 +21,11 @@ import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Function;
 
 public final class ModBlocks {
+	public static final Block VOLCANITE_ORE = registerBlock(
+		ModBlockItemIds.VOLCANITE_ORE,
+		Block::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE).mapColor(MapColor.COLOR_BLACK)
+	);
 	public static final Block ENDERMITE_BOX = register(
 		ModBlockItemIds.ENDERMITE_BOX,
 		EndermiteBoxBlock::new,
@@ -82,6 +87,8 @@ public final class ModBlocks {
 	}
 
 	public static void initialize() {
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS)
+			.register(output -> output.accept(VOLCANITE_ORE));
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
 			.register(output -> {
 				output.accept(ENDERMITE_BOX);

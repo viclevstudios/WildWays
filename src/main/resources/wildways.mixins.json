@@ -3,6 +3,9 @@
 	"package": "com.viclev.wildways.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
+		"AnvilEnchantingMixin",
+		"RecipeBookEnchantmentsMixin",
+		"RecipeBookTooltipMixin",
 		"ExampleMixin",
 		"EndermiteMixin",
 		"ServerExplosionMixin",

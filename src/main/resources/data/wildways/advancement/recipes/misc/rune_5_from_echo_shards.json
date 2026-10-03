@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_all_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:chiseled_stone_bricks"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:diamond"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:echo_shard"
+            ]
+          },
+          {
+            "items": [
+              "wildways:volcanite"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_all_ingredients"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "wildways:rune_5_from_echo_shards"
+    ]
+  }
+}

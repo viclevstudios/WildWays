@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wildways:rune_1",
+  "key": {
+    "B": "minecraft:chiseled_stone_bricks",
+    "T": "minecraft:coal",
+    "S": "minecraft:lapis_lazuli",
+    "M": "minecraft:copper_ingot"
+  },
+  "pattern": [
+    "BTB",
+    "SMS",
+    "BTB"
+  ],
+  "result": {
+    "id": "wildways:rune_1",
+    "count": 1
+  }
+}

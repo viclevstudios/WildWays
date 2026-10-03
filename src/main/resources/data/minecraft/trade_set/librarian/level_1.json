@@ -1,0 +1,8 @@
+{
+  "trades": [
+    "minecraft:librarian/1/paper_emerald",
+    "wildways:librarian/chiseled_bookshelf"
+  ],
+  "amount": 2,
+  "random_sequence": "minecraft:trade_set/librarian/level_1"
+}

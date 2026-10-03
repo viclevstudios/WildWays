@@ -6,6 +6,11 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.MenuType;
 
 public final class ModMenuTypes {
+	public static final MenuType<WildwaysEnchantingMenu> ENCHANTING = Registry.register(
+		BuiltInRegistries.MENU,
+		Wildways.id("enchanting"),
+		new MenuType<>(WildwaysEnchantingMenu::new, FeatureFlagSet.of())
+	);
 	public static final MenuType<EndermiteBoxMenu> ENDERMITE_BOX = Registry.register(
 		BuiltInRegistries.MENU,
 		Wildways.id("endermite_box"),

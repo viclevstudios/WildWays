@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wildways:rune_4",
+  "key": {
+    "B": "minecraft:chiseled_stone_bricks",
+    "T": "minecraft:emerald",
+    "S": "minecraft:emerald",
+    "M": "minecraft:diamond"
+  },
+  "pattern": [
+    "BTB",
+    "SMS",
+    "BTB"
+  ],
+  "result": {
+    "id": "wildways:rune_4",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wildways:rune_5",
+  "key": {
+    "B": "minecraft:chiseled_stone_bricks",
+    "T": "minecraft:diamond",
+    "S": "minecraft:shulker_shell",
+    "M": "wildways:volcanite"
+  },
+  "pattern": [
+    "BTB",
+    "SMS",
+    "BTB"
+  ],
+  "result": {
+    "id": "wildways:rune_5",
+    "count": 1
+  }
+}

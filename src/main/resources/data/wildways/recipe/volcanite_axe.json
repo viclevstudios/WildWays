@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "V": "wildways:volcanite",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "VV",
+    "VS",
+    " S"
+  ],
+  "result": {
+    "id": "wildways:volcanite_axe",
+    "count": 1
+  }
+}

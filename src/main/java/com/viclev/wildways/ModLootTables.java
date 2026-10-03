@@ -9,12 +9,18 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public final class ModLootTables {
 	private static final ResourceKey<LootTable> IGLOO = vanilla("chests/igloo_chest");
 	private static final ResourceKey<LootTable> SNOWY_VILLAGE = vanilla("chests/village/village_snowy_house");
 	private static final ResourceKey<LootTable> TRAIL_RUINS_COMMON = vanilla("archaeology/trail_ruins_common");
 	private static final ResourceKey<LootTable> PIGLIN_BRUTE = vanilla("entities/piglin_brute");
+	private static final java.util.Set<ResourceKey<LootTable>> BASTION_CHESTS = java.util.Set.of(
+		vanilla("chests/bastion_bridge"), vanilla("chests/bastion_hoglin_stable"),
+		vanilla("chests/bastion_other"), vanilla("chests/bastion_treasure")
+	);
 
 	private ModLootTables() {
 	}
@@ -35,6 +41,13 @@ public final class ModLootTables {
 				((FabricLootTableBuilder)(Object)tableBuilder).modifyPools(
 					pool -> pool.add(LootItem.lootTableItem(ModItems.LOST_EYE).setWeight(2))
 				);
+			}
+
+			if (BASTION_CHESTS.contains(key)) {
+				tableBuilder.withPool(LootPool.lootPool()
+					.add(LootItem.lootTableItem(ModItems.VOLCANITE)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+					.add(EmptyLootItem.emptyItem().setWeight(9)));
 			}
 		});
 	}

@@ -1,0 +1,9 @@
+{
+  "trades": [
+    "minecraft:librarian/4/writable_book_emerald",
+    "minecraft:librarian/4/emerald_clock",
+    "minecraft:librarian/4/emerald_compass"
+  ],
+  "amount": 3,
+  "random_sequence": "minecraft:trade_set/librarian/level_4"
+}

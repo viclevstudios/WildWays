@@ -10,6 +10,20 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Holding a Light Sensor displays the local raw light level. It is crafted with a daylight detector at the top centre, redstone at the centre, copper at the bottom centre, iron ingots in the four corners, and planks at the middle left and right. Its top, sides, and bottom use distinct textures.
 - Quarantine Grounds can generate in selected taiga biomes. Their terrain-aware pieces follow local ground, their placed Endermites persist, and hospital-house weathering can convert regular spruce logs into correctly orientated stripped spruce logs.
 
+## Volcanite prototype
+
+- Volcanite is a Nether alternative to diamond equipment. Its ore generates in basalt in newly generated Basalt Deltas and drops Raw Volcanite, which is processed in a furnace or blast furnace.
+- Five tools and four armor pieces match diamond values, use normal crafting shapes, are repaired with refined Volcanite when enchanted with Mending, and can be upgraded to Netherite.
+- Bastion chests rarely contain refined Volcanite. Generation rates are provisional; a first-pass Volcanite texture set replaces the Vanilla placeholders. See [prototype details and testing](VOLCANITE.md).
+
+## Enchanting prototype
+
+- Enchanting Tables use a reusable enchanted recipe book, one lapis and a rune that selects the enchantment level. Higher rune tiers require 5/10/15/20 usable bookshelves and cost up to five XP levels; Mending and Silk Touch require tier 5.
+- One universal catalyst halves XP costs, rounded up, for every rune tier and lasts four uses. Books have no displayed levels and cannot be used in an anvil.
+- Mending enables material repairs of 33% maximum durability, rounded up, for XP equal to the highest enchantment level; XP orbs no longer repair items. Same-item anvil combinations remain available, with linear prior-work growth and no forty-level cap.
+- Librarians sell Chiseled Bookshelves, runes 1/2 and Biome Compasses. Book donations at master level unlock catalyst sales. All five runes and the catalyst are craftable from the supplied designs; Rune 5 has Shulker Shell and Echo Shard variants using refined Volcanite. Book acquisition changes are deferred. See [recipes, rules and test steps](ENCHANTING.md).
+- The Eye of Enchanting requires an Attunement book, rune 1 and one lapis at the new table.
+
 ## Fletching Table and arrows
 
 - The Fletching Table has a dedicated crafting screen with a feather placeholder and a result slot. Feather, stick, and flint craft five arrows; one arrow and four glowstone dust craft two spectral arrows.

@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_all_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:chiseled_stone_bricks"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:emerald"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:diamond"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_all_ingredients"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "wildways:rune_4"
+    ]
+  }
+}

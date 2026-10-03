@@ -22,6 +22,10 @@ public class Wildways implements ModInitializer {
 		ModBlockEntities.initialize();
 		ModMenuTypes.initialize();
 		ModItems.initialize();
+		EnchantingItems.initialize();
+		EnchantingTableInteraction.initialize();
+		LibrarianEnchantingTrades.initialize();
+		VolcaniteWorldGeneration.initialize();
 		ModEffects.initialize();
 		ModPotions.initialize();
 		FletchingTableInteraction.initialize();

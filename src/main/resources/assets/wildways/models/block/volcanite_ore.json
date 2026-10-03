@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "wildways:block/volcanite_ore_side",
+    "end": "wildways:block/volcanite_ore_top"
+  }
+}

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 public class WildwaysClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		MenuScreens.register(ModMenuTypes.ENCHANTING, WildwaysEnchantingScreen::new);
 		MenuScreens.register(ModMenuTypes.ENDERMITE_BOX, EndermiteBoxScreen::new);
 		MenuScreens.register(ModMenuTypes.FLETCHING_TABLE, FletchingTableScreen::new);
 		EntityRenderers.register(ModEntityTypes.TURTLE_ARROW, context -> new SpecialArrowRenderer<>(context, Wildways.id("textures/entity/projectiles/turtle_arrow.png")));

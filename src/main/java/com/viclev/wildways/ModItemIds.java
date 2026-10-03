@@ -5,6 +5,17 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 
 public final class ModItemIds {
+	public static final ResourceKey<Item> RAW_VOLCANITE = create("raw_volcanite");
+	public static final ResourceKey<Item> VOLCANITE = create("volcanite");
+	public static final ResourceKey<Item> VOLCANITE_SWORD = create("volcanite_sword");
+	public static final ResourceKey<Item> VOLCANITE_SHOVEL = create("volcanite_shovel");
+	public static final ResourceKey<Item> VOLCANITE_PICKAXE = create("volcanite_pickaxe");
+	public static final ResourceKey<Item> VOLCANITE_AXE = create("volcanite_axe");
+	public static final ResourceKey<Item> VOLCANITE_HOE = create("volcanite_hoe");
+	public static final ResourceKey<Item> VOLCANITE_HELMET = create("volcanite_helmet");
+	public static final ResourceKey<Item> VOLCANITE_CHESTPLATE = create("volcanite_chestplate");
+	public static final ResourceKey<Item> VOLCANITE_LEGGINGS = create("volcanite_leggings");
+	public static final ResourceKey<Item> VOLCANITE_BOOTS = create("volcanite_boots");
 	public static final ResourceKey<Item> ENDERMITE_SHELL = create("endermite_shell");
 	public static final ResourceKey<Item> BIOME_COMPASS = create("biome_compass");
 	public static final ResourceKey<Item> TURTLE_ARROW = create("turtle_arrow");

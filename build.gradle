@@ -26,6 +26,13 @@ fabricApi {
 	configureDataGeneration {
 		client = true
 	}
+	configureTests {
+		createSourceSet = true
+		modId = 'wildways-test'
+		enableClientGameTests = false
+		eula = false
+		clearRunDirectory = false
+	}
 }
 
 dependencies {

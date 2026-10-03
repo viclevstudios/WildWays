@@ -45,10 +45,15 @@ The mod should feel like vanilla Minecraft with a different rhythm: slower, warm
   - big UI systems
   - hard progression gates unless they feel natural
 
+## Visual assets and communication
+
+- Always explicitly tell the user when images are AI-generated, including backgrounds, mockups, and edited images with AI-generated elements.
+- For social media assets, identify which images or elements are AI-generated when presenting the design and delivering the files, so the user can apply any required platform disclosure.
+
 ## Before editing
 
 When asked to implement a feature:
 1. Summarize the intended gameplay effect.
 2. Identify the smallest technical approach.
 3. Mention whether the change is data-driven, event-based, or mixin-based.
-4. Then implement.s
+4. Then implement.

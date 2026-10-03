@@ -3,6 +3,7 @@ package com.viclev.wildways;
 import net.minecraft.references.BlockItemId;
 
 public final class ModBlockItemIds {
+	public static final BlockItemId VOLCANITE_ORE = BlockItemId.create(Wildways.id("volcanite_ore"), Wildways.id("volcanite_ore"));
 	public static final BlockItemId ENDERMITE_BOX = BlockItemId.create(Wildways.id("endermite_box"), Wildways.id("endermite_box"));
 	public static final BlockItemId ENDERMITE_BRICKS = BlockItemId.create(Wildways.id("endermite_bricks"), Wildways.id("endermite_bricks"));
 	public static final BlockItemId ENDERMITE_BRICK_WALL = BlockItemId.create(Wildways.id("endermite_brick_wall"), Wildways.id("endermite_brick_wall"));

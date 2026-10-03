@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:chiseled_stone_bricks",
+    "L": "minecraft:lapis_block",
+    "P": "minecraft:blaze_powder",
+    "C": "minecraft:sculk_catalyst"
+  },
+  "pattern": [
+    "BLB",
+    "PCP",
+    "BLB"
+  ],
+  "result": {
+    "id": "wildways:enchanting_catalyst",
+    "count": 1
+  }
+}
