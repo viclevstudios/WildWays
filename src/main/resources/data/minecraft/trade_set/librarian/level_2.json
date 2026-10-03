@@ -1,9 +1,8 @@
 {
   "trades": [
-    "minecraft:librarian/2/book_emerald",
     "wildways:librarian/rune_1",
     "wildways:librarian/rune_2"
   ],
-  "amount": 3,
+  "amount": 1,
   "random_sequence": "minecraft:trade_set/librarian/level_2"
 }

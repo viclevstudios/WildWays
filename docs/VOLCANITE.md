@@ -19,7 +19,7 @@ Notion specifies a diamond-equivalent material found in Basalt Deltas and rarely
 
 These are prototype choices, not values specified in Notion:
 
-- Sixteen vein attempts per chunk, vein size six, uniformly between Y=32 and Y=112, with no discard for ore exposed to air. This responds to the playtest finding that Volcanite was rarer to find than Netherite. Actual yields still depend on basalt coverage in the chunk.
+- Fourteen vein attempts per chunk, vein size six, uniformly between Y=8 and Y=112, with no discard for ore exposed to air. The lower limit matches Ancient Debris and allows stripmining through the lower basalt layers. The attempt count is slightly lower than the previous sixteen; actual yields still depend on basalt coverage in the chunk.
 - A 10% chance per Bastion chest for 1-2 refined Volcanite.
 - Volcanite has a first-pass 16×16 texture set for the ore, raw item, refined ingot, equipment icons, and worn armor. The ore uses separate side and top textures. The equipment sprites reuse vanilla diamond silhouettes with a slate-and-ember palette; the ore and material items are drawn pixel by pixel. The texture files were generated with `tools/generate_volcanite_textures.py` and are not AI-generated. A larger [preview sheet](volcanite-texture-preview.png) shows the inventory sprites.
 - No fire immunity or special abilities; this is a diamond-level alternative.
@@ -32,7 +32,7 @@ These are prototype choices, not values specified in Notion:
 4. Hold refined Volcanite and sticks together. Craft the five tools and four armor pieces using vanilla shapes. Compare durability, attack attributes, mining speed, obsidian drops, armor, and toughness with diamond equipment.
 5. Damage a tool and armor piece enchanted with Mending. Repair them with Volcanite at an anvil; Raw Volcanite and diamonds must not work. Each material repairs 33% of maximum durability, rounded up, and costs XP equal to the highest enchantment level. Without Mending, material repair must fail. Check enchanting, armor trims, shovel paths, axe stripping, and hoe tilling.
 6. Upgrade a named and enchanted Volcanite item in a smithing table; confirm the Netherite result retains the name and enchantments.
-7. Use `/locate biome minecraft:basalt_deltas` in the Nether, then explore freshly generated chunks. Inspect basalt at Y=32-112 for ore, including exposed cliff faces and cave walls. Verify that ore does not replace blackstone and does not generate in other Nether biomes. Compare several fresh chunks with the previous build; visible ore should now occur more often.
+7. Use `/locate biome minecraft:basalt_deltas` in the Nether, then explore freshly generated chunks. Inspect basalt at Y=8-112 for ore, including lower-level stripmines, exposed cliff faces and cave walls. Verify that ore does not replace blackstone and does not generate in other Nether biomes.
 8. To inspect the configured replacement rule independently of natural generation, fill a safe test volume with basalt and run `/place feature wildways:ore_volcanite` inside it. Repeat with blackstone: no Volcanite ore should be placed.
 9. Sample `/loot give @s loot minecraft:chests/bastion_bridge` and the `bastion_hoglin_stable`, `bastion_other`, and `bastion_treasure` tables many times. Volcanite should occasionally appear alongside vanilla loot; a single empty result is expected.
 

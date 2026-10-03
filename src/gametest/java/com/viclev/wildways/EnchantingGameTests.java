@@ -26,6 +26,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EnchantingTableBlock;
@@ -168,21 +171,87 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void librarianMigratesBookSalesAndUnlocksCatalystOnce(GameTestHelper helper) {
+	public void newLibrariansHaveAtMostTwoOffersPerLevel(GameTestHelper helper) {
+		Player player = this.player(helper, 0);
+		for (int level = 1; level <= 5; level++) {
+			Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
+			villager.setVillagerData(villager.getVillagerData().withProfession(helper.getLevel().registryAccess(), VillagerProfession.LIBRARIAN).withLevel(level));
+			var offers = villager.getOffers();
+			helper.assertTrue(offers.size() <= 2, "A new librarian level must generate at most two offers");
+			UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
+			if (level == 1) {
+				helper.assertTrue(offers.size() == 2 && offers.stream().anyMatch(offer -> offer.getResult().is(Items.BOOKSHELF)
+					&& offer.getBaseCostA().getCount() == 9), "Novices need one ordinary Bookshelf and one alternative offer");
+			}
+			if (level == 2) {
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(EnchantingItems.RUNES.get(0))
+					|| offer.getResult().is(EnchantingItems.RUNES.get(1))).count() == 1, "Apprentices may sell exactly one of runes 1 and 2");
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.EMERALD)
+					&& offer.getBaseCostA().is(Items.BOOK)).count() == 1, "Apprentices also buy books");
+			}
+			if (level == 4) {
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.CLOCK)
+					|| offer.getResult().is(Items.COMPASS) || offer.getBaseCostA().is(Items.WRITABLE_BOOK)).count() == 2,
+					"Experts may add only two level-four trades");
+			}
+			if (level == 5) {
+				var attunement = this.enchantment(helper, ResourceKey.create(Registries.ENCHANTMENT, Wildways.id("attunement")));
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.DYED_CANDLE.red())
+					|| offer.getResult().is(Items.DYED_CANDLE.yellow())).count() == 1, "Masters must offer only one candle color");
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)
+					&& offer.getResult().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(attunement) == 1
+					&& offer.getBaseCostA().getCount() == 18).count() == 1, "Every master must sell Attunement for eighteen emeralds");
+			}
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void existingLibrariansLoseExcessTradesWithoutDonations(GameTestHelper helper) {
 		Player player = this.player(helper, 0);
 		Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
 		villager.setVillagerData(villager.getVillagerData().withProfession(helper.getLevel().registryAccess(), VillagerProfession.LIBRARIAN).withLevel(5));
-		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
 		var offers = villager.getOffers();
-		helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)), "Librarians must not sell enchanted books");
-		helper.assertTrue(offers.stream().anyMatch(offer -> offer.getResult().is(ModItems.BIOME_COMPASS) && offer.getBaseCostA().getCount() == 5), "Journeyman biome compass must cost five emeralds");
-		player.setItemInHand(InteractionHand.MAIN_HAND, this.book(helper, Enchantments.MENDING, 1));
-		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
-		helper.assertTrue(player.getMainHandItem().isEmpty(), "Unlocking a catalyst must consume the donated book");
-		helper.assertTrue(offers.stream().anyMatch(offer -> offer.getResult().is(EnchantingItems.CATALYST) && offer.getBaseCostA().getCount() == 18), "Book donation must unlock the universal catalyst for eighteen emeralds");
+		var attunement = this.enchantment(helper, ResourceKey.create(Registries.ENCHANTMENT, Wildways.id("attunement")));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 9), new ItemStack(Items.BOOKSHELF), 12, 1, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.PAPER, 24), new ItemStack(Items.EMERALD), 16, 2, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CHISELED_BOOKSHELF), 12, 1, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.BOOK, 4), new ItemStack(Items.EMERALD), 12, 10, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 10), new ItemStack(EnchantingItems.RUNES.get(0)), 12, 5, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), new ItemStack(EnchantingItems.RUNES.get(1)), 12, 5, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.WRITABLE_BOOK, 2), new ItemStack(Items.EMERALD), 12, 15, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CLOCK), 12, 15, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.COMPASS), 12, 15, 0.05F));
+		Item otherCandle = offers.stream().anyMatch(offer -> offer.getResult().is(Items.DYED_CANDLE.red()))
+			? Items.DYED_CANDLE.yellow() : Items.DYED_CANDLE.red();
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 3), new ItemStack(otherCandle), 12, 30, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 18), new ItemStack(EnchantingItems.CATALYST), 12, 30, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 18), this.book(helper, Enchantments.MENDING, 1), 12, 30, 0.05F));
 		player.setItemInHand(InteractionHand.MAIN_HAND, this.book(helper, Enchantments.UNBREAKING, 1));
 		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
-		helper.assertTrue(!player.getMainHandItem().isEmpty() && offers.stream().filter(offer -> offer.getResult().is(EnchantingItems.CATALYST)).count() == 1, "Donation of another book must preserve it once the universal offer is unlocked");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.BOOKSHELF)).count() == 1,
+			"Existing ordinary bookshelf sales must remain available without duplication");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getBaseCostA().is(Items.PAPER)
+			|| offer.getResult().is(Items.CHISELED_BOOKSHELF)).count() == 1, "Only one novice alternative may remain");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(EnchantingItems.RUNES.get(0))
+			|| offer.getResult().is(EnchantingItems.RUNES.get(1))).count() == 1, "Only one apprentice rune may remain");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.CLOCK)
+			|| offer.getResult().is(Items.COMPASS) || offer.getBaseCostA().is(Items.WRITABLE_BOOK)).count() == 2,
+			"Existing experts must keep no more than two level-four trades");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.DYED_CANDLE.red())
+			|| offer.getResult().is(Items.DYED_CANDLE.yellow())).count() == 1, "Only one master candle may remain");
+		helper.assertTrue(offers.stream().anyMatch(offer -> offer.getResult().is(ModItems.BIOME_COMPASS) && offer.getBaseCostA().getCount() == 5), "Journeyman biome compass must cost five emeralds");
+		helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(EnchantingItems.CATALYST)),
+			"Old catalyst offers must be removed");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 1,
+			"Only the fixed Attunement book may be sold");
+		helper.assertTrue(offers.stream().anyMatch(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)
+			&& offer.getResult().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(attunement) == 1
+			&& offer.getBaseCostA().getCount() == 18), "Master librarians must sell Attunement for eighteen emeralds");
+		helper.assertTrue(player.getMainHandItem().is(Items.ENCHANTED_BOOK), "Interacting must not donate the held book");
+		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 1,
+			"Opening the same librarian twice must not duplicate the Attunement offer");
 		helper.succeed();
 	}
 

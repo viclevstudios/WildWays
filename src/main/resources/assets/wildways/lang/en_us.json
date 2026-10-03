@@ -1,6 +1,4 @@
 {
-	"message.wildways.catalyst_already_unlocked": "The catalyst is already unlocked here.",
-	"message.wildways.catalyst_unlocked": "Catalyst unlocked. Trade with this librarian to buy it.",
 	"container.wildways.enchanting_requirements": "XP: %s  |  Shelves: %s/%s",
 	"container.wildways.enchanting_nearby_shelves": "Bookshelves nearby: %s",
 	"container.wildways.enchanting_status_1": "Enchantment or rune does not fit.",
