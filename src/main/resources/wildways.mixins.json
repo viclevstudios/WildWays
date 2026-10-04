@@ -6,7 +6,6 @@
 		"AnvilEnchantingMixin",
 		"RecipeBookEnchantmentsMixin",
 		"RecipeBookTooltipMixin",
-		"ExampleMixin",
 		"EndermiteMixin",
 		"ServerExplosionMixin",
 		"JigsawPlacementLocalTerrainMixin",
