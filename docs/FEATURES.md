@@ -12,7 +12,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 
 ## Volcanite prototype
 
-- Volcanite is a Nether alternative to diamond equipment. Its ore generates vertically in basalt in newly generated Basalt Deltas, can be placed along any axis like Basalt, and uses Basalt's top texture on its two ends. It drops Raw Volcanite, which is processed in a furnace or blast furnace.
+- Volcanite is a Nether alternative to diamond equipment. Its ore generates vertically in basalt in newly generated Basalt Deltas, can be placed along any axis like Basalt, and uses separate Volcanite side and end textures. It drops Raw Volcanite, which is processed in a furnace or blast furnace.
 - Raw and refined Volcanite each pack into a matching storage block in a 3×3 grid; each block unpacks into nine items and requires an iron-tier pickaxe.
 - Five tools and four armor pieces match diamond values, use normal crafting shapes, are repaired with refined Volcanite when enchanted with Mending, and can be upgraded to Netherite.
 - Bastion Bridge, Hoglin Stable, and Other chests each have a 5% chance for 1-2 refined Volcanite; Treasure chests have a 15% chance. Ore generation rates remain provisional. See [prototype details and testing](VOLCANITE.md).
