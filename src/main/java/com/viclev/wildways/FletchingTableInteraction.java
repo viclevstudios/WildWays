@@ -23,6 +23,9 @@ public final class FletchingTableInteraction {
 			if (hand != InteractionHand.MAIN_HAND || !level.getBlockState(hitResult.getBlockPos()).is(Blocks.FLETCHING_TABLE)) {
 				return InteractionResult.PASS;
 			}
+			if (player.isSecondaryUseActive() && (!player.getMainHandItem().isEmpty() || !player.getOffhandItem().isEmpty())) {
+				return InteractionResult.PASS;
+			}
 
 			if (level instanceof ServerLevel serverLevel) {
 				BlockPos pos = hitResult.getBlockPos();

@@ -10,6 +10,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -23,8 +24,18 @@ import java.util.function.Function;
 public final class ModBlocks {
 	public static final Block VOLCANITE_ORE = registerBlock(
 		ModBlockItemIds.VOLCANITE_ORE,
-		Block::new,
+		RotatedPillarBlock::new,
 		BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE).mapColor(MapColor.COLOR_BLACK)
+	);
+	public static final Block RAW_VOLCANITE_BLOCK = registerBlock(
+		ModBlockItemIds.RAW_VOLCANITE_BLOCK,
+		Block::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK).mapColor(MapColor.COLOR_BLACK)
+	);
+	public static final Block VOLCANITE_BLOCK = registerBlock(
+		ModBlockItemIds.VOLCANITE_BLOCK,
+		Block::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_BLOCK).mapColor(MapColor.COLOR_RED)
 	);
 	public static final Block ENDERMITE_BOX = register(
 		ModBlockItemIds.ENDERMITE_BOX,
@@ -96,6 +107,8 @@ public final class ModBlocks {
 			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS)
 			.register(output -> {
+				output.accept(RAW_VOLCANITE_BLOCK);
+				output.accept(VOLCANITE_BLOCK);
 				output.accept(ENDERMITE_BRICKS);
 				output.accept(ENDERMITE_BRICK_WALL);
 				output.accept(ENDERMITE_BRICK_STAIRS);

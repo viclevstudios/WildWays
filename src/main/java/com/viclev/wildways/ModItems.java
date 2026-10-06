@@ -6,6 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.HoeItem;
@@ -116,18 +117,18 @@ public final class ModItems {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(output -> {
 				output.accept(BIOME_COMPASS);
-				output.accept(VOLCANITE_PICKAXE);
-				output.accept(VOLCANITE_AXE);
-				output.accept(VOLCANITE_SHOVEL);
-				output.accept(VOLCANITE_HOE);
+				output.insertAfter(Items.DIAMOND_PICKAXE, VOLCANITE_PICKAXE);
+				output.insertAfter(Items.DIAMOND_AXE, VOLCANITE_AXE);
+				output.insertAfter(Items.DIAMOND_SHOVEL, VOLCANITE_SHOVEL);
+				output.insertAfter(Items.DIAMOND_HOE, VOLCANITE_HOE);
 			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT)
 			.register(output -> {
-				output.accept(VOLCANITE_SWORD);
-				output.accept(VOLCANITE_HELMET);
-				output.accept(VOLCANITE_CHESTPLATE);
-				output.accept(VOLCANITE_LEGGINGS);
-				output.accept(VOLCANITE_BOOTS);
+				output.insertAfter(Items.DIAMOND_SWORD, VOLCANITE_SWORD);
+				output.insertAfter(Items.DIAMOND_BOOTS, VOLCANITE_HELMET);
+				output.insertAfter(VOLCANITE_HELMET, VOLCANITE_CHESTPLATE);
+				output.insertAfter(VOLCANITE_CHESTPLATE, VOLCANITE_LEGGINGS);
+				output.insertAfter(VOLCANITE_LEGGINGS, VOLCANITE_BOOTS);
 				output.accept(TURTLE_ARROW);
 				output.accept(RANGE_ARROW);
 				output.accept(EXPLOSIVE_ARROW);

@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "wildways:block/volcanite_ore",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "wildways:block/volcanite_ore"
+    },
+    "axis=z": {
+      "model": "wildways:block/volcanite_ore",
+      "x": 90
     }
   }
 }

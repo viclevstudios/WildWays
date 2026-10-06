@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_volcanite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["wildways:raw_volcanite"] }] }
+    }
+  },
+  "requirements": [["has_raw_volcanite"]],
+  "rewards": { "recipes": ["wildways:raw_volcanite_block"] }
+}

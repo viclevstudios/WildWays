@@ -17,9 +17,10 @@ public final class ModLootTables {
 	private static final ResourceKey<LootTable> SNOWY_VILLAGE = vanilla("chests/village/village_snowy_house");
 	private static final ResourceKey<LootTable> TRAIL_RUINS_COMMON = vanilla("archaeology/trail_ruins_common");
 	private static final ResourceKey<LootTable> PIGLIN_BRUTE = vanilla("entities/piglin_brute");
+	private static final ResourceKey<LootTable> BASTION_TREASURE = vanilla("chests/bastion_treasure");
 	private static final java.util.Set<ResourceKey<LootTable>> BASTION_CHESTS = java.util.Set.of(
 		vanilla("chests/bastion_bridge"), vanilla("chests/bastion_hoglin_stable"),
-		vanilla("chests/bastion_other"), vanilla("chests/bastion_treasure")
+		vanilla("chests/bastion_other"), BASTION_TREASURE
 	);
 
 	private ModLootTables() {
@@ -44,10 +45,12 @@ public final class ModLootTables {
 			}
 
 			if (BASTION_CHESTS.contains(key)) {
+				boolean treasure = key.equals(BASTION_TREASURE);
 				tableBuilder.withPool(LootPool.lootPool()
 					.add(LootItem.lootTableItem(ModItems.VOLCANITE)
+						.setWeight(treasure ? 3 : 1)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-					.add(EmptyLootItem.emptyItem().setWeight(9)));
+					.add(EmptyLootItem.emptyItem().setWeight(treasure ? 17 : 19)));
 			}
 		});
 	}

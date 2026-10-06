@@ -5,7 +5,11 @@
   "name": "WildWays gameplay tests",
   "environment": "*",
   "entrypoints": {
-    "fabric-gametest": ["com.viclev.wildways.EnchantingGameTests"]
+    "fabric-gametest": [
+      "com.viclev.wildways.EnchantingGameTests",
+      "com.viclev.wildways.EndermiteBoxGameTests",
+      "com.viclev.wildways.VolcaniteGameTests"
+    ]
   },
   "depends": {
     "wildways": "*",

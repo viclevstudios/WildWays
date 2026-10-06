@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": { "R": "wildways:raw_volcanite" },
+  "pattern": ["RRR", "RRR", "RRR"],
+  "result": { "id": "wildways:raw_volcanite_block", "count": 1 }
+}

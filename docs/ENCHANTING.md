@@ -70,7 +70,7 @@ The Attunement book is always available at master level, without a donation or o
 ## Open planning and assets
 
 - Other enchanted-book loot is not relocated in this prototype. Existing vanilla loot sources remain until the new locations are planned.
-- Runes and catalysts use vanilla placeholder artwork. Volcanite has first-pass pixel textures; Raw Volcanite is derived from an AI-edited reference image. The menu uses the gray vanilla container style with separate, replaceable placeholder sprites in its five input slots.
+- Runes and the catalyst use the latest user-provided 16×16 item sprites. The menu uses the gray vanilla container style with separate, replaceable placeholder sprites in its five input slots.
 
 ## Technical approach
 
@@ -93,6 +93,6 @@ Automated server integration tests run with `.\gradlew.bat runGameTest`. They ex
 ## Verification performed
 
 - `.\gradlew.bat build runGameTest`: successful on Java 25. All ten required tests passed (nine WildWays tests and the Fabric test suite's own test).
-- All 246 resource JSON files parsed successfully. The test server loaded seven additional crafting recipes and seven recipe-book advancements. The packaged JAR contains the single catalyst's assets and no obsolete tiered catalyst assets.
+- The resource JSON files parsed successfully. The test server loaded the enchanting recipes and advancements, and the packaged JAR contains the single catalyst's assets with its user-provided sprite.
 - The test server loaded the mod, datapack registries, recipes, advancements and ore biome modification successfully. Shared mixins were exercised at runtime.
 - Client code compiles. The gray layout and its placeholder sprites were inspected in the client and approved in the follow-up playtest. The client-only anvil label change and multiplayer synchronization still need manual checks.

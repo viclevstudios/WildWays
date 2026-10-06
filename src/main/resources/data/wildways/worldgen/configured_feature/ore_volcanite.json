@@ -5,7 +5,7 @@
     "size": 6,
     "targets": [
       {
-        "state": { "Name": "wildways:volcanite_ore" },
+        "state": { "Name": "wildways:volcanite_ore", "Properties": { "axis": "y" } },
         "target": { "block": "minecraft:basalt", "predicate_type": "minecraft:block_match" }
       }
     ]

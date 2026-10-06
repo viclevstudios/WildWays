@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": ["wildways:volcanite_block"],
+  "result": { "id": "wildways:volcanite", "count": 9 }
+}

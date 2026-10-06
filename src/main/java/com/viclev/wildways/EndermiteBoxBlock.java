@@ -111,7 +111,7 @@ public class EndermiteBoxBlock extends BaseEntityBlock implements SimpleWaterlog
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (level.getBlockEntity(pos) instanceof EndermiteBoxBlockEntity endermiteNest) {
-			if (!level.isClientSide() && player.preventsBlockDrops() && !endermiteNest.isEmpty()) {
+			if (!level.isClientSide() && player.preventsBlockDrops()) {
 				ItemStack stack = new ItemStack(state.getBlock());
 				stack.applyComponents(endermiteNest.collectComponents());
 				ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
