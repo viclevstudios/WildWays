@@ -5,6 +5,10 @@
 	"mixins": [
 		"AnvilEnchantingMixin",
 		"RecipeBookEnchantmentsMixin",
+		"BookLightningMixin",
+		"MonsterRoomBookLootMixin",
+		"JungleTempleBookRoomMixin",
+		"OceanMonumentBookChestsMixin",
 		"RecipeBookTooltipMixin",
 		"EndermiteMixin",
 		"ServerExplosionMixin",

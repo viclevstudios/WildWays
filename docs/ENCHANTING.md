@@ -1,6 +1,6 @@
 # Enchanting prototype
 
-Source: [Enchanting design in Notion](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a201a53), the user's supplied recipe images, and the user's Mending, Attunement and universal-catalyst clarifications. This is an in-progress prototype; planning is still in progress.
+Source: [Enchanting design in Notion](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a201a53), the user's supplied recipe images, and the user's Mending, Attunement and universal-catalyst clarifications. The planned book acquisition paths are documented in [Book sources](BOOK_SOURCES.md).
 
 ## Implemented rules
 
@@ -42,7 +42,7 @@ Both rune-5 recipes replace the copper stair in the images with `wildways:volcan
 
 Newly generated enchanted books store their enchantments at level one and their tooltips omit levels. Saved or command-created books carrying older levels still select the same recipe: their stored level never controls the result. Equipment tooltips retain actual levels. Books cannot be used or combined at the anvil.
 
-The Eye of Enchanting (`wildways:enchanted_eye`) requires an Attunement enchanted book, rune 1, one lapis and one XP level. No bookshelf is required. A plain book is insufficient. Master librarians sell Attunement books; new acquisition locations for other enchanted books are intentionally deferred to later planning.
+The Eye of Enchanting (`wildways:enchanted_eye`) requires an Attunement enchanted book, rune 1, one lapis and one XP level. No bookshelf is required. A plain book is insufficient. Master librarians sell Attunement books. The other book sources follow the [completed acquisition plan](BOOK_SOURCES.md).
 
 ## Mending and anvils
 
@@ -67,9 +67,8 @@ New librarians use JSON trade sets with at most two offers per level. The variab
 
 The Attunement book is always available at master level, without a donation or other unlock. The catalyst is obtained through its crafting recipe, not librarian trading. The Attunement offer restocks through vanilla merchant data.
 
-## Open planning and assets
+## Assets
 
-- Other enchanted-book loot is not relocated in this prototype. Existing vanilla loot sources remain until the new locations are planned.
 - Runes and the catalyst use the latest user-provided 16×16 item sprites. The menu uses the gray vanilla container style with separate, replaceable placeholder sprites in its five input slots.
 
 ## Technical approach
@@ -88,11 +87,11 @@ JSON defines Mending's disabled orb effect, precious-enchantment tags and librar
 8. Combine damaged copies of the same item at an anvil, including enchanted copies. Repeat to observe linear prior-work growth, and verify combinations above forty levels when enough XP is available. Attempt to apply or combine enchanted books; no output should appear.
 9. Level a librarian through the new offers. Check that each level adds at most two trades: Novice always sells an ordinary Bookshelf, Apprentice sells either Rune 1 or Rune 2 (never both), Expert adds two offers, and Master always sells Attunement for eighteen emeralds alongside only one candle color. Holding an enchanted book while opening the trade screen must not consume it. Reload the world and check that the Attunement offer persists and restocks; old catalyst offers should disappear.
 
-Automated server integration tests run with `.\gradlew.bat runGameTest`. They exercise actual menu transactions, the universal catalyst at every rune tier, live shelf checks, Mending data and repairs, book normalization, Attunement Shift-click, librarian offer migration, anvil combinations, both rune-5 recipes and the catalyst crafting result. Client layout and survival pacing remain manual checks.
+Automated server integration tests run with `.\gradlew.bat runGameTest`. They exercise actual menu transactions, the universal catalyst at every rune tier, live shelf checks, Mending data and repairs, book normalization, Attunement Shift-click, librarian offer migration, anvil combinations, both rune-5 recipes, the catalyst crafting result, book conversion recipes, custom book loot tables and planned trader offers. Client layout and survival pacing remain manual checks.
 
 ## Verification performed
 
-- `.\gradlew.bat build runGameTest`: successful on Java 25. All ten required tests passed (nine WildWays tests and the Fabric test suite's own test).
+- `.\gradlew.bat build runGameTest`: successful on Java 25. The subsequent GameTest run passed all seventeen required tests.
 - The resource JSON files parsed successfully. The test server loaded the enchanting recipes and advancements, and the packaged JAR contains the single catalyst's assets with its user-provided sprite.
 - The test server loaded the mod, datapack registries, recipes, advancements and ore biome modification successfully. Shared mixins were exercised at runtime.
 - Client code compiles. The gray layout and its placeholder sprites were inspected in the client and approved in the follow-up playtest. The client-only anvil label change and multiplayer synchronization still need manual checks.

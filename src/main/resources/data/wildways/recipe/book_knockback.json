@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LWL",
+    "WSW",
+    "LEL"
+  ],
+  "key": {
+    "L": "minecraft:lapis_lazuli",
+    "W": "minecraft:wind_charge",
+    "S": {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:enchanted_book",
+      "components": {
+        "minecraft:stored_enchantments": {
+          "minecraft:sharpness": 1
+        }
+      }
+    },
+    "E": "minecraft:experience_bottle"
+  },
+  "result": {
+    "id": "minecraft:enchanted_book",
+    "count": 1,
+    "components": {
+      "minecraft:stored_enchantments": {
+        "minecraft:knockback": 1
+      }
+    }
+  }
+}

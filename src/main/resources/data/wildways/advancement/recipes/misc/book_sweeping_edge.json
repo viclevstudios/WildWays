@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:enchanted_book"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:iron_sword"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:lapis_lazuli"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:wind_charge"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredients"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "wildways:book_sweeping_edge"
+    ]
+  }
+}

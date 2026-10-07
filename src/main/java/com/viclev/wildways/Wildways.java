@@ -25,6 +25,7 @@ public class Wildways implements ModInitializer {
 		EnchantingItems.initialize();
 		EnchantingTableInteraction.initialize();
 		LibrarianEnchantingTrades.initialize();
+		EnchantedBookTrades.initialize();
 		VolcaniteWorldGeneration.initialize();
 		ModEffects.initialize();
 		ModPotions.initialize();
@@ -33,6 +34,7 @@ public class Wildways implements ModInitializer {
 		UneaseBlockBreakHandler.initialize();
 		PortalEyeManager.initialize();
 		ModLootTables.initialize();
+		EnchantedBookDrops.initialize();
 		EyeTransformations.initialize();
 	}
 

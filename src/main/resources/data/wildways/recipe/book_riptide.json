@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LWL",
+    "WIW",
+    "LNL"
+  ],
+  "key": {
+    "L": "minecraft:lapis_lazuli",
+    "W": "minecraft:wind_charge",
+    "I": {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:enchanted_book",
+      "components": {
+        "minecraft:stored_enchantments": {
+          "minecraft:impaling": 1
+        }
+      }
+    },
+    "N": "minecraft:nautilus_shell"
+  },
+  "result": {
+    "id": "minecraft:enchanted_book",
+    "count": 1,
+    "components": {
+      "minecraft:stored_enchantments": {
+        "minecraft:riptide": 1
+      }
+    }
+  }
+}

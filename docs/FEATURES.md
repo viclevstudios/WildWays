@@ -19,6 +19,8 @@ This page describes gameplay features currently present in WildWays. Planned wor
 
 ## Enchanting prototype
 
+- Enchanted books now have the planned exploration, mob, trade, fishing, archaeology and crafting sources; see [Book sources](BOOK_SOURCES.md). General random books remain in temples, Strongholds and Trial Chambers. Specific books come from themed locations and actions, including spawner-dependent dungeon chests, a Jungle Temple alcove and Ocean Monument supply chests.
+
 - Enchanting Tables use a reusable enchanted recipe book, one lapis and a rune that selects the enchantment level. Higher rune tiers require 5/10/15/20 usable bookshelves and cost up to five XP levels; Mending and Silk Touch require tier 5.
 - One universal catalyst halves XP costs, rounded up, for every rune tier and lasts four uses. Books have no displayed levels and cannot be used in an anvil.
 - Mending lets one repair material fully restore an item for XP equal to its highest enchantment level; XP orbs no longer repair items. Same-item anvil combinations remain available, with linear prior-work growth and no forty-level cap.

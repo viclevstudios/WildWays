@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LGL",
+    "VUV",
+    "LEL"
+  ],
+  "key": {
+    "L": "minecraft:lapis_lazuli",
+    "G": "minecraft:ghast_tear",
+    "V": "wildways:volcanite",
+    "U": {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:enchanted_book",
+      "components": {
+        "minecraft:stored_enchantments": {
+          "minecraft:unbreaking": 1
+        }
+      }
+    },
+    "E": "minecraft:experience_bottle"
+  },
+  "result": {
+    "id": "minecraft:enchanted_book",
+    "count": 1,
+    "components": {
+      "minecraft:stored_enchantments": {
+        "minecraft:mending": 1
+      }
+    }
+  }
+}

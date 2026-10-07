@@ -1,0 +1,27 @@
+{
+  "values": [
+    "minecraft:unbreaking",
+    "minecraft:mending",
+    "minecraft:protection",
+    "minecraft:fire_protection",
+    "minecraft:blast_protection",
+    "minecraft:projectile_protection",
+    "minecraft:thorns",
+    "minecraft:feather_falling",
+    "minecraft:efficiency",
+    "minecraft:fortune",
+    "minecraft:silk_touch",
+    "minecraft:sharpness",
+    "minecraft:smite",
+    "minecraft:bane_of_arthropods",
+    "minecraft:knockback",
+    "minecraft:looting",
+    "minecraft:sweeping_edge",
+    "minecraft:lunge",
+    "minecraft:power",
+    "minecraft:punch",
+    "minecraft:infinity",
+    "minecraft:density",
+    "minecraft:breach"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:enchanted_book"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:experience_bottle"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:lapis_lazuli"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:wind_charge"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredients"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "wildways:book_punch"
+    ]
+  }
+}

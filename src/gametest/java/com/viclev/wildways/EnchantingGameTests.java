@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.ContainerInput;
@@ -280,6 +281,59 @@ public class EnchantingGameTests {
 	private CraftingInput craftingInput(Item top, Item side, Item center) {
 		Item brick = Items.CHISELED_STONE_BRICKS;
 		return CraftingInput.of(3, 3, List.of(brick, top, brick, side, center, side, brick, top, brick).stream().map(ItemStack::new).toList());
+	}
+
+	@GameTest
+	public void plannedMasterTradesReplaceAnOfferAndWandererAddsOneBook(GameTestHelper helper) {
+		Player player = this.player(helper, 0);
+		for (var entry : List.of(
+			new Object[]{VillagerProfession.TOOLSMITH, Enchantments.FORTUNE},
+			new Object[]{VillagerProfession.MASON, Enchantments.SILK_TOUCH},
+			new Object[]{VillagerProfession.WEAPONSMITH, Enchantments.LOOTING},
+			new Object[]{VillagerProfession.FLETCHER, Enchantments.INFINITY})) {
+			@SuppressWarnings("unchecked")
+			ResourceKey<Enchantment> target = (ResourceKey<Enchantment>)entry[1];
+			var profession = (net.minecraft.resources.ResourceKey<VillagerProfession>)entry[0];
+			Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
+			villager.setVillagerData(villager.getVillagerData()
+				.withProfession(helper.getLevel().registryAccess(), profession).withLevel(5));
+			int before = villager.getOffers().size();
+			UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
+			helper.assertTrue(villager.getOffers().size() == before, "A master book must replace one trade");
+			helper.assertTrue(villager.getOffers().stream().anyMatch(offer ->
+				offer.getResult().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
+					.getLevel(this.enchantment(helper, target)) == 1), "The guaranteed master book must be present");
+		}
+		WanderingTrader trader = helper.spawn(EntityTypes.WANDERING_TRADER, new BlockPos(3, 2, 3));
+		int before = trader.getOffers().size();
+		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, trader, null);
+		helper.assertTrue(trader.getOffers().size() == before + 1, "The wanderer must add one random book offer");
+		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, trader, null);
+		helper.assertTrue(trader.getOffers().size() == before + 1, "The book offer must not duplicate on a second interaction");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void mendingBookRecipeRequiresAnUnbreakingBook(GameTestHelper helper) {
+		ItemStack precursor = this.book(helper, Enchantments.UNBREAKING, 1);
+		CraftingInput input = CraftingInput.of(3, 3, List.of(
+			new ItemStack(Items.LAPIS_LAZULI), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.LAPIS_LAZULI),
+			new ItemStack(ModItems.VOLCANITE), precursor, new ItemStack(ModItems.VOLCANITE),
+			new ItemStack(Items.LAPIS_LAZULI), new ItemStack(Items.EXPERIENCE_BOTTLE), new ItemStack(Items.LAPIS_LAZULI)));
+		var recipe = helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, helper.getLevel());
+		helper.assertTrue(recipe.isPresent(), "The planned Mending recipe must match the exact ingredients");
+		ItemStack result = recipe.orElseThrow().value().assemble(input);
+		helper.assertTrue(result.is(Items.ENCHANTED_BOOK)
+			&& result.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
+				.getLevel(this.enchantment(helper, Enchantments.MENDING)) == 1,
+			"The recipe must produce a level-one Mending book");
+		CraftingInput wrongBook = CraftingInput.of(3, 3, List.of(
+			new ItemStack(Items.LAPIS_LAZULI), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.LAPIS_LAZULI),
+			new ItemStack(ModItems.VOLCANITE), this.book(helper, Enchantments.PROTECTION, 1), new ItemStack(ModItems.VOLCANITE),
+			new ItemStack(Items.LAPIS_LAZULI), new ItemStack(Items.EXPERIENCE_BOTTLE), new ItemStack(Items.LAPIS_LAZULI)));
+		helper.assertTrue(helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING, wrongBook, helper.getLevel()).isEmpty(),
+			"An unrelated enchanted book must not substitute for Unbreaking");
+		helper.succeed();
 	}
 
 	@GameTest

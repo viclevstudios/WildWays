@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LSL",
+    "IPI",
+    "LIL"
+  ],
+  "key": {
+    "L": "minecraft:lapis_lazuli",
+    "S": "minecraft:shield",
+    "I": "minecraft:iron_ingot",
+    "P": {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:enchanted_book",
+      "components": {
+        "minecraft:stored_enchantments": {
+          "minecraft:protection": 1
+        }
+      }
+    }
+  },
+  "result": {
+    "id": "minecraft:enchanted_book",
+    "count": 1,
+    "components": {
+      "minecraft:stored_enchantments": {
+        "minecraft:projectile_protection": 1
+      }
+    }
+  }
+}
