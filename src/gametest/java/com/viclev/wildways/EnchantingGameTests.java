@@ -124,7 +124,7 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void mendingRepairsOneThirdAtFixedCostAndDoesNotRepairFromXp(GameTestHelper helper) {
+	public void mendingFullyRepairsAtFixedCostAndDoesNotRepairFromXp(GameTestHelper helper) {
 		Player player = this.player(helper, 20);
 		AnvilMenu menu = new AnvilMenu(1, player.getInventory());
 		ItemStack tool = new ItemStack(Items.DIAMOND_PICKAXE);
@@ -136,7 +136,7 @@ public class EnchantingGameTests {
 		tool.enchant(this.enchantment(helper, Enchantments.EFFICIENCY), 5);
 		tool.set(DataComponents.REPAIR_COST, 200);
 		menu.createResult();
-		helper.assertTrue(menu.getCost() == 5 && menu.getSlot(2).getItem().getDamageValue() == 484, "Mending must repair 33% at the highest-enchantment cost");
+		helper.assertTrue(menu.getCost() == 5 && menu.getSlot(2).getItem().getDamageValue() == 0, "Mending must fully repair at the highest-enchantment cost");
 		menu.clicked(2, 0, ContainerInput.PICKUP, player);
 		helper.assertTrue(menu.getSlot(1).getItem().getCount() == 3 && player.experienceLevel == 15, "Repair must consume one material and five levels");
 		helper.assertTrue(menu.getCarried().getOrDefault(DataComponents.REPAIR_COST, 0) == 200, "Material repair must not increase prior-work cost");

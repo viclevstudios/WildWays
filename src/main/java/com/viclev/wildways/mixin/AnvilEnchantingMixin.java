@@ -49,8 +49,7 @@ public abstract class AnvilEnchantingMixin extends ItemCombinerMenu {
 				this.wildways$clearResult();
 			} else {
 				ItemStack output = input.copy();
-				int repair = (int)((input.getMaxDamage() * 33L + 99L) / 100L);
-				output.setDamageValue(Math.max(0, input.getDamageValue() - repair));
+				output.setDamageValue(0);
 				int renameCost = 0;
 				if (!StringUtil.isBlank(this.itemName) && !this.itemName.equals(input.getHoverName().getString())) {
 					output.set(DataComponents.CUSTOM_NAME, Component.literal(this.itemName));

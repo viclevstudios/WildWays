@@ -21,7 +21,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 
 - Enchanting Tables use a reusable enchanted recipe book, one lapis and a rune that selects the enchantment level. Higher rune tiers require 5/10/15/20 usable bookshelves and cost up to five XP levels; Mending and Silk Touch require tier 5.
 - One universal catalyst halves XP costs, rounded up, for every rune tier and lasts four uses. Books have no displayed levels and cannot be used in an anvil.
-- Mending enables material repairs of 33% maximum durability, rounded up, for XP equal to the highest enchantment level; XP orbs no longer repair items. Same-item anvil combinations remain available, with linear prior-work growth and no forty-level cap.
+- Mending lets one repair material fully restore an item for XP equal to its highest enchantment level; XP orbs no longer repair items. Same-item anvil combinations remain available, with linear prior-work growth and no forty-level cap.
 - Librarians add at most two trades per level. They always sell ordinary Bookshelves, choose either Rune 1 or Rune 2 at apprentice level, and always sell an Attunement book at master level alongside one candle color. Chiseled Bookshelves are a possible novice alternative. All five runes and the catalyst are craftable from the supplied designs; Rune 5 has Shulker Shell and Echo Shard variants using refined Volcanite. Other book acquisition changes are deferred. See [recipes, rules and test steps](ENCHANTING.md).
 - The Eye of Enchanting requires an Attunement book, rune 1 and one lapis at the new table.
 
