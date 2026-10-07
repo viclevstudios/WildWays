@@ -17,6 +17,11 @@
           },
           {
             "items": [
+              "minecraft:amethyst_shard"
+            ]
+          },
+          {
+            "items": [
               "minecraft:diamond"
             ]
           }

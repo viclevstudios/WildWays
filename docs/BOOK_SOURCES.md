@@ -7,6 +7,7 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 - Desert and Jungle Temple chests and Stronghold chests retain their vanilla enchanted-book slots, but select one enchantment from the general random-loot tag.
 - A Wandering Trader adds one randomly chosen general book to its offers. Ancient City generic books select from the 23-book list in `data/wildways/tags/enchantment/ancient_city_books.json`.
 - Trial Chamber reward tables retain their random books. Density and Breach have higher weights in rare rewards; Wind Burst has a lower chance there. Bastion chests and Piglin bartering remain sources of Soul Speed at slightly lower weights; Ancient Cities remain the source of Swift Sneak at a lower weight.
+- The Endermite Nest in Quarantine Grounds uses its existing structure loot-table reference to provide one or two level-one books from Unbreaking, Protection, Efficiency, Fortune, Silk Touch, Sharpness and Power. Each roll selects independently, so two identical books are possible.
 
 ## Specific sources
 
@@ -18,7 +19,7 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 | Protection | Desert Pyramid or Desert Well archaeology; 30% in monster-room chests |
 | Fire Protection | Crafted from Protection, four Blaze Powder and four Lapis; Nether Fortress chests |
 | Blast Protection | Crafted from Protection, Obsidian, three Iron Ingots and four Lapis; guaranteed from a Ghast killed by its reflected fireball |
-| Projectile Protection | Crafted from Protection, a Shield, three Iron Ingots and four Lapis; 50% in the new Jungle Temple alcove chest |
+| Projectile Protection | Crafted from Protection, a Shield, three Iron Ingots and four Lapis; 50% in the [Jungle Temple alcove chest](JUNGLE_ROOM.md) |
 | Thorns | 5% Guardian drop; 50% chance that a master Armorer sells it |
 | Aqua Affinity / Respiration | Shipwreck treasure and Buried Treasure chests |
 | Depth Strider | Two new supply chests in each Ocean Monument entry room, each with a 75% book chance and Sponge, Nautilus Shell, Prismarine Shard or Gold Ingot loot |
@@ -41,6 +42,6 @@ All eleven conversion recipes live in `data/wildways/recipe/book_*.json`. Their 
 
 ## In-game checks
 
-Use a **new world or new chunks** for structure changes. Open a Zombie, Spider and Skeleton spawner dungeon: its chest should retain ordinary dungeon loot, sometimes include Protection, and have a 50% chance for the spawner's matching book. Find a Jungle Temple and follow the lower corridor to its extra alcove and chest; approximately half contain Projectile Protection. An Ocean Monument's entry room has two supply chests, with Depth Strider frequently present. Try a master Toolsmith, Mason, Weaponsmith, Fletcher, Fisherman and Armorer, then a Wandering Trader; reopening trade screens must not create extra offers. For drops, test a spear Zombie, a reflected Ghast fireball and a book dropped into a lightning strike.
+Use a **new world or new chunks** for structure changes. Open a Zombie, Spider and Skeleton spawner dungeon: its chest should retain ordinary dungeon loot, sometimes include Protection, and have a 50% chance for the spawner's matching book. Find a Jungle Temple and follow the lower corridor to its extra alcove and chest; approximately half contain Projectile Protection. An Ocean Monument's entry room has two supply chests, with Depth Strider frequently present. Find the Endermite Nest in Quarantine Grounds and check that it starts with one or two of the seven listed common books. Try a master Toolsmith, Mason, Weaponsmith, Fletcher, Fisherman and Armorer, then a Wandering Trader; reopening trade screens must not create extra offers. For drops, test a spear Zombie, a reflected Ghast fireball and a book dropped into a lightning strike.
 
 Run `.\gradlew.bat build runGameTest` with Java 25 for server-side checks. The automated tests cover actual recipe matching, the three custom chest tables, preservation of Volcanite Bastion loot, master-trade replacement, the wandering book offer and lightning conversion. Structure layout and rare drop rates still benefit from an in-game playtest.

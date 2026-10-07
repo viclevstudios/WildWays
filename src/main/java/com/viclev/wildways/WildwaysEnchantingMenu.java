@@ -24,6 +24,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EnchantingTableBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /** Recipe-driven enchanting; all costs are checked again before a result is taken. */
 public class WildwaysEnchantingMenu extends AbstractContainerMenu {
@@ -36,6 +37,7 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 	private final DataSlot cost = DataSlot.standalone();
 	private final DataSlot status = DataSlot.standalone();
 	private final ResultContainer result = new ResultContainer();
+	private boolean loadingStoredItems;
 	private final SimpleContainer input = new SimpleContainer(5) {
 		@Override
 		public void setChanged() {
@@ -97,6 +99,17 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 		this.addDataSlot(this.shelves);
 		this.addDataSlot(this.cost);
 		this.addDataSlot(this.status);
+		if (!inventory.player.level().isClientSide()) {
+			this.access.execute((level, pos) -> {
+				BlockEntity blockEntity = level.getBlockEntity(pos);
+				if (blockEntity instanceof WorkstationInventory stored) {
+					this.loadingStoredItems = true;
+					for (int i = 0; i < 5; i++) this.input.setItem(i, stored.getItem(i).copy());
+					this.loadingStoredItems = false;
+					this.updateResult();
+				}
+			});
+		}
 	}
 
 	public List<Holder<Enchantment>> recipes() {
@@ -112,6 +125,10 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 	public int experienceCost() { return this.cost.get(); }
 	public int status() { return this.status.get(); }
 	public int runeTier() { return EnchantingItems.runeTier(this.input.getItem(RUNE)); }
+	public int effectiveTier() {
+		Holder<Enchantment> enchantment = this.selectedEnchantment();
+		return enchantment == null ? this.runeTier() : EnchantingRules.effectiveTier(enchantment, this.runeTier());
+	}
 	public boolean hasCatalyst() { return this.input.getItem(CATALYST).is(EnchantingItems.CATALYST); }
 
 	private Recipe recipe() {
@@ -134,12 +151,17 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 		if (target.isEmpty() || enchantment == null || tier == 0 || !this.input.getItem(LAPIS).is(Items.LAPIS_LAZULI)) {
 			return null;
 		}
+		if (tier < EnchantingRules.minimumRuneTier(enchantment)) {
+			this.status.set(6);
+			return null;
+		}
+		int effectiveTier = EnchantingRules.effectiveTier(enchantment, tier);
 		int enchantmentLevel = EnchantingRules.enchantmentLevel(enchantment, tier);
 		if (!EnchantingRules.compatible(target, enchantment, enchantmentLevel)) {
 			this.status.set(1);
 			return null;
 		}
-		if (shelfCount < EnchantingRules.requiredShelves(tier)) {
+		if (shelfCount < EnchantingRules.requiredShelves(effectiveTier)) {
 			this.status.set(2);
 			return null;
 		}
@@ -148,7 +170,7 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 			this.status.set(3);
 			return null;
 		}
-		int xpCost = EnchantingRules.experienceCost(tier, !catalyst.isEmpty());
+		int xpCost = EnchantingRules.experienceCost(effectiveTier, !catalyst.isEmpty());
 		this.cost.set(xpCost);
 		if (!this.owner.hasInfiniteMaterials() && this.owner.experienceLevel < xpCost) {
 			this.status.set(4);
@@ -162,7 +184,12 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 
 	@Override
 	public void slotsChanged(Container container) {
-		if (container == this.input && this.owner != null && !this.owner.level().isClientSide()) {
+		if (container == this.input && this.owner != null && !this.owner.level().isClientSide() && !this.loadingStoredItems) {
+			this.access.execute((level, pos) -> {
+				if (level.getBlockEntity(pos) instanceof WorkstationInventory stored) {
+					for (int i = 0; i < 5; i++) stored.setItem(i, this.input.getItem(i).copy());
+				}
+			});
 			this.updateResult();
 		}
 	}
@@ -259,7 +286,6 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 	@Override
 	public void removed(Player player) {
 		super.removed(player);
-		this.clearContainer(player, this.input);
 	}
 
 	private record Recipe(ItemStack output, int cost) {

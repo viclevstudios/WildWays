@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Wildways — Endermites</title>
+  <script src="vendor/gsap.min.js"></script>
+  <style>
+    * { box-sizing:border-box; }
+    html,body { width:1080px; height:1920px; margin:0; overflow:hidden; background:#101719; }
+    body { font-family:Arial,Helvetica,sans-serif; color:#f5f0df; }
+    #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:radial-gradient(ellipse at 57% 35%,#26343b 0,#11191d 49%,#0b1114 100%); }
+    #root::before { content:""; position:absolute; inset:0; opacity:.15; background-image:linear-gradient(#98bbb222 1px,transparent 1px),linear-gradient(90deg,#98bbb222 1px,transparent 1px); background-size:72px 72px; transform:perspective(800px) rotateX(19deg) scale(1.3); }
+    #root::after { content:""; position:absolute; inset:42px; border:1px solid #a9c6b12e; border-radius:38px; pointer-events:none; }
+    .clip { position:absolute; inset:0; }
+    .scene { padding:160px 92px 330px; overflow:hidden; }
+    .brand { position:absolute; top:86px; left:92px; display:flex; align-items:center; gap:18px; font-size:26px; font-weight:900; letter-spacing:.18em; color:#e2ead8; }
+    .brandmark { width:36px; height:36px; background:#b5d68d; box-shadow:9px 9px 0 #593c77,-7px 12px 0 #405f60; transform:rotate(-12deg); }
+    .count { position:absolute; top:90px; right:92px; font-size:25px; color:#a8b8af; font-weight:800; letter-spacing:.1em; }
+    .eyebrow { position:absolute; top:222px; left:92px; right:90px; font-size:29px; letter-spacing:.16em; font-weight:900; color:#b9d991; text-transform:uppercase; }
+    h1,h2 { position:absolute; top:304px; left:90px; right:90px; margin:0; font-weight:950; line-height:.98; letter-spacing:-.065em; text-transform:uppercase; text-wrap:balance; }
+    h1 { font-size:117px; } h2 { font-size:102px; }
+    .purple { color:#cbb5f5; } .green-text { color:#b9db93; }
+    .hero { position:absolute; left:105px; right:105px; top:690px; height:650px; display:flex; align-items:center; justify-content:center; }
+    .halo { position:absolute; width:620px; height:620px; border-radius:50%; background:radial-gradient(circle,#9571c879 0,#6a579233 43%,transparent 69%); filter:blur(12px); }
+    .halo.green { background:radial-gradient(circle,#b1ce7770 0,#7aa16e30 46%,transparent 70%); }
+    .item { position:relative; width:380px; height:380px; object-fit:contain; image-rendering:pixelated; filter:drop-shadow(0 26px 0 #070a0a99) drop-shadow(0 0 38px #b18be5aa); }
+    .item.small { width:270px; height:270px; } .item.huge { width:450px; height:450px; }
+    .card { position:absolute; left:95px; right:95px; bottom:430px; min-height:130px; border-radius:25px; border:1px solid #b7d29365; background:#142021da; padding:28px 35px; display:flex; align-items:center; justify-content:space-between; gap:20px; box-shadow:0 18px 55px #0008; }
+    .card strong { font-size:44px; line-height:1.1; text-transform:uppercase; letter-spacing:-.04em; }
+    .card span { font-size:30px; color:#c7d3c7; line-height:1.25; text-align:right; max-width:280px; }
+    .pill { display:inline-flex; padding:18px 26px; border:2px solid #c1db9e99; border-radius:100px; color:#dbecbf; background:#162418; font-size:29px; font-weight:800; }
+    .info-row { display:flex; gap:18px; position:absolute; left:92px; right:92px; bottom:465px; justify-content:center; flex-wrap:wrap; }
+    .caption { z-index:50; inset:auto 97px 155px; height:175px; display:block; text-align:center; padding:18px 25px 0; font-size:43px; line-height:1.17; font-weight:850; letter-spacing:-.015em; color:white; text-shadow:0 4px 8px #000,0 0 20px #000; }
+    .caption em { color:#c9e69e; font-style:normal; }
+    .progress { position:absolute; z-index:60; left:90px; right:90px; bottom:104px; height:6px; border-radius:10px; background:#d4ded246; }
+    .progress span { display:block; height:100%; width:100%; background:#bbd98e; transform-origin:left; }
+    .footer { position:absolute; z-index:55; left:94px; bottom:71px; font-size:19px; font-weight:700; letter-spacing:.13em; color:#bdcdbd; }
+    .mite { position:relative; width:390px; height:200px; filter:drop-shadow(0 35px 0 #02040475); transform:rotate(-8deg); }
+    .mite-body { position:absolute; left:45px; top:50px; width:300px; height:135px; background:repeating-linear-gradient(90deg,#5b4a78 0 43px,#8064a4 43px 52px,#403853 52px 69px); border:13px solid #c8a0d8; box-shadow:inset 0 -25px 0 #3b354e; }
+    .mite-eye { position:absolute; top:80px; width:24px; height:24px; background:#ee7aa5; box-shadow:0 0 18px #ff709e; }
+    .mite-eye.left { left:95px; } .mite-eye.right { left:175px; }
+    .mite-leg { position:absolute; width:28px; height:94px; background:#a084b9; top:152px; transform:skew(-23deg); }
+    .mite-leg.one { left:85px; } .mite-leg.two { left:170px; } .mite-leg.three { left:270px; }
+    .cross { position:absolute; right:240px; top:60px; width:145px; height:145px; border:14px solid #c9e69e; border-radius:50%; transform:rotate(-12deg); }
+    .cross::after { content:""; position:absolute; width:160px; height:14px; top:53px; left:-21px; background:#c9e69e; transform:rotate(-35deg); }
+    .recipe { position:relative; width:590px; height:580px; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); gap:15px; transform:rotate(-4deg); }
+    .recipe .slot { display:flex; align-items:center; justify-content:center; border:3px solid #c7d8c659; border-radius:20px; background:#1d2b2dbb; }
+    .recipe .slot img { width:110px; height:110px; image-rendering:pixelated; }
+    .recipe .slot.center { background:#557b5e55; }
+    .recipe .slot.center::after { content:"CHEST"; font-weight:900; color:#d6dbbc; font-size:27px; }
+    .eye-flow { display:flex; align-items:center; gap:42px; transform:rotate(-4deg); }
+    .eye-old { position:relative; width:245px; height:245px; border-radius:50%; border:45px solid #afbf76; background:#e8edbf; box-shadow:0 0 60px #adc96e55; }
+    .eye-old::after { content:""; position:absolute; inset:38px; border-radius:50%; background:#517c4f; }
+    .arrow { font-size:130px; font-weight:900; color:#c8e69f; }
+    .eye-flow img { width:260px; height:260px; image-rendering:pixelated; filter:drop-shadow(0 0 30px #b386e5); }
+    .potion { position:relative; width:260px; height:350px; border:20px solid #cadac8; border-top:55px solid #cadac8; border-radius:45px 45px 90px 90px; transform:rotate(7deg); box-shadow:inset 0 -130px 0 #8d6dba,0 0 60px #956db077; }
+    .potion::before { content:""; position:absolute; top:-115px; left:65px; width:90px; height:60px; background:#876342; border-radius:15px 15px 0 0; }
+    .mini-mites { position:absolute; right:110px; bottom:125px; font-size:90px; color:#d4acd9; }
+    .structure { position:relative; width:630px; height:470px; display:flex; align-items:flex-end; justify-content:center; filter:drop-shadow(0 30px 0 #0008); }
+    .structure .roof { position:absolute; top:73px; width:590px; height:85px; background:repeating-linear-gradient(90deg,#555c48 0 85px,#707d5b 85px 100px); transform:skew(-20deg) rotate(-6deg); border:8px solid #c6cc99; }
+    .structure .wall { width:510px; height:285px; background:repeating-linear-gradient(0deg,#566663 0 38px,#85918a 38px 47px); border:11px solid #a0a98e; }
+    .structure .door { position:absolute; bottom:0; width:120px; height:180px; background:#1c2429; border:10px solid #746c5e; }
+    .structure .light { position:absolute; top:188px; left:135px; width:75px; height:80px; background:#c7d79f; box-shadow:330px 0 0 #c7d79f,0 0 40px #bbd884; }
+    .end-icons { display:flex; align-items:center; gap:18px; transform:rotate(-6deg); }
+    .end-icons img { width:230px; height:230px; image-rendering:pixelated; filter:drop-shadow(0 0 24px #af7ad888); }
+    .end-icons img:nth-child(2) { transform:translateY(-80px) scale(1.2); } .end-icons img:nth-child(3) { transform:translateY(40px); }
+    .ending { background:radial-gradient(circle at 50% 49%,#3b3759aa,transparent 52%); }
+    .ending h2 { top:385px; text-align:center; font-size:119px; } .ending .hero { top:790px; }
+  </style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="60" data-width="1080" data-height="1920" data-fps="24">
+  <div id="s1" class="clip scene" data-start="0" data-duration="7" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">01 / 08</div>
+    <div class="eyebrow">The overlooked mob</div><h1>THE TIMER<br><span class="purple">IS GONE.</span></h1>
+    <div class="hero"><div class="halo"></div><div class="mite"><div class="mite-body"></div><div class="mite-eye left"></div><div class="mite-eye right"></div><div class="mite-leg one"></div><div class="mite-leg two"></div><div class="mite-leg three"></div></div><div class="cross"></div></div>
+    <div class="card"><strong>Endermites persist</strong><span>No fixed despawn timer</span></div>
+  </div>
+  <div id="s2" class="clip scene" data-start="7" data-duration="6" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">02 / 08</div>
+    <div class="eyebrow">A new reason to fight</div><h2>IT DROPS<br><span class="purple">A SHELL.</span></h2>
+    <div class="hero"><div class="halo"></div><img class="item huge" src="assets/endermite_shell.png" alt=""></div>
+    <div class="card"><strong>Endermite Shell</strong><span>0–2 on player kill</span></div>
+  </div>
+  <div id="s3" class="clip scene" data-start="13" data-duration="6" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">03 / 08</div>
+    <div class="eyebrow">One shell, a new palette</div><h2>BUILD WITH<br><span class="green-text">THE END.</span></h2>
+    <div class="hero"><div class="halo green"></div><img class="item huge" src="assets/endermite_bricks.png" alt=""></div>
+    <div class="info-row"><span class="pill">BRICKS</span><span class="pill">STAIRS</span><span class="pill">SLABS</span><span class="pill">WALLS</span></div>
+  </div>
+  <div id="s4" class="clip scene" data-start="19" data-duration="12" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">04 / 08</div>
+    <div class="eyebrow">Storage with a secret</div><h2>CRAFT THE<br><span class="purple">NEST.</span></h2>
+    <div class="hero"><div class="halo"></div><div class="recipe">
+      <div class="slot"><img src="assets/endermite_shell.png" alt=""></div><div class="slot"><img src="assets/endermite_shell.png" alt=""></div><div class="slot"><img src="assets/endermite_shell.png" alt=""></div>
+      <div class="slot"><img src="assets/endermite_shell.png" alt=""></div><div class="slot center"></div><div class="slot"><img src="assets/endermite_shell.png" alt=""></div>
+      <div class="slot"><img src="assets/endermite_shell.png" alt=""></div><div class="slot"><img src="assets/endermite_shell.png" alt=""></div><div class="slot"><img src="assets/endermite_shell.png" alt=""></div>
+    </div></div>
+    <div class="info-row"><span class="pill">12 SLOTS</span><span class="pill">PORTABLE</span><span class="pill">WATERLOGGABLE</span><span class="pill">COMPARATOR</span><span class="pill">5% SPAWN ON OPEN</span></div>
+  </div>
+  <div id="s5" class="clip scene" data-start="31" data-duration="9" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">05 / 08</div>
+    <div class="eyebrow">The nest changes more than storage</div><h2>AN EYE<br><span class="purple">AWAKENS.</span></h2>
+    <div class="hero"><div class="halo"></div><div class="eye-flow"><div class="eye-old"></div><div class="arrow">→</div><img src="assets/eye_of_endermites.png" alt=""></div></div>
+    <div class="card"><strong>Eye of the Endermite</strong><span>Random wait · one of 12</span></div>
+  </div>
+  <div id="s6" class="clip scene" data-start="40" data-duration="11" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">06 / 08</div>
+    <div class="eyebrow">Brew trouble</div><h2>FEEL THE<br><span class="purple">UNEASE.</span></h2>
+    <div class="hero"><div class="halo"></div><div class="potion"></div><img class="item small" src="assets/unease.png" alt="" style="position:absolute;right:50px;top:25px"><div class="mini-mites">✦ ✦</div></div>
+    <div class="info-row"><span class="pill">10% ON SOLID BLOCKS</span><span class="pill">STRONG: 20%</span><span class="pill">CREEPER BLASTS TOO</span></div>
+  </div>
+  <div id="s7" class="clip scene" data-start="51" data-duration="5" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">07 / 08</div>
+    <div class="eyebrow">Follow the trail</div><h2>THE TAIGA<br><span class="green-text">HOLDS THEM.</span></h2>
+    <div class="hero"><div class="halo green"></div><div class="structure"><div class="roof"></div><div class="wall"></div><div class="door"></div><div class="light"></div></div></div>
+    <div class="card"><strong>Quarantine Grounds</strong><span>Explore the taiga</span></div>
+  </div>
+  <div id="s8" class="clip scene ending" data-start="56" data-duration="4" data-track-index="1">
+    <div class="brand"><span class="brandmark"></span> WILDWAYS</div><div class="count">08 / 08</div>
+    <h2>ONE MOB.<br><span class="green-text">A WHOLE<br>NEW TRAIL.</span></h2>
+    <div class="hero"><div class="halo"></div><div class="end-icons"><img src="assets/endermite_shell.png" alt=""><img src="assets/endermite_nest_side.png" alt=""><img src="assets/eye_of_endermites.png" alt=""></div></div>
+  </div>
+  <div id="c1" class="clip caption" data-start="0" data-duration="3.7" data-track-index="8">An Endermite used to vanish almost<br>as soon as you found it.</div>
+  <div id="c2" class="clip caption" data-start="3.7" data-duration="3.3" data-track-index="8">Wildways removes its fixed<br><em>despawn timer.</em></div>
+  <div id="c3" class="clip caption" data-start="7" data-duration="6" data-track-index="8">Defeat one, and it can drop<br>an <em>Endermite Shell.</em></div>
+  <div id="c4" class="clip caption" data-start="13" data-duration="6" data-track-index="8">Combine one shell with stone bricks<br>for new bricks, stairs, slabs, and walls.</div>
+  <div id="c5" class="clip caption" data-start="19" data-duration="5" data-track-index="8">Eight shells around a chest<br>make an <em>Endermite Nest:</em></div>
+  <div id="c6" class="clip caption" data-start="24" data-duration="4.2" data-track-index="8">twelve portable slots, waterlogging,<br>a comparator output,</div>
+  <div id="c7" class="clip caption" data-start="28.2" data-duration="2.8" data-track-index="8">and a five percent surprise<br>when you open it.</div>
+  <div id="c8" class="clip caption" data-start="31" data-duration="3.2" data-track-index="8">Leave an Eye of Ender inside.</div>
+  <div id="c9" class="clip caption" data-start="34.2" data-duration="5.8" data-track-index="8">After a random wait, it becomes the<br><em>Eye of the Endermite,</em> one of twelve eyes for the End Portal.</div>
+  <div id="c10" class="clip caption" data-start="40" data-duration="2.5" data-track-index="8">Brew a shell into <em>Unease.</em></div>
+  <div id="c11" class="clip caption" data-start="42.5" data-duration="3.5" data-track-index="8">Break solid blocks for a ten percent<br>chance to spawn a mite.</div>
+  <div id="c12" class="clip caption" data-start="46" data-duration="5" data-track-index="8">Strong Unease doubles that, and<br>affected creeper blasts can do it too.</div>
+  <div id="c13" class="clip caption" data-start="51" data-duration="5" data-track-index="8">Find Quarantine Grounds in the taiga,<br>where Endermites are already waiting.</div>
+  <div id="c14" class="clip caption" data-start="56" data-duration="4" data-track-index="8">One overlooked mob.<br><em>A whole new trail to follow.</em></div>
+  <audio id="demo-bed" data-start="0" data-duration="60" data-track-index="10" data-volume="0.35" data-fade-in="1.3" data-fade-out="1.5" src="assets/demo-bed.wav"></audio>
+  <div class="footer">WILDWAYS · ENDERMITE UPDATE</div><div class="progress"><span id="bar"></span></div>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({paused:true});
+  const sections = [["s1",0,7],["s2",7,6],["s3",13,6],["s4",19,12],["s5",31,9],["s6",40,11],["s7",51,5],["s8",56,4]];
+  for (const [id,start,duration] of sections) {
+    tl.fromTo(`#${id} .hero`,{opacity:0,y:80,scale:.88},{opacity:1,y:0,scale:1,duration:.85,ease:"power3.out"},start+.18);
+    const scene = document.getElementById(id);
+    tl.fromTo(scene.querySelector("h1, h2"),{opacity:0,y:45},{opacity:1,y:0,duration:.55,ease:"power3.out"},start+.05);
+    const lower = scene.querySelector(".card, .info-row");
+    if (lower) tl.fromTo(lower,{opacity:0,y:38},{opacity:1,y:0,duration:.6,ease:"power2.out"},start+.42);
+    tl.to(`#${id} .hero`,{scale:1.07,duration:duration-.7,ease:"none"},start+.85);
+  }
+  tl.fromTo("#bar",{scaleX:0},{scaleX:1,duration:60,ease:"none"},0);
+  window.__timelines.main = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

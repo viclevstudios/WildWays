@@ -1,0 +1,303 @@
+{
+  "voice_seconds": 47.882438,
+  "shots": [
+    [
+      "Endermite Intro.mp4",
+      0.0,
+      3.69,
+      "center"
+    ],
+    [
+      "Endermite Walking.mp4",
+      0.0,
+      4.12,
+      "follow"
+    ],
+    [
+      "Endermite Shell Drop.mp4",
+      3.5,
+      7.13,
+      "center"
+    ],
+    [
+      "Endermite Bricks House Building.mp4",
+      1.5,
+      6.8,
+      "portrait"
+    ],
+    [
+      "Endermite Nest.mp4",
+      5.0,
+      7.16,
+      "center"
+    ],
+    [
+      "Endermite Nest.mp4",
+      9.4,
+      10.7,
+      "center"
+    ],
+    [
+      "Endermite Nest.mp4",
+      11.4,
+      13.3,
+      "center"
+    ],
+    [
+      "Endermite Nest.mp4",
+      14.1,
+      15.2,
+      "center"
+    ],
+    [
+      "Endermite Nest.mp4",
+      17.19,
+      19.51,
+      "center"
+    ],
+    [
+      "Endermite Nest.mp4",
+      19.51,
+      21.16,
+      "center"
+    ],
+    [
+      "Eye of Ender to Eye of the Endermites.mp4",
+      0.0,
+      3.72,
+      "center"
+    ],
+    [
+      "Potion of Unease.mp4",
+      2.0,
+      3.7,
+      "center"
+    ],
+    [
+      "Potion of Unease.mp4",
+      5.2,
+      6.3,
+      "center"
+    ],
+    [
+      "Potion of Unease.mp4",
+      9.3,
+      11.75,
+      "center"
+    ],
+    [
+      "Potion of Unease.mp4",
+      13.6,
+      15.83,
+      "center"
+    ],
+    [
+      "Quarantine Grounds.mp4",
+      3.2,
+      7.73,
+      "portrait"
+    ],
+    [
+      "Using Eye of the Endermites.mp4",
+      2.3,
+      3.5,
+      "portrait"
+    ],
+    [
+      "Using Eye of the Endermites.mp4",
+      6.1,
+      8.2,
+      "portrait"
+    ],
+    [
+      "Endermite Outro.mp4",
+      1.0,
+      2.6824379999999977,
+      "portrait"
+    ]
+  ],
+  "captions": [
+    [
+      0.0,
+      2.34,
+      "What if Minecraft's most forgotten mob"
+    ],
+    [
+      2.5,
+      3.43,
+      "finally mattered?"
+    ],
+    [
+      3.99,
+      6.11,
+      "Wildways completely improves the Endermite"
+    ],
+    [
+      6.25,
+      8.25,
+      "and adds some special items along the way."
+    ],
+    [
+      8.72,
+      11.03,
+      "Defeat one for a chance at an Endermite Shell."
+    ],
+    [
+      11.43,
+      14.03,
+      "A shell and stone bricks make Endermite Bricks,"
+    ],
+    [
+      14.1,
+      16.38,
+      "with matching stairs, slabs, and walls."
+    ],
+    [
+      16.74,
+      19.75,
+      "Eight shells and a chest make a portable Endermite Nest."
+    ],
+    [
+      20.05,
+      22.44,
+      "Its twelve slots keep their contents when you move it."
+    ],
+    [
+      22.87,
+      25.09,
+      "Opening it might release another endermite though."
+    ],
+    [
+      25.52,
+      26.98,
+      "Leave an Eye of Ender inside."
+    ],
+    [
+      27.32,
+      30.42,
+      "After some time, it transforms into the Eye of the Endermite."
+    ],
+    [
+      30.89,
+      33.09,
+      "Brew a shell into a potion of Unease."
+    ],
+    [
+      33.41,
+      35.72,
+      "Break solid blocks, and Endermites may appear."
+    ],
+    [
+      36.1,
+      38.13,
+      "Level 2 Unease doubles the chance."
+    ],
+    [
+      38.37,
+      41.22,
+      "And you'll find camps infested by endermites around the world."
+    ],
+    [
+      41.58,
+      42.97,
+      "Watch out for hidden secrets there."
+    ],
+    [
+      43.33,
+      46.02,
+      "These features and lots more is part of WildWays."
+    ],
+    [
+      46.22,
+      47.79,
+      "Releasing on November 1st."
+    ]
+  ],
+  "labels": [
+    [
+      0.05,
+      3.7,
+      "THE FORGOTTEN MOB"
+    ],
+    [
+      4.0,
+      8.5,
+      "NO FIXED DESPAWN TIMER"
+    ],
+    [
+      8.72,
+      11.35,
+      "ENDERMITE SHELL"
+    ],
+    [
+      11.45,
+      16.5,
+      "BRICKS \u00b7 STAIRS \u00b7 SLABS \u00b7 WALLS"
+    ],
+    [
+      16.75,
+      19.9,
+      "8 SHELLS + CHEST"
+    ],
+    [
+      20.0,
+      21.35,
+      "12 SLOTS \u00b7 PORTABLE"
+    ],
+    [
+      21.35,
+      22.7,
+      "WATERLOGGABLE \u00b7 COMPARATOR"
+    ],
+    [
+      22.88,
+      25.2,
+      "5% CHANCE ON OPEN"
+    ],
+    [
+      25.55,
+      27.2,
+      "EYE OF ENDER + NEST"
+    ],
+    [
+      27.3,
+      30.6,
+      "RANDOM WAIT \u00b7 ~10 MIN AVG"
+    ],
+    [
+      30.9,
+      33.1,
+      "POTION OF UNEASE"
+    ],
+    [
+      33.4,
+      35.8,
+      "UNEASE \u00b7 10% PER BLOCK"
+    ],
+    [
+      36.1,
+      37.1,
+      "UNEASE II \u00b7 20% PER BLOCK"
+    ],
+    [
+      37.1,
+      38.2,
+      "CREEPER BLASTS ALSO COUNT"
+    ],
+    [
+      38.4,
+      42.95,
+      "QUARANTINE GROUNDS"
+    ],
+    [
+      43.32,
+      46.1,
+      "EYE: 1 OF 12 UNIQUE EYES"
+    ],
+    [
+      46.2,
+      47.882438,
+      "WILDWAYS \u00b7 NOVEMBER 1"
+    ]
+  ]
+}

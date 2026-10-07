@@ -49,6 +49,7 @@ Suggested smoke checks:
 
 - Follow the [Volcanite prototype checks](VOLCANITE.md) for basalt-only, vertically oriented ore generation (including visible air-exposed ore in fresh Basalt Deltas), Basalt-style placement along all three axes, mining tiers, Fortune/Silk Touch, smelting, diamond-equivalent equipment, Volcanite repairs, Netherite upgrades, and 5%/15% Bastion loot chances.
 - Follow the [Enchanting prototype checks](ENCHANTING.md) for the seven rune/catalyst recipes, reusable books, the universal catalyst, shelves, Attunement, Mending, anvil costs and librarian trades. Rune 5 must use refined Volcanite, not copper stairs or Raw Volcanite. Follow the [book-source checks](BOOK_SOURCES.md) for the new exploration, mob, trade and crafting sources.
+- Close and reopen an Enchanting Table and an anvil with inputs inside, reload the world, then break each workstation. Check that the inputs persist, render outside the block and drop exactly once when it is broken.
 
 - Hold a compass and verify that the action bar shows `X`, `Y`, `Z`, and the current cardinal or intercardinal direction.
 - Hold the clock, Biome Compass, and Light Sensor in turn and verify their action-bar information.
@@ -56,7 +57,7 @@ Suggested smoke checks:
 - Test Turtle, Range, and Explosive Arrows in a safe world to verify their increased damage, faster flight, and small explosion respectively.
 - Open an Endermite Nest with contents and verify its inventory, comparator output, and portable contents. Verify Endermite Brick recipes and shapes.
 - Brew Unease and Strong Unease, then test their Endermite-spawning behaviour while mining or around an affected creeper. Check representative Supreme and Fatal potion upgrades with Popped Chorus Fruit.
-- Generate or locate a new Quarantine Grounds. Check that its Endermites remain present and that weathered spruce logs in the hospital houses become stripped spruce logs without changing their horizontal or vertical orientation.
+- Generate or locate a new Quarantine Grounds. Check that its Endermites remain present, that its Endermite Nest starts with one or two common enchanted books, and that weathered spruce logs in the hospital houses become stripped spruce logs without changing their horizontal or vertical orientation.
 - Place a Light Sensor below changing light levels and verify that its redstone output follows the light above it.
 - Locate a newly generated Stronghold and verify that all twelve End Portal Frames are empty. Confirm that a vanilla Eye of Ender cannot be inserted.
 - Insert the twelve different WildWays eyes in any order. Confirm that a duplicate is rejected, an unenchanted Eye of Enchanting is rejected, and the portal opens only after all twelve valid eyes are present.

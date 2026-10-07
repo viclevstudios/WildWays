@@ -1,5 +1,7 @@
 package com.viclev.wildways;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -23,6 +25,48 @@ import net.minecraft.world.phys.Vec3;
 
 /** Exercises the loaded loot tables, including existing Bastion rewards. */
 public class BookLootGameTests {
+	@GameTest
+	public void quarantineNestContainsOneOrTwoCommonBooks(GameTestHelper helper) {
+		LootParams params = new LootParams.Builder(helper.getLevel())
+			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(helper.absolutePos(BlockPos.ZERO)))
+			.create(LootContextParamSets.CHEST);
+		LootTable nest = table(helper, "wildways:chests/quarantine_grounds/secret");
+		Set<ResourceKey<Enchantment>> allowed = Set.of(Enchantments.UNBREAKING, Enchantments.PROTECTION,
+			Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH,
+			Enchantments.SHARPNESS, Enchantments.POWER);
+		Set<ResourceKey<Enchantment>> seen = new HashSet<>();
+		boolean retainedOriginalLoot = false;
+		for (int seed = 0; seed < 200; seed++) {
+			var drops = nest.getRandomItems(params, RandomSource.create(seed));
+			int count = drops.stream().filter(stack -> stack.is(Items.ENCHANTED_BOOK))
+				.mapToInt(ItemStack::getCount).sum();
+			helper.assertTrue(count >= 1 && count <= 2, "A Quarantine Grounds nest must contain one or two books");
+			for (ItemStack stack : drops) {
+				if (!stack.is(Items.ENCHANTED_BOOK)) {
+					retainedOriginalLoot = true;
+					continue;
+				}
+				ItemEnchantments enchantments = stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+				helper.assertTrue(enchantments.size() == 1,
+					"Each nest reward must be a single-enchantment book");
+				var enchantment = enchantments.keySet().iterator().next();
+				helper.assertTrue(enchantments.getLevel(enchantment) == 1,
+					"Nest books must be level-one recipes");
+				boolean permitted = false;
+				for (ResourceKey<Enchantment> key : allowed) {
+					if (enchantment.is(key)) {
+						seen.add(key);
+						permitted = true;
+					}
+				}
+				helper.assertTrue(permitted, "Nest loot must stay inside the seven-book whitelist");
+			}
+		}
+		helper.assertTrue(seen.equals(allowed), "All seven common books must be reachable");
+		helper.assertTrue(retainedOriginalLoot, "The nest must retain its pre-existing non-book loot");
+		helper.succeed();
+	}
+
 	@GameTest
 	public void lightningTurnsOneDroppedBookIntoChanneling(GameTestHelper helper) {
 		ItemEntity item = helper.spawn(EntityTypes.ITEM, new BlockPos(2, 2, 2));

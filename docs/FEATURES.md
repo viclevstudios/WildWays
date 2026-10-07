@@ -20,12 +20,13 @@ This page describes gameplay features currently present in WildWays. Planned wor
 ## Enchanting prototype
 
 - Enchanted books now have the planned exploration, mob, trade, fishing, archaeology and crafting sources; see [Book sources](BOOK_SOURCES.md). General random books remain in temples, Strongholds and Trial Chambers. Specific books come from themed locations and actions, including spawner-dependent dungeon chests, a Jungle Temple alcove and Ocean Monument supply chests.
+- Quarantine Grounds' Endermite Nest contains one or two common enchanted books. The Jungle Temple alcove can be adjusted through its [local structure coordinates](JUNGLE_ROOM.md).
 
-- Enchanting Tables use a reusable enchanted recipe book, one lapis and a rune that selects the enchantment level. Higher rune tiers require 5/10/15/20 usable bookshelves and cost up to five XP levels; Mending and Silk Touch require tier 5.
+- Enchanting Tables use a reusable enchanted recipe book, one lapis and a rune that selects the enchantment level. A higher rune can substitute for the matching one without raising the level, bookshelf requirement or XP price above the enchantment's maximum. Mending, Silk Touch, Channeling and Multishot require at least a Golden Rune and cost three levels.
 - One universal catalyst halves XP costs, rounded up, for every rune tier and lasts four uses. Books have no displayed levels and cannot be used in an anvil.
-- Mending lets one repair material fully restore an item for XP equal to its highest enchantment level; XP orbs no longer repair items. Same-item anvil combinations remain available, with linear prior-work growth and no forty-level cap.
-- Librarians add at most two trades per level. They always sell ordinary Bookshelves, choose either Rune 1 or Rune 2 at apprentice level, and always sell an Attunement book at master level alongside one candle color. Chiseled Bookshelves are a possible novice alternative. All five runes and the catalyst are craftable from the supplied designs; Rune 5 has Shulker Shell and Echo Shard variants using refined Volcanite. Other book acquisition changes are deferred. See [recipes, rules and test steps](ENCHANTING.md).
-- The Eye of Enchanting requires an Attunement book, rune 1 and one lapis at the new table.
+- Mending lets one repair material fully restore an item for XP equal to its highest enchantment level, with the four valuable single-level enchantments counting as at least level three; XP orbs no longer repair items. Netherite gear also accepts one Netherite Scrap. Renaming is free. Same-item anvil combinations remain available, with linear prior-work growth and no forty-level cap.
+- Librarians add at most two trades per level. They always sell ordinary Bookshelves, choose either a Copper or Iron Rune at apprentice level, and always sell an Attunement book at master level alongside one candle color. Chiseled Bookshelves are a possible novice alternative. All five runes and the catalyst are craftable; the Volcanite Rune has Shulker Shell and Echo Shard variants using refined Volcanite. See [recipes, rules and test steps](ENCHANTING.md).
+- The Eye of Enchanting requires an Attunement book, at least a Copper Rune and one lapis at the new table.
 
 ## Fletching Table and arrows
 

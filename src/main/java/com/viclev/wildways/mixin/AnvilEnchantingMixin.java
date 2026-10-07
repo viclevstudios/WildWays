@@ -44,28 +44,54 @@ public abstract class AnvilEnchantingMixin extends ItemCombinerMenu {
 			ci.cancel();
 			return;
 		}
-		if (!input.isEmpty() && input.isDamageableItem() && !addition.isEmpty() && input.isValidRepairItem(addition)) {
+		if (!input.isEmpty() && input.isDamageableItem() && !addition.isEmpty()
+			&& (input.isValidRepairItem(addition) || wildways$netheriteScrapRepairs(input, addition))) {
 			if (!input.isDamaged() || !EnchantingRules.hasMending(input)) {
 				this.wildways$clearResult();
 			} else {
 				ItemStack output = input.copy();
 				output.setDamageValue(0);
-				int renameCost = 0;
 				if (!StringUtil.isBlank(this.itemName) && !this.itemName.equals(input.getHoverName().getString())) {
 					output.set(DataComponents.CUSTOM_NAME, Component.literal(this.itemName));
-					renameCost = 1;
 				} else if (StringUtil.isBlank(this.itemName) && input.has(DataComponents.CUSTOM_NAME)) {
 					output.remove(DataComponents.CUSTOM_NAME);
-					renameCost = 1;
 				}
 				this.onlyRenaming = false;
 				this.repairItemCountCost = 1;
-				this.cost.set(EnchantingRules.repairCost(input) + renameCost);
+				this.cost.set(EnchantingRules.repairCost(input));
 				this.resultSlots.setItem(0, output);
 				this.broadcastChanges();
 			}
 			ci.cancel();
 		}
+	}
+
+	@Unique
+	private static boolean wildways$netheriteScrapRepairs(ItemStack input, ItemStack addition) {
+		return addition.is(Items.NETHERITE_SCRAP) && (input.is(Items.NETHERITE_SWORD)
+			|| input.is(Items.NETHERITE_PICKAXE) || input.is(Items.NETHERITE_AXE)
+			|| input.is(Items.NETHERITE_SHOVEL) || input.is(Items.NETHERITE_HOE)
+			|| input.is(Items.NETHERITE_HELMET) || input.is(Items.NETHERITE_CHESTPLATE)
+			|| input.is(Items.NETHERITE_LEGGINGS) || input.is(Items.NETHERITE_BOOTS));
+	}
+
+	@Inject(method = "createResult", at = @At("TAIL"))
+	private void wildways$freePureRename(CallbackInfo ci) {
+		if (this.resultSlots.getItem(0).isEmpty()) return;
+		if (this.onlyRenaming) {
+			this.cost.set(0);
+			return;
+		}
+		ItemStack input = this.inputSlots.getItem(0);
+		boolean renamed = !StringUtil.isBlank(this.itemName)
+			? !this.itemName.equals(input.getHoverName().getString())
+			: input.has(DataComponents.CUSTOM_NAME);
+		if (renamed) this.cost.set(Math.max(0, this.cost.get() - 1));
+	}
+
+	@Inject(method = "mayPickup", at = @At("HEAD"), cancellable = true)
+	private void wildways$allowFreeRename(Player player, boolean hasItem, CallbackInfoReturnable<Boolean> cir) {
+		if (this.onlyRenaming) cir.setReturnValue(hasItem);
 	}
 
 	@Unique

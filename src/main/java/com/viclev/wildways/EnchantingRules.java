@@ -14,7 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 public final class EnchantingRules {
-	public static final TagKey<Enchantment> LEVEL_FIVE = TagKey.create(Registries.ENCHANTMENT, Wildways.id("requires_level_five_rune"));
+	public static final TagKey<Enchantment> GOLD_RUNE_MINIMUM = TagKey.create(Registries.ENCHANTMENT, Wildways.id("requires_gold_rune"));
 
 	private EnchantingRules() {
 	}
@@ -35,7 +35,16 @@ public final class EnchantingRules {
 	}
 
 	public static boolean isPrecious(Holder<Enchantment> enchantment) {
-		return enchantment.is(LEVEL_FIVE);
+		return enchantment.is(GOLD_RUNE_MINIMUM);
+	}
+
+	public static int minimumRuneTier(Holder<Enchantment> enchantment) {
+		return isPrecious(enchantment) ? 3 : 1;
+	}
+
+	/** The rune may exceed the enchantment's level, but never raises its price or shelf requirement. */
+	public static int effectiveTier(Holder<Enchantment> enchantment, int runeTier) {
+		return runeTier <= 0 ? 0 : Math.max(minimumRuneTier(enchantment), Math.min(runeTier, enchantment.value().getMaxLevel()));
 	}
 
 	public static int requiredShelves(int runeTier) {
@@ -43,10 +52,7 @@ public final class EnchantingRules {
 	}
 
 	public static int enchantmentLevel(Holder<Enchantment> enchantment, int runeTier) {
-		if (isPrecious(enchantment)) {
-			return runeTier == 5 ? 1 : 0;
-		}
-		return runeTier <= enchantment.value().getMaxLevel() ? runeTier : 0;
+		return runeTier < minimumRuneTier(enchantment) ? 0 : Math.min(runeTier, enchantment.value().getMaxLevel());
 	}
 
 	public static boolean compatible(ItemStack target, Holder<Enchantment> enchantment, int level) {
@@ -69,7 +75,8 @@ public final class EnchantingRules {
 
 	public static int repairCost(ItemStack target) {
 		return Math.max(1, target.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet().stream()
-			.mapToInt(entry -> entry.getIntValue()).max().orElse(1));
+			.mapToInt(entry -> isPrecious(entry.getKey()) ? Math.max(3, entry.getIntValue()) : entry.getIntValue())
+			.max().orElse(1));
 	}
 
 }

@@ -1,0 +1,9 @@
+node_modules/
+project/.hyperframes/
+project/debug.log
+project/export-frame-*.png
+review/
+gameplay-project/assets/
+gameplay-project/renders/
+gameplay-project/.hyperframes/
+gameplay-project/debug.log

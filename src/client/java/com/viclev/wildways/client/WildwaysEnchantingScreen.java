@@ -12,12 +12,13 @@ import net.minecraft.locale.Language;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class WildwaysEnchantingScreen extends AbstractContainerScreen<WildwaysEnchantingMenu> {
 	private static final Identifier INVENTORY_TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
 	private static final Identifier FURNACE_TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/furnace.png");
 	private static final Identifier[] PLACEHOLDERS = {
-		Wildways.id("textures/gui/enchanting/item_placeholder.png"),
 		Wildways.id("textures/gui/enchanting/lapis_placeholder.png"),
 		Wildways.id("textures/gui/enchanting/book_placeholder.png"),
 		Wildways.id("textures/gui/enchanting/rune_placeholder.png"),
@@ -25,6 +26,7 @@ public class WildwaysEnchantingScreen extends AbstractContainerScreen<WildwaysEn
 	};
 	private static final int TEXT_COLOR = 0xFF404040;
 	private static final int PANEL_COLOR = 0xFFC6C6C6;
+	private static final Identifier XP_ORB_TEXTURE = Identifier.withDefaultNamespace("textures/entity/experience/experience_orb.png");
 	private Button previous;
 	private Button next;
 
@@ -63,8 +65,8 @@ public class WildwaysEnchantingScreen extends AbstractContainerScreen<WildwaysEn
 		graphics.fill(x + 7, y + 16, x + 169, y + 115, PANEL_COLOR);
 		for (int index = 0; index < 5; index++) {
 			this.drawSlot(graphics, x + 8 + index * 22, y + 70);
-			if (!this.menu.getSlot(index).hasItem()) {
-				graphics.blit(RenderPipelines.GUI_TEXTURED, PLACEHOLDERS[index], x + 8 + index * 22, y + 70,
+			if (index > 0 && !this.menu.getSlot(index).hasItem()) {
+				graphics.blit(RenderPipelines.GUI_TEXTURED, PLACEHOLDERS[index - 1], x + 8 + index * 22, y + 70,
 					0, 0, 16, 16, 16, 16);
 			}
 		}
@@ -85,18 +87,24 @@ public class WildwaysEnchantingScreen extends AbstractContainerScreen<WildwaysEn
 		if (enchantment != null) {
 			int level = EnchantingRules.enchantmentLevel(enchantment, this.menu.runeTier());
 			Component name = level > 0 ? Enchantment.getFullname(enchantment, level) : enchantment.value().description();
-			graphics.text(this.font, Language.getInstance().getVisualOrder(this.font.substrByWidth(name, 122)), 8, 29, TEXT_COLOR, false);
+			graphics.text(this.font, Language.getInstance().getVisualOrder(this.font.substrByWidth(Component.literal(name.getString()), 122)), 8, 29, 0xFF303030, false);
 		}
-		if (this.menu.runeTier() == 0) {
-			graphics.text(this.font, Component.translatable("container.wildways.enchanting_nearby_shelves", this.menu.shelfCount()), 8, 44, TEXT_COLOR, false);
-		} else {
-			graphics.text(this.font, Component.translatable("container.wildways.enchanting_requirements",
-				EnchantingRules.experienceCost(this.menu.runeTier(), this.menu.hasCatalyst()),
-				this.menu.shelfCount(), EnchantingRules.requiredShelves(this.menu.runeTier())), 8, 44, TEXT_COLOR, false);
-		}
-		if (this.menu.status() != 0) {
-			graphics.text(this.font, Language.getInstance().getVisualOrder(this.font.substrByWidth(Component.translatable("container.wildways.enchanting_status_" + this.menu.status()), 160)),
-				8, 55, this.menu.status() == 5 ? 0xFF316038 : 0xFF9C3535, false);
+		String xp = Integer.toString(this.menu.effectiveTier() > 0
+			? EnchantingRules.experienceCost(this.menu.effectiveTier(), this.menu.hasCatalyst()) : 0);
+		graphics.text(this.font, Component.literal(xp), 8, 45, TEXT_COLOR, false);
+		graphics.blit(RenderPipelines.GUI_TEXTURED, XP_ORB_TEXTURE, 8 + this.font.width(xp), 40,
+			0, 0, 16, 16, 64, 64, 0xFF78D532);
+		String shelves = Integer.toString(this.menu.shelfCount());
+		graphics.text(this.font, Component.literal(shelves), 65, 45, TEXT_COLOR, false);
+		graphics.item(new ItemStack(Items.BOOKSHELF), 65 + this.font.width(shelves) + 3, 40);
+		if (this.menu.status() > 0 && this.menu.status() != 5) {
+			Component message = this.menu.status() == 2
+				? Component.translatable("container.wildways.enchanting_status_2", EnchantingRules.requiredShelves(this.menu.effectiveTier()))
+				: this.menu.status() == 4
+					? Component.translatable("container.wildways.enchanting_status_4", this.menu.experienceCost())
+					: Component.translatable("container.wildways.enchanting_status_" + this.menu.status());
+			graphics.text(this.font, Language.getInstance().getVisualOrder(this.font.substrByWidth(message, 160)),
+				8, 58, 0xFF9C3535, false);
 		}
 		graphics.text(this.font, this.playerInventoryTitle, 8, 103, TEXT_COLOR, false);
 	}

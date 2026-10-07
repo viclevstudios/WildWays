@@ -4,8 +4,8 @@
   "group": "wildways:rune_2",
   "key": {
     "B": "minecraft:chiseled_stone_bricks",
-    "T": "minecraft:amethyst_shard",
-    "S": "minecraft:amethyst_shard",
+    "T": "minecraft:redstone",
+    "S": "minecraft:copper_ingot",
     "M": "minecraft:iron_ingot"
   },
   "pattern": [

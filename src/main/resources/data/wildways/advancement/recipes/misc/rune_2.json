@@ -12,7 +12,12 @@
           },
           {
             "items": [
-              "minecraft:amethyst_shard"
+              "minecraft:redstone"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:copper_ingot"
             ]
           },
           {

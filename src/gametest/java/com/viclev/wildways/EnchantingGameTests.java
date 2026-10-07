@@ -73,6 +73,67 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
+	public void enchantingTableRetainsInputsWhenClosed(GameTestHelper helper) {
+		Player player = this.player(helper, 10);
+		WildwaysEnchantingMenu menu = this.table(helper, player, 0);
+		this.inputs(helper, menu, Enchantments.UNBREAKING, 1);
+		menu.removed(player);
+		WorkstationInventory stored = (WorkstationInventory)helper.getLevel().getBlockEntity(helper.absolutePos(TABLE));
+		helper.assertTrue(stored.getItem(0).is(Items.DIAMOND_PICKAXE) && stored.getItem(2).is(Items.ENCHANTED_BOOK),
+			"Closing the table must leave the target and book inside the block");
+		WildwaysEnchantingMenu reopened = new WildwaysEnchantingMenu(2, player.getInventory(),
+			ContainerLevelAccess.create(helper.getLevel(), helper.absolutePos(TABLE)));
+		helper.assertTrue(reopened.getSlot(0).hasItem() && reopened.getSlot(1).getItem().getCount() == 8
+			&& reopened.getSlot(2).hasItem() && reopened.getSlot(3).getItem().getCount() == 8,
+			"All enchanting inputs must return to their slots on reopening");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void anvilRetainsInputsAndRenamesWithoutXp(GameTestHelper helper) {
+		Player player = this.player(helper, 0);
+		helper.setBlock(TABLE, Blocks.ANVIL);
+		ContainerLevelAccess access = ContainerLevelAccess.create(helper.getLevel(), helper.absolutePos(TABLE));
+		AnvilMenu menu = new AnvilMenu(1, player.getInventory(), access);
+		menu.getSlot(0).set(new ItemStack(Items.NAME_TAG));
+		menu.getSlot(1).set(new ItemStack(Items.IRON_INGOT));
+		menu.removed(player);
+		WorkstationInventory stored = (WorkstationInventory)helper.getLevel().getBlockEntity(helper.absolutePos(TABLE));
+		helper.assertTrue(stored.getItem(0).is(Items.NAME_TAG) && stored.getItem(1).is(Items.IRON_INGOT),
+			"Both anvil inputs must remain in the anvil after closing");
+		AnvilMenu reopened = new AnvilMenu(2, player.getInventory(), access);
+		helper.assertTrue(reopened.getSlot(0).hasItem() && reopened.getSlot(1).hasItem(),
+			"Both anvil slots must be restored when reopened");
+		reopened.getSlot(1).set(ItemStack.EMPTY);
+		reopened.setItemName("Wildways");
+		helper.assertTrue(reopened.getCost() == 0 && reopened.getSlot(2).hasItem() && reopened.getSlot(2).mayPickup(player),
+			"Renaming a name tag alone must be free and takeable at level zero");
+		reopened.clicked(2, 0, ContainerInput.PICKUP, player);
+		helper.assertTrue(player.experienceLevel == 0 && reopened.getCarried().getHoverName().getString().equals("Wildways"),
+			"Taking a renamed name tag must not use XP");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void partialGapBlocksDoNotBlockBookshelves(GameTestHelper helper) {
+		this.table(helper, this.player(helper, 0), 0);
+		BlockPos offset = new BlockPos(2, 0, 0);
+		helper.setBlock(TABLE.offset(offset), Blocks.BOOKSHELF);
+		BlockPos gap = TABLE.offset(1, 0, 0);
+		helper.setBlock(gap, Blocks.TORCH);
+		BlockPos table = helper.absolutePos(TABLE);
+		helper.assertTrue(EnchantingTableBlock.isValidBookShelf(helper.getLevel(), table, offset),
+			"A torch between the table and shelf must not block enchanting power");
+		helper.setBlock(gap, Blocks.CARPET.white());
+		helper.assertTrue(EnchantingTableBlock.isValidBookShelf(helper.getLevel(), table, offset),
+			"A carpet between the table and shelf must not block enchanting power");
+		helper.setBlock(gap, Blocks.STONE);
+		helper.assertFalse(EnchantingTableBlock.isValidBookShelf(helper.getLevel(), table, offset),
+			"A full block must still block enchanting power");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void consumesOneLapisAndRuneAndKeepsRecipeBook(GameTestHelper helper) {
 		Player player = this.player(helper, 1);
 		WildwaysEnchantingMenu menu = this.table(helper, player, 0);
@@ -108,19 +169,83 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void preciousEnchantmentsNeedTierFiveAndLiveBookshelfChecks(GameTestHelper helper) {
+	public void preciousEnchantmentsNeedGoldRuneAndLiveBookshelfChecks(GameTestHelper helper) {
 		Player player = this.player(helper, 20);
-		WildwaysEnchantingMenu menu = this.table(helper, player, 20);
-		this.inputs(helper, menu, Enchantments.SILK_TOUCH, 1);
-		helper.assertFalse(menu.getSlot(5).hasItem(), "Silk Touch must reject a tier 1 rune");
-		menu.getSlot(3).set(new ItemStack(EnchantingItems.RUNES.get(4)));
-		helper.assertTrue(menu.getSlot(5).hasItem(), "Silk Touch must accept tier 5 with twenty shelves");
+		WildwaysEnchantingMenu menu = this.table(helper, player, 10);
+		this.inputs(helper, menu, Enchantments.SILK_TOUCH, 2);
+		helper.assertFalse(menu.getSlot(5).hasItem(), "Silk Touch must reject an iron rune");
+		menu.getSlot(3).set(new ItemStack(EnchantingItems.RUNES.get(2)));
+		helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 3,
+			"Silk Touch must accept a gold rune with ten shelves for three levels");
 		for (BlockPos offset : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
 			helper.setBlock(TABLE.offset(offset), Blocks.AIR);
 		}
 		helper.assertFalse(menu.getSlot(5).mayPickup(player), "Removing shelves must invalidate an already visible result");
 		menu.clicked(5, 0, ContainerInput.PICKUP, player);
 		helper.assertTrue(menu.getCarried().isEmpty() && player.experienceLevel == 20, "Invalidated results must not charge or give items");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void higherRunesKeepTheEnchantmentMaximumAndItsCost(GameTestHelper helper) {
+		Player player = this.player(helper, 10);
+		WildwaysEnchantingMenu menu = this.table(helper, player, 10);
+		this.inputs(helper, menu, Enchantments.FORTUNE, 4);
+		helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 3,
+			"A diamond rune must make Fortune III with only the gold-rune shelf and XP cost");
+		helper.assertTrue(EnchantmentHelper.getItemEnchantmentLevel(this.enchantment(helper, Enchantments.FORTUNE),
+			menu.getSlot(5).getItem()) == 3, "Higher runes must not exceed an enchantment's maximum level");
+		menu.getSlot(3).set(new ItemStack(EnchantingItems.RUNES.get(4)));
+		helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 3,
+			"A Volcanite rune must also work without increasing Fortune III's price");
+		menu.getSlot(4).set(new ItemStack(EnchantingItems.CATALYST));
+		helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 2,
+			"The catalyst must halve the effective cost, not the higher rune's tier");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void allPreciousSingleLevelEnchantmentsUseGoldRune(GameTestHelper helper) {
+		Player player = this.player(helper, 20);
+		WildwaysEnchantingMenu menu = this.table(helper, player, 10);
+		for (var entry : List.of(
+			new Object[]{Enchantments.MENDING, Items.DIAMOND_PICKAXE},
+			new Object[]{Enchantments.SILK_TOUCH, Items.DIAMOND_PICKAXE},
+			new Object[]{Enchantments.CHANNELING, Items.TRIDENT},
+			new Object[]{Enchantments.MULTISHOT, Items.CROSSBOW})) {
+			@SuppressWarnings("unchecked")
+			ResourceKey<Enchantment> enchantment = (ResourceKey<Enchantment>)entry[0];
+			menu.getSlot(0).set(new ItemStack((Item)entry[1]));
+			menu.getSlot(1).set(new ItemStack(Items.LAPIS_LAZULI));
+			menu.getSlot(2).set(this.book(helper, enchantment, 1));
+			menu.getSlot(3).set(new ItemStack(EnchantingItems.RUNES.get(1)));
+			helper.assertFalse(menu.getSlot(5).hasItem(), "Precious level-one enchantments must reject iron runes");
+			menu.getSlot(3).set(new ItemStack(EnchantingItems.RUNES.get(2)));
+			helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 3,
+				"Each precious level-one enchantment must accept a gold rune for three levels");
+			menu.getSlot(3).set(new ItemStack(EnchantingItems.RUNES.get(4)));
+			helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 3,
+				"A more expensive rune must not raise a precious enchantment's cost");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void mendingRepairsNetheriteWithOneScrapForThreeLevels(GameTestHelper helper) {
+		Player player = this.player(helper, 10);
+		AnvilMenu menu = new AnvilMenu(1, player.getInventory());
+		ItemStack pickaxe = new ItemStack(Items.NETHERITE_PICKAXE);
+		pickaxe.setDamageValue(1000);
+		menu.getSlot(0).set(pickaxe);
+		menu.getSlot(1).set(new ItemStack(Items.NETHERITE_SCRAP, 2));
+		helper.assertFalse(menu.getSlot(2).hasItem(), "Netherite Scrap must not bypass the Mending requirement");
+		pickaxe.enchant(this.enchantment(helper, Enchantments.MENDING), 1);
+		menu.createResult();
+		helper.assertTrue(menu.getCost() == 3 && menu.getSlot(2).getItem().getDamageValue() == 0,
+			"Mending alone must fully repair Netherite equipment with one Scrap for three levels");
+		menu.clicked(2, 0, ContainerInput.PICKUP, player);
+		helper.assertTrue(menu.getSlot(1).getItem().getCount() == 1 && player.experienceLevel == 7,
+			"Only one Scrap and three levels must be consumed");
 		helper.succeed();
 	}
 
@@ -278,6 +403,29 @@ public class EnchantingGameTests {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void ironAndDiamondRunesUseUpdatedIngredients(GameTestHelper helper) {
+		for (var entry : List.of(
+			new Object[]{Items.REDSTONE, Items.COPPER_INGOT, Items.IRON_INGOT, EnchantingItems.RUNES.get(1)},
+			new Object[]{Items.EMERALD, Items.AMETHYST_SHARD, Items.DIAMOND, EnchantingItems.RUNES.get(3)})) {
+			Item top = (Item)entry[0];
+			Item side = (Item)entry[1];
+			Item center = (Item)entry[2];
+			Item result = (Item)entry[3];
+			CraftingInput input = this.craftingInput(top, side, center);
+			var recipe = helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, helper.getLevel());
+			helper.assertTrue(recipe.isPresent() && recipe.orElseThrow().value().assemble(input).is(result),
+				"The updated iron and diamond rune designs must craft their respective runes");
+		}
+		helper.assertTrue(helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING,
+			this.craftingInput(Items.AMETHYST_SHARD, Items.AMETHYST_SHARD, Items.IRON_INGOT), helper.getLevel()).isEmpty(),
+			"The old iron-rune recipe must no longer work");
+		helper.assertTrue(helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING,
+			this.craftingInput(Items.EMERALD, Items.EMERALD, Items.DIAMOND), helper.getLevel()).isEmpty(),
+			"The old diamond-rune recipe must no longer work");
+		helper.succeed();
+	}
+
 	private CraftingInput craftingInput(Item top, Item side, Item center) {
 		Item brick = Items.CHISELED_STONE_BRICKS;
 		return CraftingInput.of(3, 3, List.of(brick, top, brick, side, center, side, brick, top, brick).stream().map(ItemStack::new).toList());
@@ -352,6 +500,10 @@ public class EnchantingGameTests {
 		sacrifice.enchant(this.enchantment(helper, Enchantments.UNBREAKING), 3);
 		menu.getSlot(1).set(sacrifice);
 		helper.assertTrue(menu.getCost() > 40 && menu.getSlot(2).hasItem(), "Equipment combination above forty levels must remain available");
+		int combinationCost = menu.getCost();
+		menu.setItemName("Reforged");
+		helper.assertTrue(menu.getCost() == combinationCost,
+			"Adding a name during a combination must not add an XP level");
 		helper.assertTrue(menu.getSlot(2).getItem().getOrDefault(DataComponents.REPAIR_COST, 0) == 26, "Prior-work cost must increase by one instead of doubling");
 		helper.succeed();
 	}

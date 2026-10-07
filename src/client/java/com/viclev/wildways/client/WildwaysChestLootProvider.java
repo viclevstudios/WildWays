@@ -5,19 +5,24 @@ import com.viclev.wildways.Wildways;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableSubProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.List;
 
 public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubProvider {
 	private static final ResourceKey<LootTable> QUARANTINE_GROUNDS_ANCHOR = table("chests/quarantine_grounds/anchor");
@@ -25,12 +30,14 @@ public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubPro
 	private static final ResourceKey<LootTable> QUARANTINE_GROUNDS_HOSPITAL = table("chests/quarantine_grounds/hospital");
 	private static final ResourceKey<LootTable> QUARANTINE_GROUNDS_RUINS = table("chests/quarantine_grounds/ruins");
 	private static final ResourceKey<LootTable> QUARANTINE_GROUNDS_SECRET = table("chests/quarantine_grounds/secret");
+	private final CompletableFuture<HolderLookup.Provider> registriesFuture;
 
 	public WildwaysChestLootProvider(
 		FabricPackOutput output,
 		CompletableFuture<HolderLookup.Provider> registriesFuture
 	) {
 		super(output, registriesFuture, LootContextParamSets.CHEST);
+		this.registriesFuture = registriesFuture;
 	}
 
 	@Override
@@ -67,6 +74,16 @@ public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubPro
 			entry(Items.IRON_INGOT, 2)
 		)));
 
+		var enchantments = registriesFuture.join().lookupOrThrow(Registries.ENCHANTMENT);
+		HolderSet<Enchantment> nestBooks = HolderSet.direct(List.of(
+			enchantments.getOrThrow(Enchantments.UNBREAKING),
+			enchantments.getOrThrow(Enchantments.PROTECTION),
+			enchantments.getOrThrow(Enchantments.EFFICIENCY),
+			enchantments.getOrThrow(Enchantments.FORTUNE),
+			enchantments.getOrThrow(Enchantments.SILK_TOUCH),
+			enchantments.getOrThrow(Enchantments.SHARPNESS),
+			enchantments.getOrThrow(Enchantments.POWER)
+		));
 		exporter.accept(QUARANTINE_GROUNDS_SECRET, LootTable.lootTable().withPool(weightedPool(2, 4,
 			entry(Items.ENDER_PEARL, 10),
 			entry(ModItems.ENDERMITE_SHELL, 8),
@@ -74,7 +91,11 @@ public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubPro
 			entry(Items.GOLD_INGOT, 4),
 			entry(Items.DIAMOND, 2),
 			entry(Items.ECHO_SHARD, 1)
-		)));
+		)).withPool(LootPool.lootPool()
+			.setRolls(UniformGenerator.between(1, 2))
+			.add(LootItem.lootTableItem(Items.BOOK)
+				.apply(EnchantRandomlyFunction.randomEnchantment()
+					.withOneOf(nestBooks)))));
 	}
 
 	private static ResourceKey<LootTable> table(String path) {
