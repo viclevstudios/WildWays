@@ -21,15 +21,15 @@ import java.util.Set;
 public final class ModItems {
 	public static final Item RAW_VOLCANITE = register(ModItemIds.RAW_VOLCANITE, Item::new, new Item.Properties());
 	public static final Item VOLCANITE = register(ModItemIds.VOLCANITE, Item::new, new Item.Properties());
-	public static final Item VOLCANITE_SWORD = register(ModItemIds.VOLCANITE_SWORD, Item::new, new Item.Properties().sword(VolcaniteMaterials.TOOL, 3.0F, -2.4F));
-	public static final Item VOLCANITE_PICKAXE = register(ModItemIds.VOLCANITE_PICKAXE, Item::new, new Item.Properties().pickaxe(VolcaniteMaterials.TOOL, 1.0F, -2.8F));
-	public static final Item VOLCANITE_SHOVEL = register(ModItemIds.VOLCANITE_SHOVEL, properties -> new ShovelItem(VolcaniteMaterials.TOOL, 1.5F, -3.0F, properties), new Item.Properties());
-	public static final Item VOLCANITE_AXE = register(ModItemIds.VOLCANITE_AXE, properties -> new AxeItem(VolcaniteMaterials.TOOL, 5.0F, -3.0F, properties), new Item.Properties());
-	public static final Item VOLCANITE_HOE = register(ModItemIds.VOLCANITE_HOE, properties -> new HoeItem(VolcaniteMaterials.TOOL, -3.0F, 0.0F, properties), new Item.Properties());
-	public static final Item VOLCANITE_HELMET = register(ModItemIds.VOLCANITE_HELMET, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.HELMET));
-	public static final Item VOLCANITE_CHESTPLATE = register(ModItemIds.VOLCANITE_CHESTPLATE, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.CHESTPLATE));
-	public static final Item VOLCANITE_LEGGINGS = register(ModItemIds.VOLCANITE_LEGGINGS, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.LEGGINGS));
-	public static final Item VOLCANITE_BOOTS = register(ModItemIds.VOLCANITE_BOOTS, Item::new, new Item.Properties().humanoidArmor(VolcaniteMaterials.ARMOR, ArmorType.BOOTS));
+	public static final Item VOLCANITE_SWORD = register(ModItemIds.VOLCANITE_SWORD, Item::new, new Item.Properties().sword(VolcaniteMaterials.TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED));
+	public static final Item VOLCANITE_PICKAXE = register(ModItemIds.VOLCANITE_PICKAXE, Item::new, new Item.Properties().pickaxe(VolcaniteMaterials.TOOL, ProgressionMaterials.PICKAXE_ATTACK_DAMAGE, ProgressionMaterials.PICKAXE_ATTACK_SPEED));
+	public static final Item VOLCANITE_SHOVEL = register(ModItemIds.VOLCANITE_SHOVEL, properties -> new ShovelItem(VolcaniteMaterials.TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED, properties), new Item.Properties());
+	public static final Item VOLCANITE_AXE = register(ModItemIds.VOLCANITE_AXE, properties -> new AxeItem(VolcaniteMaterials.TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED, properties), new Item.Properties());
+	public static final Item VOLCANITE_HOE = register(ModItemIds.VOLCANITE_HOE, properties -> new HoeItem(VolcaniteMaterials.TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED, properties), new Item.Properties());
+	public static final Item VOLCANITE_HELMET = register(ModItemIds.VOLCANITE_HELMET, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.HELMET));
+	public static final Item VOLCANITE_CHESTPLATE = register(ModItemIds.VOLCANITE_CHESTPLATE, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.CHESTPLATE));
+	public static final Item VOLCANITE_LEGGINGS = register(ModItemIds.VOLCANITE_LEGGINGS, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.LEGGINGS));
+	public static final Item VOLCANITE_BOOTS = register(ModItemIds.VOLCANITE_BOOTS, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.BOOTS));
 	public static final Item ENDERMITE_SHELL = register(
 		ModItemIds.ENDERMITE_SHELL,
 		Item::new,

@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_sword",
+  "template": "wildways:gold_refinement",
+  "result": {
+    "id": "wildways:gold_sword"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:gold_ingot"
+}

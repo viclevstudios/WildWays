@@ -1,16 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite"
-  },
-  "pattern": [
-    "VVV",
-    "V V",
-    "V V"
-  ],
+  "base": "#wildways:progression/middle_leggings",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_leggings",
-    "count": 1
-  }
+    "id": "wildways:volcanite_leggings"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

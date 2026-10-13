@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/middle_pickaxe",
+  "template": "wildways:diamond_refinement",
+  "result": {
+    "id": "minecraft:diamond_pickaxe"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:diamond"
+}

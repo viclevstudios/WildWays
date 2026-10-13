@@ -1,0 +1,30 @@
+{
+  "rewards": {
+    "recipes": [
+      "wildways:volcanite_sword",
+      "wildways:volcanite_pickaxe",
+      "wildways:volcanite_axe",
+      "wildways:volcanite_shovel",
+      "wildways:volcanite_hoe",
+      "wildways:volcanite_helmet",
+      "wildways:volcanite_chestplate",
+      "wildways:volcanite_leggings",
+      "wildways:volcanite_boots"
+    ]
+  },
+  "criteria": {
+    "has_volcanite": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wildways:volcanite"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "parent": "minecraft:recipes/root"
+}

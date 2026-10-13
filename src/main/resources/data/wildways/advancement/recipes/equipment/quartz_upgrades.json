@@ -1,0 +1,30 @@
+{
+  "rewards": {
+    "recipes": [
+      "wildways:quartz_sword_upgrade",
+      "wildways:quartz_pickaxe_upgrade",
+      "wildways:quartz_axe_upgrade",
+      "wildways:quartz_shovel_upgrade",
+      "wildways:quartz_hoe_upgrade",
+      "wildways:quartz_helmet_upgrade",
+      "wildways:quartz_chestplate_upgrade",
+      "wildways:quartz_leggings_upgrade",
+      "wildways:quartz_boots_upgrade"
+    ]
+  },
+  "criteria": {
+    "has_material": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:quartz"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "parent": "minecraft:recipes/root"
+}

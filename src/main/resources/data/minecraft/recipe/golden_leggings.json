@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_leggings",
+  "template": "wildways:gold_refinement",
+  "result": {
+    "id": "wildways:gold_leggings"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:gold_ingot"
+}

@@ -1,17 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite",
-    "S": "minecraft:stick"
-  },
-  "pattern": [
-    "VVV",
-    " S ",
-    " S "
-  ],
+  "base": "#wildways:progression/middle_pickaxe",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_pickaxe",
-    "count": 1
-  }
+    "id": "wildways:volcanite_pickaxe"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

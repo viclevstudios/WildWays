@@ -1,5 +1,8 @@
 {
   "values": [
-    "wildways:volcanite_pickaxe"
+    "wildways:volcanite_pickaxe",
+    "wildways:quartz_pickaxe",
+    "wildways:amethyst_pickaxe",
+    "wildways:gold_pickaxe"
   ]
 }

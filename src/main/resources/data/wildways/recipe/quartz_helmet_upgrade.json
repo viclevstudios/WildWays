@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_helmet",
+  "template": "wildways:quartz_refinement",
+  "result": {
+    "id": "wildways:quartz_helmet"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:quartz"
+}

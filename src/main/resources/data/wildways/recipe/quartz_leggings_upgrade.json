@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_leggings",
+  "template": "wildways:quartz_refinement",
+  "result": {
+    "id": "wildways:quartz_leggings"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:quartz"
+}

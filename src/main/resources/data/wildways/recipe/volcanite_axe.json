@@ -1,17 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite",
-    "S": "minecraft:stick"
-  },
-  "pattern": [
-    "VV",
-    "VS",
-    " S"
-  ],
+  "base": "#wildways:progression/middle_axe",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_axe",
-    "count": 1
-  }
+    "id": "wildways:volcanite_axe"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

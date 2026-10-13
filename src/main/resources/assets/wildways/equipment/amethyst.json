@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid_leggings": [
+      {
+        "texture": "wildways:amethyst"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "wildways:amethyst"
+      }
+    ],
+    "humanoid": [
+      {
+        "texture": "wildways:amethyst"
+      }
+    ]
+  }
+}

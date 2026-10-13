@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_shovel",
+  "template": "wildways:quartz_refinement",
+  "result": {
+    "id": "wildways:quartz_shovel"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:quartz"
+}

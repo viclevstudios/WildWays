@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_hoe",
+  "template": "wildways:amethyst_refinement",
+  "result": {
+    "id": "wildways:amethyst_hoe"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:amethyst_shard"
+}

@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/middle_sword",
+  "template": "wildways:diamond_refinement",
+  "result": {
+    "id": "minecraft:diamond_sword"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:diamond"
+}

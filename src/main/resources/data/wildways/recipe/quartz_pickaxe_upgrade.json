@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_pickaxe",
+  "template": "wildways:quartz_refinement",
+  "result": {
+    "id": "wildways:quartz_pickaxe"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:quartz"
+}

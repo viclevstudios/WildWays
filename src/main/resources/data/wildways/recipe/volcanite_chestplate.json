@@ -1,16 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite"
-  },
-  "pattern": [
-    "V V",
-    "VVV",
-    "VVV"
-  ],
+  "base": "#wildways:progression/middle_chestplate",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_chestplate",
-    "count": 1
-  }
+    "id": "wildways:volcanite_chestplate"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

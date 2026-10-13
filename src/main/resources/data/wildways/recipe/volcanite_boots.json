@@ -1,15 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite"
-  },
-  "pattern": [
-    "V V",
-    "V V"
-  ],
+  "base": "#wildways:progression/middle_boots",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_boots",
-    "count": 1
-  }
+    "id": "wildways:volcanite_boots"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

@@ -1,0 +1,17 @@
+{
+  "category": "equipment",
+  "pattern": [
+    "M M",
+    " I ",
+    "M M"
+  ],
+  "result": {
+    "count": 1,
+    "id": "wildways:gold_refinement"
+  },
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": "minecraft:gold_ingot",
+    "I": "minecraft:iron_ingot"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_chestplate",
+  "template": "wildways:quartz_refinement",
+  "result": {
+    "id": "wildways:quartz_chestplate"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:quartz"
+}

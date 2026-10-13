@@ -1,0 +1,30 @@
+{
+  "rewards": {
+    "recipes": [
+      "wildways:amethyst_sword_upgrade",
+      "wildways:amethyst_pickaxe_upgrade",
+      "wildways:amethyst_axe_upgrade",
+      "wildways:amethyst_shovel_upgrade",
+      "wildways:amethyst_hoe_upgrade",
+      "wildways:amethyst_helmet_upgrade",
+      "wildways:amethyst_chestplate_upgrade",
+      "wildways:amethyst_leggings_upgrade",
+      "wildways:amethyst_boots_upgrade"
+    ]
+  },
+  "criteria": {
+    "has_material": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:amethyst_shard"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "parent": "minecraft:recipes/root"
+}

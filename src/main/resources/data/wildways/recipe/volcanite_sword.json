@@ -1,17 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite",
-    "S": "minecraft:stick"
-  },
-  "pattern": [
-    "V",
-    "V",
-    "S"
-  ],
+  "base": "#wildways:progression/middle_sword",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_sword",
-    "count": 1
-  }
+    "id": "wildways:volcanite_sword"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

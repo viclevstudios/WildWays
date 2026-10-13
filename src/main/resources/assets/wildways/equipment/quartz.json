@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid_leggings": [
+      {
+        "texture": "wildways:quartz"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "wildways:quartz"
+      }
+    ],
+    "humanoid": [
+      {
+        "texture": "wildways:quartz"
+      }
+    ]
+  }
+}

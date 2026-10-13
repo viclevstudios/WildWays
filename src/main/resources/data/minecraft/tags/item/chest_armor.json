@@ -1,5 +1,8 @@
 {
   "values": [
-    "wildways:volcanite_chestplate"
+    "wildways:volcanite_chestplate",
+    "wildways:quartz_chestplate",
+    "wildways:amethyst_chestplate",
+    "wildways:gold_chestplate"
   ]
 }

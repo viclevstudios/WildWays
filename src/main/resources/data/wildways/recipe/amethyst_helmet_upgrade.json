@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_helmet",
+  "template": "wildways:amethyst_refinement",
+  "result": {
+    "id": "wildways:amethyst_helmet"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:amethyst_shard"
+}

@@ -1,15 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite"
-  },
-  "pattern": [
-    "VVV",
-    "V V"
-  ],
+  "base": "#wildways:progression/middle_helmet",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_helmet",
-    "count": 1
-  }
+    "id": "wildways:volcanite_helmet"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

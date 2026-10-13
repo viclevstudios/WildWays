@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/endgame_chestplate",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "result": {
+    "id": "minecraft:netherite_chestplate"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "#minecraft:netherite_tool_materials"
+}

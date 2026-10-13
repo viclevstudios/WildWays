@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_boots",
+  "template": "wildways:amethyst_refinement",
+  "result": {
+    "id": "wildways:amethyst_boots"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:amethyst_shard"
+}

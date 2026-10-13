@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_leggings",
+  "template": "wildways:amethyst_refinement",
+  "result": {
+    "id": "wildways:amethyst_leggings"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:amethyst_shard"
+}

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid_leggings": [
+      {
+        "texture": "wildways:refined_gold"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "wildways:refined_gold"
+      }
+    ],
+    "humanoid": [
+      {
+        "texture": "wildways:refined_gold"
+      }
+    ]
+  }
+}

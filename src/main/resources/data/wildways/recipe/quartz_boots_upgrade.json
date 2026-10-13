@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_boots",
+  "template": "wildways:quartz_refinement",
+  "result": {
+    "id": "wildways:quartz_boots"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:quartz"
+}

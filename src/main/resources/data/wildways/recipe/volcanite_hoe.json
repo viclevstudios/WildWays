@@ -1,17 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "V": "wildways:volcanite",
-    "S": "minecraft:stick"
-  },
-  "pattern": [
-    "VV",
-    " S",
-    " S"
-  ],
+  "base": "#wildways:progression/middle_hoe",
+  "template": "wildways:volcanite_refinement",
   "result": {
-    "id": "wildways:volcanite_hoe",
-    "count": 1
-  }
+    "id": "wildways:volcanite_hoe"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "wildways:volcanite"
 }

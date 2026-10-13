@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/middle_helmet",
+  "template": "wildways:diamond_refinement",
+  "result": {
+    "id": "minecraft:diamond_helmet"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:diamond"
+}

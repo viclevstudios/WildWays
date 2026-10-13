@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/endgame_boots",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "result": {
+    "id": "minecraft:netherite_boots"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "#minecraft:netherite_tool_materials"
+}

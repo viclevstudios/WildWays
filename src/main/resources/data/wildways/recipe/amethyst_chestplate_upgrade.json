@@ -1,0 +1,9 @@
+{
+  "base": "#wildways:progression/iron_chestplate",
+  "template": "wildways:amethyst_refinement",
+  "result": {
+    "id": "wildways:amethyst_chestplate"
+  },
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:amethyst_shard"
+}
