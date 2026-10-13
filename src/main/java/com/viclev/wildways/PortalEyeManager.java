@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -103,7 +104,7 @@ public final class PortalEyeManager {
 		data.put(pos, placedStack);
 		placedStack.shrink(1);
 		level.levelEvent(1503, pos, 0);
-		tryOpenPortal(serverLevel, pos, data);
+		tryOpenPortal(serverLevel, pos, data, context.getPlayer() instanceof ServerPlayer serverPlayer ? serverPlayer : null);
 		return InteractionResult.SUCCESS_SERVER;
 	}
 
@@ -139,7 +140,7 @@ public final class PortalEyeManager {
 		return false;
 	}
 
-	private static void tryOpenPortal(ServerLevel level, BlockPos insertedAt, PortalEyeData data) {
+	private static void tryOpenPortal(ServerLevel level, BlockPos insertedAt, PortalEyeData data, ServerPlayer player) {
 		BlockPattern.BlockPatternMatch match = EndPortalFrameBlock.getOrCreatePortalShape().find(level, insertedAt);
 		if (match == null || !hasAllUniqueEyes(level, data, insertedAt)) {
 			return;
@@ -154,6 +155,9 @@ public final class PortalEyeManager {
 			}
 		}
 		level.globalLevelEvent(1038, corner.offset(1, 0, 1), 0);
+		if (player != null) {
+			XpProgression.awardOnce(player, "portal:minecraft:the_end", 25);
+		}
 	}
 
 	private static boolean hasAllUniqueEyes(ServerLevel level, PortalEyeData data, BlockPos center) {

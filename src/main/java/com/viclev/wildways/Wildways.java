@@ -37,6 +37,7 @@ public class Wildways implements ModInitializer {
 		ModLootTables.initialize();
 		EnchantedBookDrops.initialize();
 		EyeTransformations.initialize();
+		XpProgression.initialize();
 	}
 
 	public static Identifier id(String path) {

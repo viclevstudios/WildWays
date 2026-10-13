@@ -42,7 +42,20 @@
 		"CreakingEyeDropMixin",
 		"PotionBrewingMixin",
 		"BrewingStandPotionSlotMixin",
-		"BrewingStandBlockEntityMixin"
+		"BrewingStandBlockEntityMixin",
+		"AdvancementRewardsXpMixin",
+		"ThrownExperienceBottleXpMixin",
+		"AnimalBreedXpMixin",
+		"TamableAnimalXpMixin",
+		"TurtleEggHatchXpMixin",
+		"SnifferEggHatchXpMixin",
+		"VillagerTradeXpMixin",
+		"PiglinTradeXpMixin",
+		"ArmorTrimXpMixin",
+		"MetalSmeltingXpMixin",
+		"FishingTreasureXpMixin",
+		"FlintAndSteelPortalXpMixin",
+		"FireChargePortalXpMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
