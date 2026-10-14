@@ -4,6 +4,5 @@
   "result": {
     "id": "wildways:volcanite_chestplate"
   },
-  "type": "minecraft:smithing_transform",
-  "addition": "wildways:volcanite"
+  "type": "minecraft:smithing_transform"
 }

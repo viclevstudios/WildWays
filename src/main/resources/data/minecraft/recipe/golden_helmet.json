@@ -2,8 +2,7 @@
   "base": "#wildways:progression/iron_helmet",
   "template": "wildways:gold_refinement",
   "result": {
-    "id": "wildways:gold_helmet"
+    "id": "minecraft:golden_helmet"
   },
-  "type": "minecraft:smithing_transform",
-  "addition": "minecraft:gold_ingot"
+  "type": "minecraft:smithing_transform"
 }

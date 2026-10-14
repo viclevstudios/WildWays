@@ -1,9 +1,9 @@
 {
   "category": "equipment",
   "pattern": [
-    "M M",
-    " I ",
-    "M M"
+    " M ",
+    "MIM",
+    " M "
   ],
   "result": {
     "count": 1,

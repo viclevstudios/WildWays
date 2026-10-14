@@ -15,7 +15,7 @@
       "base": "minecraft:enchanted_book",
       "components": {
         "minecraft:stored_enchantments": {
-          "minecraft:unbreaking": 1
+          "minecraft:protection": 1
         }
       }
     },

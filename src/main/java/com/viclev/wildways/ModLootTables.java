@@ -11,6 +11,8 @@ import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 
 public final class ModLootTables {
 	private static final ResourceKey<LootTable> IGLOO = vanilla("chests/igloo_chest");
@@ -30,6 +32,13 @@ public final class ModLootTables {
 		LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
 			if (!source.isBuiltin()) {
 				return;
+			}
+
+			if (isTrialVault(key)) {
+				tableBuilder.withPool(LootPool.lootPool()
+					.add(LootItem.lootTableItem(Items.BOOK).setWeight(1)
+						.apply(EnchantRandomlyFunction.randomApplicableEnchantment(registries)))
+					.add(EmptyLootItem.emptyItem().setWeight(9)));
 			}
 
 			if (key.equals(IGLOO)) {
@@ -53,6 +62,14 @@ public final class ModLootTables {
 					.add(EmptyLootItem.emptyItem().setWeight(treasure ? 17 : 19)));
 			}
 		});
+	}
+
+	private static boolean isTrialVault(ResourceKey<LootTable> key) {
+		String path = key.identifier().getPath();
+		return path.equals("chests/trial_chambers/reward_common")
+			|| path.equals("chests/trial_chambers/reward_rare")
+			|| path.equals("chests/trial_chambers/reward_ominous_common")
+			|| path.equals("chests/trial_chambers/reward_ominous_rare");
 	}
 
 	private static LootPool.Builder chancePool(net.minecraft.world.item.Item item, int itemWeight, int emptyWeight) {

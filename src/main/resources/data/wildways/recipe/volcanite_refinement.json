@@ -1,9 +1,9 @@
 {
   "category": "equipment",
   "pattern": [
-    "M M",
-    " I ",
-    "M M"
+    " M ",
+    "MIM",
+    " M "
   ],
   "result": {
     "count": 1,
@@ -12,6 +12,6 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "M": "wildways:volcanite",
-    "I": "minecraft:iron_ingot"
+    "I": "minecraft:emerald"
   }
 }

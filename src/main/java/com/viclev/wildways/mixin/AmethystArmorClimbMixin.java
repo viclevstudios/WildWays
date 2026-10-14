@@ -26,9 +26,9 @@ public abstract class AmethystArmorClimbMixin {
 	}
 
 	private static boolean isWearingAmethystArmor(LivingEntity entity) {
-		return ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.HEAD).getItem())
-			|| ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.CHEST).getItem())
-			|| ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.LEGS).getItem())
-			|| ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.FEET).getItem());
+		return ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.HEAD))
+			|| ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.CHEST))
+			|| ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.LEGS))
+			|| ProgressionItems.isAmethystArmor(entity.getItemBySlot(EquipmentSlot.FEET));
 	}
 }

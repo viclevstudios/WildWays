@@ -12,6 +12,14 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.component.DamageResistant;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.ToolMaterial;
@@ -48,10 +56,10 @@ public final class ProgressionItems {
 	public static final Item GOLD_AXE = axe("gold_axe", ProgressionMaterials.GOLD_TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED);
 	public static final Item GOLD_SHOVEL = shovel("gold_shovel", ProgressionMaterials.GOLD_TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED);
 	public static final Item GOLD_HOE = hoe("gold_hoe", ProgressionMaterials.GOLD_TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED);
-	public static final Item GOLD_HELMET = armor("gold_helmet", ProgressionMaterials.GOLD_ARMOR, ArmorType.HELMET, false, false);
-	public static final Item GOLD_CHESTPLATE = armor("gold_chestplate", ProgressionMaterials.GOLD_ARMOR, ArmorType.CHESTPLATE, false, false);
-	public static final Item GOLD_LEGGINGS = armor("gold_leggings", ProgressionMaterials.GOLD_ARMOR, ArmorType.LEGGINGS, false, false);
-	public static final Item GOLD_BOOTS = armor("gold_boots", ProgressionMaterials.GOLD_ARMOR, ArmorType.BOOTS, false, false);
+	public static final Item GOLD_HELMET = Items.GOLDEN_HELMET;
+	public static final Item GOLD_CHESTPLATE = Items.GOLDEN_CHESTPLATE;
+	public static final Item GOLD_LEGGINGS = Items.GOLDEN_LEGGINGS;
+	public static final Item GOLD_BOOTS = Items.GOLDEN_BOOTS;
 
 	public static final Item REFINEMENT_QUARTZ = refinement("quartz_refinement", "quartz", List.of("helmet", "chestplate", "leggings", "boots", "sword", "pickaxe", "axe", "shovel", "hoe"), "quartz");
 	public static final Item REFINEMENT_AMETHYST = refinement("amethyst_refinement", "amethyst", List.of("helmet", "chestplate", "leggings", "boots", "sword", "pickaxe", "axe", "shovel", "hoe"), "amethyst_shard");
@@ -72,19 +80,36 @@ public final class ProgressionItems {
 
 	public static void initialize() {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output -> {
-			output.accept(REFINEMENT_QUARTZ);
-			output.accept(REFINEMENT_AMETHYST);
-			output.accept(REFINEMENT_GOLD);
-			output.accept(REFINEMENT_DIAMOND);
-			output.accept(REFINEMENT_VOLCANITE);
-			QUARTZ_TOOLS.forEach(output::accept);
-			AMETHYST_TOOLS.forEach(output::accept);
-			GOLD_TOOLS.forEach(output::accept);
+			output.insertAfter(Items.IRON_PICKAXE, QUARTZ_PICKAXE);
+			output.insertAfter(QUARTZ_PICKAXE, AMETHYST_PICKAXE);
+			output.insertAfter(Items.GOLDEN_PICKAXE, GOLD_PICKAXE);
+			output.insertAfter(Items.IRON_AXE, QUARTZ_AXE);
+			output.insertAfter(QUARTZ_AXE, AMETHYST_AXE);
+			output.insertAfter(Items.IRON_SHOVEL, QUARTZ_SHOVEL);
+			output.insertAfter(QUARTZ_SHOVEL, AMETHYST_SHOVEL);
+			output.insertAfter(Items.IRON_HOE, QUARTZ_HOE);
+			output.insertAfter(QUARTZ_HOE, AMETHYST_HOE);
+			output.insertAfter(Items.IRON_SWORD, QUARTZ_SWORD);
+			output.insertAfter(QUARTZ_SWORD, AMETHYST_SWORD);
+			output.insertAfter(Items.GOLDEN_SWORD, GOLD_SWORD);
+			output.insertAfter(Items.GOLDEN_AXE, GOLD_AXE);
+			output.insertAfter(Items.GOLDEN_SHOVEL, GOLD_SHOVEL);
+			output.insertAfter(Items.GOLDEN_HOE, GOLD_HOE);
+			output.insertAfter(Items.IRON_PICKAXE, REFINEMENT_QUARTZ);
+			output.insertAfter(REFINEMENT_QUARTZ, REFINEMENT_AMETHYST);
+			output.insertAfter(REFINEMENT_AMETHYST, REFINEMENT_GOLD);
+			output.insertAfter(REFINEMENT_GOLD, REFINEMENT_DIAMOND);
+			output.insertAfter(REFINEMENT_DIAMOND, REFINEMENT_VOLCANITE);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output -> {
-			QUARTZ_SET.forEach(output::accept);
-			AMETHYST_SET.forEach(output::accept);
-			GOLD_SET.forEach(output::accept);
+			output.insertAfter(Items.IRON_HELMET, QUARTZ_HELMET);
+			output.insertAfter(Items.IRON_CHESTPLATE, QUARTZ_CHESTPLATE);
+			output.insertAfter(Items.IRON_LEGGINGS, QUARTZ_LEGGINGS);
+			output.insertAfter(Items.IRON_BOOTS, QUARTZ_BOOTS);
+			output.insertAfter(Items.IRON_HELMET, AMETHYST_HELMET);
+			output.insertAfter(Items.IRON_CHESTPLATE, AMETHYST_CHESTPLATE);
+			output.insertAfter(Items.IRON_LEGGINGS, AMETHYST_LEGGINGS);
+			output.insertAfter(Items.IRON_BOOTS, AMETHYST_BOOTS);
 		});
 	}
 
@@ -92,8 +117,42 @@ public final class ProgressionItems {
 		return AMETHYST_SET.contains(item);
 	}
 
+	public static boolean hasAmethystHeritage(ItemStack stack) {
+		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+		return data != null && data.copyTag().getBoolean("wildways_amethyst_heritage").orElse(false);
+	}
+
+	public static boolean isAmethystArmor(ItemStack stack) {
+		return isAmethystArmor(stack.getItem()) || hasAmethystHeritage(stack);
+	}
+
+	public static boolean isAmethystTool(Item item) {
+		return AMETHYST_TOOLS.contains(item);
+	}
+
+	public static boolean isAmethystGear(Item item) {
+		return isAmethystArmor(item) || isAmethystTool(item);
+	}
+
+	public static boolean isArmorEquipment(Item item) {
+		String path = BuiltInRegistries.ITEM.getKey(item).getPath();
+		return path.endsWith("_helmet") || path.endsWith("_chestplate") || path.endsWith("_leggings") || path.endsWith("_boots");
+	}
+
+	public static boolean isToolEquipment(Item item) {
+		String path = BuiltInRegistries.ITEM.getKey(item).getPath();
+		return path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe");
+	}
+
 	public static Item.Properties volcaniteArmorProperties(ArmorType type) {
-		return armorProperties(ProgressionMaterials.VOLCANITE_ARMOR, type, false, true);
+		return armorProperties(ProgressionMaterials.VOLCANITE_ARMOR, type, false, true)
+			.delayedComponent(DataComponents.DAMAGE_RESISTANT, lookup ->
+				new DamageResistant(lookup.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(DamageTypeTags.IS_EXPLOSION)));
+	}
+
+	public static Item.Properties volcaniteProperties() {
+		return new Item.Properties().delayedComponent(DataComponents.DAMAGE_RESISTANT, lookup ->
+			new DamageResistant(lookup.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(DamageTypeTags.IS_EXPLOSION)));
 	}
 
 	private static Item sword(String name, ToolMaterial material, float damage, float speed) {
@@ -135,8 +194,6 @@ public final class ProgressionItems {
 		if (volcanite) {
 			attributes = attributes.withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE,
 				new AttributeModifier(Wildways.id("volcanite_block_range_" + type.getName()), ProgressionMaterials.VOLCANITE_RANGE_PER_PIECE, AttributeModifier.Operation.ADD_VALUE), slot);
-			attributes = attributes.withModifierAdded(Attributes.ENTITY_INTERACTION_RANGE,
-				new AttributeModifier(Wildways.id("volcanite_entity_range_" + type.getName()), ProgressionMaterials.VOLCANITE_RANGE_PER_PIECE, AttributeModifier.Operation.ADD_VALUE), slot);
 		}
 		return properties.attributes(attributes);
 	}

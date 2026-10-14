@@ -4,6 +4,5 @@
   "result": {
     "id": "wildways:quartz_sword"
   },
-  "type": "minecraft:smithing_transform",
-  "addition": "minecraft:quartz"
+  "type": "minecraft:smithing_transform"
 }

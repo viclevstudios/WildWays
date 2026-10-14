@@ -4,6 +4,5 @@
   "result": {
     "id": "wildways:amethyst_chestplate"
   },
-  "type": "minecraft:smithing_transform",
-  "addition": "minecraft:amethyst_shard"
+  "type": "minecraft:smithing_transform"
 }

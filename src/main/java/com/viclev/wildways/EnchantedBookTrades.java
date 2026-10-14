@@ -65,7 +65,7 @@ public final class EnchantedBookTrades {
 			return Enchantments.INFINITY;
 		}
 		if (profession.is(VillagerProfession.ARMORER)) {
-			return villager.getRandom().nextBoolean() ? Enchantments.THORNS : null;
+			return null;
 		}
 		if (profession.is(VillagerProfession.FISHERMAN)) {
 			return villager.getRandom().nextBoolean() ? Enchantments.LUCK_OF_THE_SEA : Enchantments.LURE;

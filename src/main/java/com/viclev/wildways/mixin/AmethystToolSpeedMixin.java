@@ -13,7 +13,7 @@ public abstract class AmethystToolSpeedMixin {
 	@Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
 	private void wildways$slightlySpeedUpInefficientAmethystTools(BlockState state, CallbackInfoReturnable<Float> cir) {
 		ItemStack stack = (ItemStack) (Object) this;
-		if (ProgressionItems.AMETHYST_TOOLS.contains(stack.getItem()) && cir.getReturnValue() <= 1.0F) {
+		if ((ProgressionItems.isAmethystTool(stack.getItem()) || ProgressionItems.hasAmethystHeritage(stack)) && cir.getReturnValue() <= 1.0F) {
 			cir.setReturnValue(1.5F);
 		}
 	}

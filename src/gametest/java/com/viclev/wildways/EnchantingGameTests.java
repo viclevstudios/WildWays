@@ -11,6 +11,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
@@ -462,8 +463,8 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void mendingBookRecipeRequiresAnUnbreakingBook(GameTestHelper helper) {
-		ItemStack precursor = this.book(helper, Enchantments.UNBREAKING, 1);
+	public void mendingBookRecipeRequiresAProtectionBook(GameTestHelper helper) {
+		ItemStack precursor = this.book(helper, Enchantments.PROTECTION, 1);
 		CraftingInput input = CraftingInput.of(3, 3, List.of(
 			new ItemStack(Items.LAPIS_LAZULI), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.LAPIS_LAZULI),
 			new ItemStack(ModItems.VOLCANITE), precursor, new ItemStack(ModItems.VOLCANITE),
@@ -477,10 +478,24 @@ public class EnchantingGameTests {
 			"The recipe must produce a level-one Mending book");
 		CraftingInput wrongBook = CraftingInput.of(3, 3, List.of(
 			new ItemStack(Items.LAPIS_LAZULI), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.LAPIS_LAZULI),
-			new ItemStack(ModItems.VOLCANITE), this.book(helper, Enchantments.PROTECTION, 1), new ItemStack(ModItems.VOLCANITE),
+			new ItemStack(ModItems.VOLCANITE), this.book(helper, Enchantments.UNBREAKING, 1), new ItemStack(ModItems.VOLCANITE),
 			new ItemStack(Items.LAPIS_LAZULI), new ItemStack(Items.EXPERIENCE_BOTTLE), new ItemStack(Items.LAPIS_LAZULI)));
-		helper.assertTrue(helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING, wrongBook, helper.getLevel()).isEmpty(),
-			"An unrelated enchanted book must not substitute for Unbreaking");
+			helper.assertTrue(helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING, wrongBook, helper.getLevel()).isEmpty(),
+			"An unrelated enchanted book must not substitute for Protection");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void lightningTransformsDroppedBookIntoChanneling(GameTestHelper helper) {
+		ItemEntity dropped = new ItemEntity(helper.getLevel(), 3.5, 2.0, 3.5, new ItemStack(Items.BOOK, 2));
+		helper.getLevel().addFreshEntity(dropped);
+		dropped.thunderHit(helper.getLevel(), null);
+		ItemStack result = dropped.getItem();
+		helper.assertTrue(result.is(Items.ENCHANTED_BOOK), "A lightning-struck ordinary book must become enchanted");
+		helper.assertTrue(result.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
+			.getLevel(this.enchantment(helper, Enchantments.CHANNELING)) == 1,
+			"A lightning-struck book must carry Channeling");
+		helper.assertTrue(result.getCount() == 1, "Only one book from a stack should transform per lightning strike");
 		helper.succeed();
 	}
 

@@ -2,7 +2,7 @@
   "values": [
     "wildways:quartz_helmet",
     "wildways:amethyst_helmet",
-    "wildways:gold_helmet"
+    "minecraft:golden_helmet"
   ],
   "replace": false
 }

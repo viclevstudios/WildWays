@@ -28,18 +28,21 @@ public final class EnchantedBookDrops {
 		if (!(entity.level() instanceof ServerLevel level)) {
 			return;
 		}
+		if (!(source.getEntity() instanceof Player)) {
+			return;
+		}
 		if (entity instanceof Zombie zombie && zombie.getMainHandItem().is(ItemTags.SPEARS)) {
 			dropWithChance(level, zombie, Enchantments.LUNGE, 0.5F);
 		}
 		if (entity instanceof Ghast && source.getDirectEntity() instanceof LargeFireball
 			&& source.getEntity() instanceof Player) {
-			entity.spawnAtLocation(level, EnchantedBookSources.book(level, Enchantments.BLAST_PROTECTION));
+			dropWithChance(level, entity, Enchantments.BLAST_PROTECTION, 0.5F);
 		}
 		if (entity instanceof Pillager || entity instanceof Vindicator) {
-			dropWithChance(level, entity, Enchantments.QUICK_CHARGE, 0.05F);
-			dropWithChance(level, entity, Enchantments.MULTISHOT, 0.05F);
+			dropWithChance(level, entity, Enchantments.QUICK_CHARGE, 0.20F);
+			dropWithChance(level, entity, Enchantments.MULTISHOT, 0.20F);
 			if (entity instanceof net.minecraft.world.entity.raid.Raider raider && raider.hasActiveRaid()) {
-				dropWithChance(level, entity, Enchantments.PIERCING, 0.05F);
+				dropWithChance(level, entity, Enchantments.PIERCING, 0.20F);
 			}
 		}
 	}

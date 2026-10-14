@@ -4,6 +4,5 @@
   "result": {
     "id": "wildways:gold_axe"
   },
-  "type": "minecraft:smithing_transform",
-  "addition": "minecraft:gold_ingot"
+  "type": "minecraft:smithing_transform"
 }

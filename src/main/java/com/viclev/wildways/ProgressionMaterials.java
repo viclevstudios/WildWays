@@ -15,7 +15,7 @@ import java.util.Map;
 
 /** Central starting values for the added equipment tiers; adjust these after playtesting. */
 public final class ProgressionMaterials {
-	public static final int QUARTZ_TOOL_DURABILITY = 600;
+	public static final int QUARTZ_TOOL_DURABILITY = 700;
 	public static final int AMETHYST_TOOL_DURABILITY = 250;
 	public static final int GOLD_TOOL_DURABILITY = 400;
 	public static final int QUARTZ_ARMOR_DURABILITY = 25;

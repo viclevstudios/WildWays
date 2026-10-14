@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/** Two supply chests flank the entry room without blocking its centre aisle. */
-@Mixin(OceanMonumentPieces.OceanMonumentEntryRoom.class)
+/** One supply chest is added to each of the two monument wing rooms. */
+@Mixin(OceanMonumentPieces.OceanMonumentWingRoom.class)
 public abstract class OceanMonumentBookChestsMixin extends StructurePiece {
 	private static final ResourceKey<LootTable> WILDWAYS$SUPPLY_LOOT = ResourceKey.create(
 		Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath("wildways", "chests/monument_supply"));
@@ -32,7 +32,6 @@ public abstract class OceanMonumentBookChestsMixin extends StructurePiece {
 	private void wildways$addSupplyChests(WorldGenLevel world, StructureManager manager,
 		ChunkGenerator generator, RandomSource random, BoundingBox bounds, ChunkPos chunk, BlockPos pivot,
 		CallbackInfo ci) {
-		createChest(world, bounds, random, 1, 1, 5, WILDWAYS$SUPPLY_LOOT);
-		createChest(world, bounds, random, 6, 1, 5, WILDWAYS$SUPPLY_LOOT);
+		createChest(world, bounds, random, 3, 1, 3, WILDWAYS$SUPPLY_LOOT);
 	}
 }

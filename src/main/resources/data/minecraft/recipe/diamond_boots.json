@@ -4,6 +4,5 @@
   "result": {
     "id": "minecraft:diamond_boots"
   },
-  "type": "minecraft:smithing_transform",
-  "addition": "minecraft:diamond"
+  "type": "minecraft:smithing_transform"
 }
