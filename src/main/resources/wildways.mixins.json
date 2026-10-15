@@ -60,7 +60,11 @@
 		"MetalSmeltingXpMixin",
 		"FishingTreasureXpMixin",
 		"FlintAndSteelPortalXpMixin",
-		"FireChargePortalXpMixin"
+		"FireChargePortalXpMixin",
+		"ElytraDurabilityMixin",
+		"ElytraRocketDurabilityMixin",
+		"BoatWaterSpeedMixin",
+		"PositiveHorseBreedingMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
