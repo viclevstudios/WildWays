@@ -1,6 +1,6 @@
 {
   "textures": {
-    "layer0": "minecraft:item/iron_boots"
+    "layer0": "wildways:item/quartz_boots"
   },
   "parent": "minecraft:item/generated"
 }
