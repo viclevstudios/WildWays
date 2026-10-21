@@ -22,11 +22,12 @@ public final class ModItems {
 	public static final Item RAW_VOLCANITE = register(ModItemIds.RAW_VOLCANITE, Item::new, new Item.Properties());
 	public static final Item VOLCANITE = register(ModItemIds.VOLCANITE, Item::new, new Item.Properties());
 	public static final Item VOLCANITE_SWORD = register(ModItemIds.VOLCANITE_SWORD, Item::new, ProgressionItems.volcaniteProperties().sword(VolcaniteMaterials.TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED));
+	public static final Item VOLCANITE_SPEAR = register(ModItemIds.VOLCANITE_SPEAR, Item::new, ProgressionSpears.volcaniteProperties());
 	public static final Item VOLCANITE_PICKAXE = register(ModItemIds.VOLCANITE_PICKAXE, Item::new, ProgressionItems.volcaniteProperties().pickaxe(VolcaniteMaterials.TOOL, ProgressionMaterials.PICKAXE_ATTACK_DAMAGE, ProgressionMaterials.PICKAXE_ATTACK_SPEED));
 	public static final Item VOLCANITE_SHOVEL = register(ModItemIds.VOLCANITE_SHOVEL, properties -> new ShovelItem(VolcaniteMaterials.TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED, properties), ProgressionItems.volcaniteProperties());
 	public static final Item VOLCANITE_AXE = register(ModItemIds.VOLCANITE_AXE, properties -> new AxeItem(VolcaniteMaterials.TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED, properties), ProgressionItems.volcaniteProperties());
 	public static final Item VOLCANITE_HOE = register(ModItemIds.VOLCANITE_HOE, properties -> new HoeItem(VolcaniteMaterials.TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED, properties), ProgressionItems.volcaniteProperties());
-	public static final List<Item> VOLCANITE_TOOLS = List.of(VOLCANITE_SWORD, VOLCANITE_PICKAXE, VOLCANITE_AXE, VOLCANITE_SHOVEL, VOLCANITE_HOE);
+	public static final List<Item> VOLCANITE_TOOLS = List.of(VOLCANITE_SWORD, VOLCANITE_SPEAR, VOLCANITE_PICKAXE, VOLCANITE_AXE, VOLCANITE_SHOVEL, VOLCANITE_HOE);
 	public static final Item VOLCANITE_HELMET = register(ModItemIds.VOLCANITE_HELMET, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.HELMET));
 	public static final Item VOLCANITE_CHESTPLATE = register(ModItemIds.VOLCANITE_CHESTPLATE, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.CHESTPLATE));
 	public static final Item VOLCANITE_LEGGINGS = register(ModItemIds.VOLCANITE_LEGGINGS, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.LEGGINGS));
@@ -126,6 +127,7 @@ public final class ModItems {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT)
 			.register(output -> {
 				output.insertAfter(Items.DIAMOND_SWORD, VOLCANITE_SWORD);
+				output.insertAfter(Items.DIAMOND_SPEAR, VOLCANITE_SPEAR);
 				output.insertAfter(Items.DIAMOND_BOOTS, VOLCANITE_HELMET);
 				output.insertAfter(VOLCANITE_HELMET, VOLCANITE_CHESTPLATE);
 				output.insertAfter(VOLCANITE_CHESTPLATE, VOLCANITE_LEGGINGS);

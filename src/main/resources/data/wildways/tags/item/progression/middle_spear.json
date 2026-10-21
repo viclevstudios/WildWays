@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "wildways:quartz_spear",
+    "wildways:amethyst_spear",
+    "minecraft:golden_spear"
+  ]
+}

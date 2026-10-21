@@ -70,7 +70,7 @@ public abstract class AnvilEnchantingMixin extends ItemCombinerMenu {
 	private static boolean wildways$netheriteScrapRepairs(ItemStack input, ItemStack addition) {
 		return addition.is(Items.NETHERITE_SCRAP) && (input.is(Items.NETHERITE_SWORD)
 			|| input.is(Items.NETHERITE_PICKAXE) || input.is(Items.NETHERITE_AXE)
-			|| input.is(Items.NETHERITE_SHOVEL) || input.is(Items.NETHERITE_HOE)
+			|| input.is(Items.NETHERITE_SHOVEL) || input.is(Items.NETHERITE_HOE) || input.is(Items.NETHERITE_SPEAR)
 			|| input.is(Items.NETHERITE_HELMET) || input.is(Items.NETHERITE_CHESTPLATE)
 			|| input.is(Items.NETHERITE_LEGGINGS) || input.is(Items.NETHERITE_BOOTS));
 	}

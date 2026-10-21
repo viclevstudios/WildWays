@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:smithing_transform",
+  "base": "#wildways:progression/middle_spear",
+  "template": "wildways:volcanite_refinement",
+  "result": {
+    "id": "wildways:volcanite_spear"
+  }
+}

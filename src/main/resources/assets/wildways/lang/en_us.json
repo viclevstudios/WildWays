@@ -203,5 +203,11 @@
   "tag.item.wildways.progression.endgame_leggings": "Diamond or Volcanite Leggings",
   "tag.item.wildways.progression.iron_boots": "Iron Boots for refinements",
   "tag.item.wildways.progression.middle_boots": "Middle-tier Boots",
-  "tag.item.wildways.progression.endgame_boots": "Diamond or Volcanite Boots"
+  "tag.item.wildways.progression.endgame_boots": "Diamond or Volcanite Boots",
+  "item.wildways.quartz_spear": "Quartz Spear",
+  "item.wildways.amethyst_spear": "Amethyst Spear",
+  "item.wildways.volcanite_spear": "Volcanite Spear",
+  "tag.item.wildways.progression.iron_spear": "Iron Spears for refinements",
+  "tag.item.wildways.progression.middle_spear": "Quartz, Amethyst and Gold Spears",
+  "tag.item.wildways.progression.endgame_spear": "Diamond and Volcanite Spears"
 }

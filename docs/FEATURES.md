@@ -14,7 +14,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 
 - Volcanite is a Nether alternative to diamond equipment. Its ore generates vertically in basalt in newly generated Basalt Deltas, can be placed along any axis like Basalt, and uses separate Volcanite side and end textures. It drops Raw Volcanite, which is processed in a furnace or blast furnace.
 - Raw and refined Volcanite each pack into a matching storage block in a 3×3 grid; each block unpacks into nine items and requires an iron-tier pickaxe.
-- Five tools and four armor pieces match diamond values, use normal crafting shapes, are repaired with refined Volcanite when enchanted with Mending, and can be upgraded to Netherite.
+- Six weapons/tools and four armor pieces use Volcanite's progression values, are obtained through Smithing Table refinements, are repaired with refined Volcanite when enchanted with Mending, and can be upgraded to Netherite.
 - Bastion Bridge, Hoglin Stable, and Other chests each have a 5% chance for 1-2 refined Volcanite; Treasure chests have a 15% chance. Ore generation rates remain provisional. See [prototype details and testing](VOLCANITE.md).
 
 ## Enchanting prototype
@@ -27,6 +27,15 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Mending lets one repair material fully restore an item for XP equal to its highest enchantment level, with the four valuable single-level enchantments counting as at least level three; XP orbs no longer repair items. Netherite gear also accepts one Netherite Scrap. Renaming is free. Same-item anvil combinations remain available, with linear prior-work growth and no forty-level cap.
 - Librarians add at most two trades per level. They always sell ordinary Bookshelves, choose either a Copper or Iron Rune at apprentice level, and always sell an Attunement book at master level alongside one candle color. Chiseled Bookshelves are a possible novice alternative. All five runes and the catalyst are craftable; the Volcanite Rune has Shulker Shell and Echo Shard variants using refined Volcanite. See [recipes, rules and test steps](ENCHANTING.md).
 - The Eye of Enchanting requires an Attunement book, at least a Copper Rune and one lapis at the new table.
+
+## Spears and material progression
+
+- Quartz and Amethyst Spears refine an Iron Spear at the Smithing Table using the matching refinement template. The vanilla Golden Spear follows the Gold Refinement path and now has 400 durability, 3.5 total jab damage, 1.0 attacks per second and charged-attack values between iron and diamond.
+- Quartz Spears have 700 durability and iron-tier attacks. Amethyst Spears have 250 durability and +0.2 attacks per second over iron (about 1.253 attacks per second), with a shorter stab animation.
+- Any Quartz, Amethyst or Golden Spear can be refined into Diamond or Volcanite. Diamond and Volcanite Spears upgrade to Netherite with the vanilla template and Netherite Ingot. Upgrades preserve names and enchantments; the existing Amethyst heritage system also preserves the attack-speed bonus on later spear tiers.
+- Volcanite Spears have 1,400 durability, 3.7 total jab damage, diamond-style charged attacks and an extra 0.25 blocks of attack reach (4.75 survival / 6.75 creative). Their minimum range remains two blocks. They also inherit Volcanite's block-reach and dropped-item explosion-resistance traits.
+- All new spears support vanilla spear attacks, Lunge and normal weapon/durability enchantments, and repair with their matching material. Netherite Spears also accept Netherite Scrap in the Mending anvil path.
+- Spear visuals currently reuse vanilla Iron (Quartz/Amethyst) and Diamond (Volcanite) sprites, with separate inventory and held models. Custom textures can later replace these references: a 16x16 `<material>_spear.png` and a 32x32 `<material>_spear_in_hand.png` under `assets/wildways/textures/item/`, updating the matching models' `layer0` references to `wildways:item/<filename without .png>`.
 
 ## Fletching Table and arrows
 

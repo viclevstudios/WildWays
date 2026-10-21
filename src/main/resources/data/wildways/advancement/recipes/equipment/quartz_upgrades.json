@@ -9,7 +9,8 @@
       "wildways:quartz_helmet_upgrade",
       "wildways:quartz_chestplate_upgrade",
       "wildways:quartz_leggings_upgrade",
-      "wildways:quartz_boots_upgrade"
+      "wildways:quartz_boots_upgrade",
+      "wildways:quartz_spear_upgrade"
     ]
   },
   "criteria": {

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:smithing_transform",
+  "base": "#wildways:progression/iron_spear",
+  "template": "wildways:amethyst_refinement",
+  "result": {
+    "id": "wildways:amethyst_spear"
+  }
+}

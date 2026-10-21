@@ -8,6 +8,7 @@ public final class ModItemIds {
 	public static final ResourceKey<Item> RAW_VOLCANITE = create("raw_volcanite");
 	public static final ResourceKey<Item> VOLCANITE = create("volcanite");
 	public static final ResourceKey<Item> VOLCANITE_SWORD = create("volcanite_sword");
+	public static final ResourceKey<Item> VOLCANITE_SPEAR = create("volcanite_spear");
 	public static final ResourceKey<Item> VOLCANITE_SHOVEL = create("volcanite_shovel");
 	public static final ResourceKey<Item> VOLCANITE_PICKAXE = create("volcanite_pickaxe");
 	public static final ResourceKey<Item> VOLCANITE_AXE = create("volcanite_axe");

@@ -32,6 +32,7 @@ import java.util.function.Function;
 
 public final class ProgressionItems {
 	public static final Item QUARTZ_SWORD = sword("quartz_sword", ProgressionMaterials.QUARTZ_TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED);
+	public static final Item QUARTZ_SPEAR = register("quartz_spear", Item::new, ProgressionSpears.quartzProperties());
 	public static final Item QUARTZ_PICKAXE = pickaxe("quartz_pickaxe", ProgressionMaterials.QUARTZ_TOOL);
 	public static final Item QUARTZ_AXE = axe("quartz_axe", ProgressionMaterials.QUARTZ_TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED);
 	public static final Item QUARTZ_SHOVEL = shovel("quartz_shovel", ProgressionMaterials.QUARTZ_TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED);
@@ -42,6 +43,7 @@ public final class ProgressionItems {
 	public static final Item QUARTZ_BOOTS = armor("quartz_boots", ProgressionMaterials.QUARTZ_ARMOR, ArmorType.BOOTS, false, false);
 
 	public static final Item AMETHYST_SWORD = sword("amethyst_sword", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
+	public static final Item AMETHYST_SPEAR = register("amethyst_spear", Item::new, ProgressionSpears.amethystProperties());
 	public static final Item AMETHYST_PICKAXE = pickaxe("amethyst_pickaxe", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.PICKAXE_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
 	public static final Item AMETHYST_AXE = axe("amethyst_axe", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
 	public static final Item AMETHYST_SHOVEL = shovel("amethyst_shovel", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
@@ -61,17 +63,17 @@ public final class ProgressionItems {
 	public static final Item GOLD_LEGGINGS = Items.GOLDEN_LEGGINGS;
 	public static final Item GOLD_BOOTS = Items.GOLDEN_BOOTS;
 
-	public static final Item REFINEMENT_QUARTZ = refinement("quartz_refinement", "quartz", List.of("helmet", "chestplate", "leggings", "boots", "sword", "pickaxe", "axe", "shovel", "hoe"), "quartz");
-	public static final Item REFINEMENT_AMETHYST = refinement("amethyst_refinement", "amethyst", List.of("helmet", "chestplate", "leggings", "boots", "sword", "pickaxe", "axe", "shovel", "hoe"), "amethyst_shard");
-	public static final Item REFINEMENT_GOLD = refinement("gold_refinement", "gold", List.of("helmet", "chestplate", "leggings", "boots", "sword", "pickaxe", "axe", "shovel", "hoe"), "ingot");
-	public static final Item REFINEMENT_DIAMOND = refinement("diamond_refinement", "diamond", List.of("helmet", "chestplate", "leggings", "boots", "sword", "pickaxe", "axe", "shovel", "hoe"), "diamond");
-	public static final Item REFINEMENT_VOLCANITE = refinement("volcanite_refinement", "volcanite", List.of("helmet", "chestplate", "leggings", "boots", "sword", "pickaxe", "axe", "shovel", "hoe"), "ingot");
+	public static final Item REFINEMENT_QUARTZ = refinement("quartz_refinement", "quartz", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "quartz");
+	public static final Item REFINEMENT_AMETHYST = refinement("amethyst_refinement", "amethyst", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "amethyst_shard");
+	public static final Item REFINEMENT_GOLD = refinement("gold_refinement", "gold", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "ingot");
+	public static final Item REFINEMENT_DIAMOND = refinement("diamond_refinement", "diamond", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "diamond");
+	public static final Item REFINEMENT_VOLCANITE = refinement("volcanite_refinement", "volcanite", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "ingot");
 
 	public static final List<Item> QUARTZ_SET = List.of(QUARTZ_HELMET, QUARTZ_CHESTPLATE, QUARTZ_LEGGINGS, QUARTZ_BOOTS);
 	public static final List<Item> AMETHYST_SET = List.of(AMETHYST_HELMET, AMETHYST_CHESTPLATE, AMETHYST_LEGGINGS, AMETHYST_BOOTS);
 	public static final List<Item> GOLD_SET = List.of(GOLD_HELMET, GOLD_CHESTPLATE, GOLD_LEGGINGS, GOLD_BOOTS);
-	public static final List<Item> QUARTZ_TOOLS = List.of(QUARTZ_SWORD, QUARTZ_PICKAXE, QUARTZ_AXE, QUARTZ_SHOVEL, QUARTZ_HOE);
-	public static final List<Item> AMETHYST_TOOLS = List.of(AMETHYST_SWORD, AMETHYST_PICKAXE, AMETHYST_AXE, AMETHYST_SHOVEL, AMETHYST_HOE);
+	public static final List<Item> QUARTZ_TOOLS = List.of(QUARTZ_SWORD, QUARTZ_SPEAR, QUARTZ_PICKAXE, QUARTZ_AXE, QUARTZ_SHOVEL, QUARTZ_HOE);
+	public static final List<Item> AMETHYST_TOOLS = List.of(AMETHYST_SWORD, AMETHYST_SPEAR, AMETHYST_PICKAXE, AMETHYST_AXE, AMETHYST_SHOVEL, AMETHYST_HOE);
 	public static final List<Item> GOLD_TOOLS = List.of(GOLD_SWORD, GOLD_PICKAXE, GOLD_AXE, GOLD_SHOVEL, GOLD_HOE);
 	public static final List<Item> REFINEMENTS = List.of(REFINEMENT_QUARTZ, REFINEMENT_AMETHYST, REFINEMENT_GOLD, REFINEMENT_DIAMOND, REFINEMENT_VOLCANITE);
 
@@ -102,6 +104,8 @@ public final class ProgressionItems {
 			output.insertAfter(REFINEMENT_DIAMOND, REFINEMENT_VOLCANITE);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output -> {
+			output.insertAfter(Items.IRON_SPEAR, QUARTZ_SPEAR);
+			output.insertAfter(QUARTZ_SPEAR, AMETHYST_SPEAR);
 			output.insertAfter(Items.IRON_HELMET, QUARTZ_HELMET);
 			output.insertAfter(Items.IRON_CHESTPLATE, QUARTZ_CHESTPLATE);
 			output.insertAfter(Items.IRON_LEGGINGS, QUARTZ_LEGGINGS);
@@ -141,7 +145,7 @@ public final class ProgressionItems {
 
 	public static boolean isToolEquipment(Item item) {
 		String path = BuiltInRegistries.ITEM.getKey(item).getPath();
-		return path.endsWith("_sword") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe");
+		return path.endsWith("_sword") || path.endsWith("_spear") || path.endsWith("_pickaxe") || path.endsWith("_axe") || path.endsWith("_shovel") || path.endsWith("_hoe");
 	}
 
 	public static Item.Properties volcaniteArmorProperties(ArmorType type) {
