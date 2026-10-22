@@ -23,6 +23,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Raw and refined Volcanite each pack into a matching storage block in a 3×3 grid; each block unpacks into nine items and requires an iron-tier pickaxe.
 - Six weapons/tools and four armor pieces use Volcanite's progression values, are obtained through Smithing Table refinements, are repaired with refined Volcanite when enchanted with Mending, and can be upgraded to Netherite.
 - Bastion Bridge, Hoglin Stable, and Other chests each have a 5% chance for 1-2 refined Volcanite; Treasure chests have a 15% chance. Ore generation rates remain provisional. See [prototype details and testing](VOLCANITE.md).
+- Volcanite Ingots also work as an armor-trim material with all eighteen vanilla patterns. A coral-red palette distinguishes the trim from Redstone; Volcanite armor automatically uses a brighter contrast palette. Both worn armor and all 41 vanilla/Wildways armor inventory icons support it, including dyed leather and the Turtle Shell. The two eight-color palette PNGs under `assets/wildways/textures/trims/color_palettes/` are AI-designed and generated with code; existing vanilla pattern textures are reused. The trim does not grant Volcanite equipment attributes.
 
 ## Enchanting prototype
 

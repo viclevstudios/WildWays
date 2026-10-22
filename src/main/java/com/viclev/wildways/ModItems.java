@@ -19,7 +19,7 @@ import java.util.Set;
 
 public final class ModItems {
 	public static final Item RAW_VOLCANITE = register(ModItemIds.RAW_VOLCANITE, Item::new, new Item.Properties());
-	public static final Item VOLCANITE = register(ModItemIds.VOLCANITE, Item::new, new Item.Properties());
+	public static final Item VOLCANITE = register(ModItemIds.VOLCANITE, Item::new, new Item.Properties().trimMaterial(ModTrimMaterials.VOLCANITE));
 	public static final Item VOLCANITE_SWORD = register(ModItemIds.VOLCANITE_SWORD, Item::new, ProgressionItems.volcaniteProperties().sword(VolcaniteMaterials.TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED));
 	public static final Item VOLCANITE_SPEAR = register(ModItemIds.VOLCANITE_SPEAR, Item::new, ProgressionSpears.volcaniteProperties());
 	public static final Item VOLCANITE_PICKAXE = register(ModItemIds.VOLCANITE_PICKAXE, Item::new, ProgressionItems.volcaniteProperties().pickaxe(VolcaniteMaterials.TOOL, ProgressionMaterials.PICKAXE_ATTACK_DAMAGE, ProgressionMaterials.PICKAXE_ATTACK_SPEED));

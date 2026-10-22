@@ -79,6 +79,13 @@
           "type": "minecraft:model",
           "model": "wildways:item/amethyst_helmet_resin_trim"
         }
+      },
+      {
+        "when": "wildways:volcanite",
+        "model": {
+          "type": "minecraft:model",
+          "model": "wildways:item/amethyst_helmet_volcanite_trim"
+        }
       }
     ],
     "fallback": {

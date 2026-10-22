@@ -79,6 +79,13 @@
           "type": "minecraft:model",
           "model": "wildways:item/volcanite_chestplate_resin_trim"
         }
+      },
+      {
+        "when": "wildways:volcanite",
+        "model": {
+          "type": "minecraft:model",
+          "model": "wildways:item/volcanite_chestplate_volcanite_trim"
+        }
       }
     ],
     "fallback": {

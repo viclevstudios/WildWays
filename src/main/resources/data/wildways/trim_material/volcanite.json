@@ -1,0 +1,10 @@
+{
+  "asset_name": "wildways_volcanite",
+  "description": {
+    "color": "#DC505C",
+    "translate": "trim_material.wildways.volcanite"
+  },
+  "override_armor_assets": {
+    "wildways:volcanite": "wildways_volcanite_contrast"
+  }
+}

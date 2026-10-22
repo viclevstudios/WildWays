@@ -204,5 +204,6 @@
   "item.wildways.gold_refinement.base_slot": "Add Iron equipment",
   "item.wildways.diamond_refinement.base_slot": "Add Quartz, Amethyst or Gold equipment",
   "item.wildways.volcanite_refinement.base_slot": "Add Quartz, Amethyst or Gold equipment",
-  "item.wildways.refinement.additions_slot": "Leave this slot empty"
+  "item.wildways.refinement.additions_slot": "Leave this slot empty",
+  "trim_material.wildways.volcanite": "Volcanite Material"
 }

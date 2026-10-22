@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wildways:item/volcanite_chestplate",
+    "layer1": "minecraft:trims/items/chestplate_trim_wildways_volcanite_contrast"
+  }
+}
