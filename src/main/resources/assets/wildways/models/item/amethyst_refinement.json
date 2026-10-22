@@ -1,6 +1,6 @@
 {
   "textures": {
-    "layer0": "minecraft:item/amethyst_shard"
+    "layer0": "wildways:item/amethyst_refinement"
   },
   "parent": "minecraft:item/generated"
 }

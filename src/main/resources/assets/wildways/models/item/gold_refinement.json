@@ -1,6 +1,6 @@
 {
   "textures": {
-    "layer0": "minecraft:item/gold_ingot"
+    "layer0": "wildways:item/gold_refinement"
   },
   "parent": "minecraft:item/generated"
 }

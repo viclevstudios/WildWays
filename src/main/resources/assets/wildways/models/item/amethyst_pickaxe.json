@@ -1,6 +1,6 @@
 {
   "textures": {
-    "layer0": "minecraft:item/iron_pickaxe"
+    "layer0": "wildways:item/amethyst_pickaxe"
   },
   "parent": "minecraft:item/handheld"
 }

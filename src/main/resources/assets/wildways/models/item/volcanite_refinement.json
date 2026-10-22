@@ -1,6 +1,6 @@
 {
   "textures": {
-    "layer0": "wildways:item/volcanite_ingot"
+    "layer0": "wildways:item/volcanite_refinement"
   },
   "parent": "minecraft:item/generated"
 }

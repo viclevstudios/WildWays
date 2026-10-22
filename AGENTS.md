@@ -47,6 +47,9 @@ The mod should feel like vanilla Minecraft with a different rhythm: slower, warm
 
 ## Visual assets and communication
 
+- Store logo experiments, branding drafts, social-media content plans, scripts, mockups, previews, renders, and other non-mod working artifacts under the Git-ignored `local-artifacts/` directory. Use subfolders such as `branding/`, `social-media/`, `planning/`, and `scratch/`.
+- Verify new working-artifact paths with `git check-ignore` before placing files there. Keep these artifacts out of commits unless the user explicitly requests versioning them; do not use `git add -f` to bypass this rule.
+- Keep assets used by the mod and gameplay/development documentation in their normal versioned project paths. The local-artifacts rule applies to drafts, experiments, and marketing working files.
 - Always explicitly tell the user when images are AI-generated, including backgrounds, mockups, and edited images with AI-generated elements.
 - For social media assets, identify which images or elements are AI-generated when presenting the design and delivering the files, so the user can apply any required platform disclosure.
 

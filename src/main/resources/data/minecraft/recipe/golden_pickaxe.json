@@ -2,7 +2,7 @@
   "base": "#wildways:progression/iron_pickaxe",
   "template": "wildways:gold_refinement",
   "result": {
-    "id": "wildways:gold_pickaxe"
+    "id": "minecraft:golden_pickaxe"
   },
   "type": "minecraft:smithing_transform"
 }

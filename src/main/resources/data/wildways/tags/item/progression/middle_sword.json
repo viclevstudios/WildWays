@@ -2,7 +2,7 @@
   "values": [
     "wildways:quartz_sword",
     "wildways:amethyst_sword",
-    "wildways:gold_sword"
+    "minecraft:golden_sword"
   ],
   "replace": false
 }

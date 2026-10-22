@@ -10,6 +10,7 @@
       "com.viclev.wildways.EndermiteBoxGameTests",
       "com.viclev.wildways.VolcaniteGameTests",
       "com.viclev.wildways.SpearGameTests",
+      "com.viclev.wildways.GoldToolGameTests",
       "com.viclev.wildways.BookLootGameTests"
     ]
   },

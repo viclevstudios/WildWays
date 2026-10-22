@@ -2,7 +2,7 @@
   "values": [
     "wildways:quartz_hoe",
     "wildways:amethyst_hoe",
-    "wildways:gold_hoe"
+    "minecraft:golden_hoe"
   ],
   "replace": false
 }

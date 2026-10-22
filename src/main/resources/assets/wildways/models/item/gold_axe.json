@@ -1,6 +1,0 @@
-{
-  "textures": {
-    "layer0": "minecraft:item/golden_axe"
-  },
-  "parent": "minecraft:item/handheld"
-}

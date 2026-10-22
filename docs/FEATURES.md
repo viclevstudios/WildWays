@@ -2,6 +2,13 @@
 
 This page describes gameplay features currently present in WildWays. Planned work remains in [ROADMAP.md](ROADMAP.md).
 
+## Equipment and creative inventory
+
+- Gold progression modifies the existing Minecraft Golden Sword, Pickaxe, Axe, Shovel and Hoe rather than registering an extra equipment set. The vanilla tools have 400 durability, mining speed 7 on their effective blocks (between iron and diamond), the gold progression tier's damage/attack speed, and enchantability 20. Gold Refinement produces those vanilla items, which can be refined into Diamond or Volcanite; repairs still use Gold Ingots. The vanilla Golden Spear and gold armor also retain their existing Wildways adjustments.
+- Both equipment tabs group by material, including the vanilla equipment. After Iron, the order is Quartz, Amethyst, Gold, Diamond, Volcanite, Netherite. Tools use shovel/pickaxe/axe/hoe groups. Combat keeps each material's sword, spear, axe and complete helmet/chestplate/leggings/boots set together, followed by general combat items. Refinement templates appear in Ingredients immediately before the Netherite Upgrade template.
+- Refinement tooltips name the compatible input equipment and state that no extra material is needed and the refinement is consumed. At the Smithing Table, the addition slot stays empty and has no misleading material icon. Quartz, Amethyst and Gold refine Iron; Diamond and Volcanite refine Quartz, Amethyst or Gold equipment.
+- All five refinement templates use their supplied custom item sprites. Quartz, Amethyst and Volcanite armor inventory icons overlay the vanilla trim sprites for all eleven vanilla trim materials. Untrimmed armor keeps its normal icon; as in vanilla, the icon indicates trim material color while the worn armor displays the actual trim pattern.
+
 ## Exploration and information
 
 - Holding a vanilla compass displays block coordinates and one of the eight cardinal or intercardinal directions in the action bar.
@@ -35,7 +42,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Any Quartz, Amethyst or Golden Spear can be refined into Diamond or Volcanite. Diamond and Volcanite Spears upgrade to Netherite with the vanilla template and Netherite Ingot. Upgrades preserve names and enchantments; the existing Amethyst heritage system also preserves the attack-speed bonus on later spear tiers.
 - Volcanite Spears have 1,400 durability, 3.7 total jab damage, diamond-style charged attacks and an extra 0.25 blocks of attack reach (4.75 survival / 6.75 creative). Their minimum range remains two blocks. They also inherit Volcanite's block-reach and dropped-item explosion-resistance traits.
 - All new spears support vanilla spear attacks, Lunge and normal weapon/durability enchantments, and repair with their matching material. Netherite Spears also accept Netherite Scrap in the Mending anvil path.
-- Spear visuals currently reuse vanilla Iron (Quartz/Amethyst) and Diamond (Volcanite) sprites, with separate inventory and held models. Custom textures can later replace these references: a 16x16 `<material>_spear.png` and a 32x32 `<material>_spear_in_hand.png` under `assets/wildways/textures/item/`, updating the matching models' `layer0` references to `wildways:item/<filename without .png>`.
+- Quartz, Amethyst and Volcanite Spears use the supplied custom textures, with separate inventory and held models: a 16x16 `<material>_spear.png` and a 32x32 `<material>_spear_in_hand.png` under `assets/wildways/textures/item/`. Quartz and Amethyst armor use the supplied custom inventory icons and worn textures for humanoid, leggings and baby layers.
 
 ## Fletching Table and arrows
 

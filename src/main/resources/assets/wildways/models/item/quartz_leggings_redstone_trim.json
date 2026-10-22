@@ -1,0 +1,7 @@
+{
+  "textures": {
+    "layer0": "wildways:item/quartz_leggings",
+    "layer1": "minecraft:trims/items/leggings_trim_redstone"
+  },
+  "parent": "minecraft:item/generated"
+}

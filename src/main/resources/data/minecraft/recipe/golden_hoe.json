@@ -2,7 +2,7 @@
   "base": "#wildways:progression/iron_hoe",
   "template": "wildways:gold_refinement",
   "result": {
-    "id": "wildways:gold_hoe"
+    "id": "minecraft:golden_hoe"
   },
   "type": "minecraft:smithing_transform"
 }

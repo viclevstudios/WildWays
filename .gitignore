@@ -44,3 +44,9 @@ replay_*.log
 
 profile-picture-ideas/
 brand-banners/
+Sprites/
+sprites/
+
+# Local drafts, branding experiments and social-media working files
+/local-artifacts/
+/social-assets/

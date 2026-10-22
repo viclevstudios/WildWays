@@ -2,7 +2,7 @@
   "values": [
     "wildways:quartz_shovel",
     "wildways:amethyst_shovel",
-    "wildways:gold_shovel"
+    "minecraft:golden_shovel"
   ],
   "replace": false
 }

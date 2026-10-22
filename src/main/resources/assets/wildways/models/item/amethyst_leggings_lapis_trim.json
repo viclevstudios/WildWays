@@ -1,0 +1,7 @@
+{
+  "textures": {
+    "layer0": "wildways:item/amethyst_leggings",
+    "layer1": "minecraft:trims/items/leggings_trim_lapis"
+  },
+  "parent": "minecraft:item/generated"
+}

@@ -1,6 +1,5 @@
 package com.viclev.wildways;
 
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -9,14 +8,12 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.component.DamageResistant;
@@ -53,21 +50,21 @@ public final class ProgressionItems {
 	public static final Item AMETHYST_LEGGINGS = armor("amethyst_leggings", ProgressionMaterials.AMETHYST_ARMOR, ArmorType.LEGGINGS, true, false);
 	public static final Item AMETHYST_BOOTS = armor("amethyst_boots", ProgressionMaterials.AMETHYST_ARMOR, ArmorType.BOOTS, true, false);
 
-	public static final Item GOLD_SWORD = sword("gold_sword", ProgressionMaterials.GOLD_TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED);
-	public static final Item GOLD_PICKAXE = pickaxe("gold_pickaxe", ProgressionMaterials.GOLD_TOOL);
-	public static final Item GOLD_AXE = axe("gold_axe", ProgressionMaterials.GOLD_TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED);
-	public static final Item GOLD_SHOVEL = shovel("gold_shovel", ProgressionMaterials.GOLD_TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED);
-	public static final Item GOLD_HOE = hoe("gold_hoe", ProgressionMaterials.GOLD_TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED);
+	public static final Item GOLD_SWORD = Items.GOLDEN_SWORD;
+	public static final Item GOLD_PICKAXE = Items.GOLDEN_PICKAXE;
+	public static final Item GOLD_AXE = Items.GOLDEN_AXE;
+	public static final Item GOLD_SHOVEL = Items.GOLDEN_SHOVEL;
+	public static final Item GOLD_HOE = Items.GOLDEN_HOE;
 	public static final Item GOLD_HELMET = Items.GOLDEN_HELMET;
 	public static final Item GOLD_CHESTPLATE = Items.GOLDEN_CHESTPLATE;
 	public static final Item GOLD_LEGGINGS = Items.GOLDEN_LEGGINGS;
 	public static final Item GOLD_BOOTS = Items.GOLDEN_BOOTS;
 
-	public static final Item REFINEMENT_QUARTZ = refinement("quartz_refinement", "quartz", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "quartz");
-	public static final Item REFINEMENT_AMETHYST = refinement("amethyst_refinement", "amethyst", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "amethyst_shard");
-	public static final Item REFINEMENT_GOLD = refinement("gold_refinement", "gold", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "ingot");
-	public static final Item REFINEMENT_DIAMOND = refinement("diamond_refinement", "diamond", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "diamond");
-	public static final Item REFINEMENT_VOLCANITE = refinement("volcanite_refinement", "volcanite", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"), "ingot");
+	public static final Item REFINEMENT_QUARTZ = refinement("quartz_refinement", "quartz", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"));
+	public static final Item REFINEMENT_AMETHYST = refinement("amethyst_refinement", "amethyst", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"));
+	public static final Item REFINEMENT_GOLD = refinement("gold_refinement", "gold", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"));
+	public static final Item REFINEMENT_DIAMOND = refinement("diamond_refinement", "diamond", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"));
+	public static final Item REFINEMENT_VOLCANITE = refinement("volcanite_refinement", "volcanite", List.of("helmet", "chestplate", "leggings", "boots", "sword", "spear", "pickaxe", "axe", "shovel", "hoe"));
 
 	public static final List<Item> QUARTZ_SET = List.of(QUARTZ_HELMET, QUARTZ_CHESTPLATE, QUARTZ_LEGGINGS, QUARTZ_BOOTS);
 	public static final List<Item> AMETHYST_SET = List.of(AMETHYST_HELMET, AMETHYST_CHESTPLATE, AMETHYST_LEGGINGS, AMETHYST_BOOTS);
@@ -81,40 +78,7 @@ public final class ProgressionItems {
 	}
 
 	public static void initialize() {
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output -> {
-			output.insertAfter(Items.IRON_PICKAXE, QUARTZ_PICKAXE);
-			output.insertAfter(QUARTZ_PICKAXE, AMETHYST_PICKAXE);
-			output.insertAfter(Items.GOLDEN_PICKAXE, GOLD_PICKAXE);
-			output.insertAfter(Items.IRON_AXE, QUARTZ_AXE);
-			output.insertAfter(QUARTZ_AXE, AMETHYST_AXE);
-			output.insertAfter(Items.IRON_SHOVEL, QUARTZ_SHOVEL);
-			output.insertAfter(QUARTZ_SHOVEL, AMETHYST_SHOVEL);
-			output.insertAfter(Items.IRON_HOE, QUARTZ_HOE);
-			output.insertAfter(QUARTZ_HOE, AMETHYST_HOE);
-			output.insertAfter(Items.IRON_SWORD, QUARTZ_SWORD);
-			output.insertAfter(QUARTZ_SWORD, AMETHYST_SWORD);
-			output.insertAfter(Items.GOLDEN_SWORD, GOLD_SWORD);
-			output.insertAfter(Items.GOLDEN_AXE, GOLD_AXE);
-			output.insertAfter(Items.GOLDEN_SHOVEL, GOLD_SHOVEL);
-			output.insertAfter(Items.GOLDEN_HOE, GOLD_HOE);
-			output.insertAfter(Items.IRON_PICKAXE, REFINEMENT_QUARTZ);
-			output.insertAfter(REFINEMENT_QUARTZ, REFINEMENT_AMETHYST);
-			output.insertAfter(REFINEMENT_AMETHYST, REFINEMENT_GOLD);
-			output.insertAfter(REFINEMENT_GOLD, REFINEMENT_DIAMOND);
-			output.insertAfter(REFINEMENT_DIAMOND, REFINEMENT_VOLCANITE);
-		});
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output -> {
-			output.insertAfter(Items.IRON_SPEAR, QUARTZ_SPEAR);
-			output.insertAfter(QUARTZ_SPEAR, AMETHYST_SPEAR);
-			output.insertAfter(Items.IRON_HELMET, QUARTZ_HELMET);
-			output.insertAfter(Items.IRON_CHESTPLATE, QUARTZ_CHESTPLATE);
-			output.insertAfter(Items.IRON_LEGGINGS, QUARTZ_LEGGINGS);
-			output.insertAfter(Items.IRON_BOOTS, QUARTZ_BOOTS);
-			output.insertAfter(Items.IRON_HELMET, AMETHYST_HELMET);
-			output.insertAfter(Items.IRON_CHESTPLATE, AMETHYST_CHESTPLATE);
-			output.insertAfter(Items.IRON_LEGGINGS, AMETHYST_LEGGINGS);
-			output.insertAfter(Items.IRON_BOOTS, AMETHYST_BOOTS);
-		});
+		CreativeInventory.initialize();
 	}
 
 	public static boolean isAmethystArmor(Item item) {
@@ -202,15 +166,15 @@ public final class ProgressionItems {
 		return properties.attributes(attributes);
 	}
 
-	private static Item refinement(String id, String name, List<String> baseSlots, String additionSlot) {
+	private static Item refinement(String id, String name, List<String> baseSlots) {
 		List<Identifier> baseIcons = baseSlots.stream().map(slot -> Identifier.withDefaultNamespace("container/slot/" + slot)).toList();
 		return register(id, properties -> new SmithingTemplateItem(
 			 net.minecraft.network.chat.Component.translatable("item.wildways." + name + "_refinement.applies_to"),
 			 net.minecraft.network.chat.Component.translatable("item.wildways." + name + "_refinement.ingredients"),
-			 net.minecraft.network.chat.Component.translatable("item.wildways.refinement.base_slot"),
-			 net.minecraft.network.chat.Component.translatable("item.wildways." + name + "_refinement.additions_slot"),
+			 net.minecraft.network.chat.Component.translatable("item.wildways." + name + "_refinement.base_slot"),
+			 net.minecraft.network.chat.Component.translatable("item.wildways.refinement.additions_slot"),
 			 baseIcons,
-			 List.of(Identifier.withDefaultNamespace("container/slot/" + additionSlot)),
+			 List.of(),
 			 properties
 		), new Item.Properties().stacksTo(64));
 	}

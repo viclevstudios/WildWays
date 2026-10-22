@@ -23,6 +23,7 @@ public class Wildways implements ModInitializer {
 		ModMenuTypes.initialize();
 		ModItems.initialize();
 		ProgressionItems.initialize();
+		GoldToolStats.initialize();
 		ProgressionSpears.initialize();
 		EnchantingItems.initialize();
 		EnchantingTableInteraction.initialize();

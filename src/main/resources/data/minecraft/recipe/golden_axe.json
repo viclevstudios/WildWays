@@ -2,7 +2,7 @@
   "base": "#wildways:progression/iron_axe",
   "template": "wildways:gold_refinement",
   "result": {
-    "id": "wildways:gold_axe"
+    "id": "minecraft:golden_axe"
   },
   "type": "minecraft:smithing_transform"
 }

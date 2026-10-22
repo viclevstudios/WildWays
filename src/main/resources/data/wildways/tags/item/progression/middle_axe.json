@@ -2,7 +2,7 @@
   "values": [
     "wildways:quartz_axe",
     "wildways:amethyst_axe",
-    "wildways:gold_axe"
+    "minecraft:golden_axe"
   ],
   "replace": false
 }
