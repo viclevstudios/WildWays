@@ -63,8 +63,18 @@
 		"FireChargePortalXpMixin",
 		"ElytraDurabilityMixin",
 		"ElytraRocketDurabilityMixin",
+		"ElytraRocketUseMixin",
 		"BoatWaterSpeedMixin",
-		"PositiveHorseBreedingMixin"
+		"PositiveHorseBreedingMixin",
+		"WorkstationCompletionXpMixin",
+		"RespawnAnchorWorkstationXpMixin",
+		"CauldronWorkstationXpMixin",
+		"ComposterWorkstationXpMixin",
+		"LodestoneWorkstationXpMixin",
+		"LecternWorkstationXpMixin",
+		"LecternBlockWorkstationXpMixin",
+		"VanillaEnchantingWorkstationXpMixin",
+		"BeaconFirstActivationXpMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

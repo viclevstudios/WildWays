@@ -58,7 +58,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Endermites no longer use vanilla's fixed despawn timer.
 - Endermites drop Endermite Shells, which support the Unease brewing path and Endermite-themed recipes.
 - Four Endermite Bricks are crafted from four Stone Bricks and one Endermite Shell. They are available as full blocks, slabs, stairs, and walls, with stonecutter recipes for each shape.
-- The Endermite Nest is crafted from eight Endermite Shells surrounding a chest. It is a waterloggable, portable twelve-slot container with an animated side texture and a distinct open top. Opening it has a 5% chance to spawn an Endermite nearby, its inventory fullness supplies a comparator signal, and a vanilla Eye of Ender left inside transforms at a random time averaging about ten minutes.
+- The Endermite Nest is crafted from eight Endermite Shells surrounding a chest. It is a waterloggable, portable twelve-slot container with a static side texture and a distinct open top. Its [three editable textures](ENDERMITE_NEST_TEXTURES.md) are each 12 x 12 pixels. Opening it has a 5% chance to spawn an Endermite nearby, its inventory fullness supplies a comparator signal, and a vanilla Eye of Ender left inside transforms at a random time averaging about ten minutes.
 
 ## End progression
 

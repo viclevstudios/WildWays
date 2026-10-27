@@ -17,11 +17,11 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BeehiveBlock;
@@ -36,10 +36,10 @@ public final class XpProgression {
 		"minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian",
 		"minecraft:evoker", "minecraft:ravager", "minecraft:piglin_brute"
 	);
-	private static final Set<Block> WORKSTATIONS = Set.of(
-		Blocks.STONECUTTER, Blocks.LOOM, Blocks.CARTOGRAPHY_TABLE, Blocks.SMITHING_TABLE,
-		Blocks.GRINDSTONE, Blocks.FLETCHING_TABLE, Blocks.COMPOSTER, Blocks.LECTERN,
-		Blocks.BREWING_STAND, Blocks.LODESTONE
+	private static final Set<String> EXCLUDED_PASSIVE_MOBS = Set.of(
+		"minecraft:axolotl", "minecraft:panda", "minecraft:wolf", "minecraft:ocelot", "minecraft:cat",
+		"minecraft:parrot", "minecraft:sniffer", "minecraft:allay", "minecraft:frog", "minecraft:tadpole",
+		"minecraft:armadillo"
 	);
 
 	private XpProgression() {
@@ -68,14 +68,11 @@ public final class XpProgression {
 			}
 			BlockState state = level.getBlockState(hit.getBlockPos());
 			Block block = state.getBlock();
-			if (WORKSTATIONS.contains(block)) {
-				awardOnce(serverPlayer, "workstation:" + BuiltInRegistries.BLOCK.getKey(block), 5);
-			}
 			if (block instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5
 				&& (serverPlayer.getItemInHand(hand).is(Items.GLASS_BOTTLE) || serverPlayer.getItemInHand(hand).is(Items.SHEARS))) {
 				String harvest = serverPlayer.getItemInHand(hand).is(Items.SHEARS) ? "honeycomb" : "honey";
 				serverPlayer.giveExperiencePoints(2);
-				awardOnce(serverPlayer, "first_honey:" + harvest, 5);
+				awardOnce(serverPlayer, "first_honey:" + harvest, harvest.equals("honeycomb") ? 10 : 5);
 			}
 			return InteractionResult.PASS;
 		});
@@ -83,15 +80,33 @@ public final class XpProgression {
 		ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
 			String dimension = destination.dimension().identifier().toString();
 			if (dimension.equals("minecraft:the_nether") || dimension.equals("minecraft:the_end")) {
-				awardOnce(player, "portal:" + dimension, 25);
+				awardOnce(player, "portal:" + dimension, 75);
 			}
 		});
 	}
 
 	public static void awardFirstMobKill(ServerPlayer player, Entity victim) {
 		String mob = EntityType.getKey(victim.getType()).toString();
-		int xp = RARE_OR_BOSS_MOBS.contains(mob) ? 25 : victim.getType().getCategory() == MobCategory.MONSTER ? 10 : 5;
+		if (EXCLUDED_PASSIVE_MOBS.contains(mob)) {
+			return;
+		}
+		MobCategory category = victim.getType().getCategory();
+		int xp;
+		if (RARE_OR_BOSS_MOBS.contains(mob)) {
+			xp = 75;
+		} else if (category == MobCategory.MONSTER) {
+			xp = 30;
+		} else if (category == MobCategory.CREATURE || category == MobCategory.AMBIENT || category == MobCategory.WATER_CREATURE
+			|| category == MobCategory.WATER_AMBIENT || category == MobCategory.AXOLOTLS) {
+			xp = 10;
+		} else {
+			return;
+		}
 		awardOnce(player, "first_kill:" + mob, xp);
+	}
+
+	public static void awardWorkstationOnce(ServerPlayer player, Block workstation) {
+		awardOnce(player, "workstation_success_v2:" + BuiltInRegistries.BLOCK.getKey(workstation), 15);
 	}
 
 	public static boolean claimFirstBreed(Animal animal, Animal other) {
@@ -109,12 +124,14 @@ public final class XpProgression {
 	public static void awardFirstTame(TamableAnimal animal, Player player) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			String kind = EntityType.getKey(animal.getType()).toString();
-			awardOnce(serverPlayer, "first_tame:" + kind, 5);
+			awardOnce(serverPlayer, "first_tame:" + kind, 10);
 		}
 	}
 
-	public static void awardFirstVillagerTrade(ServerPlayer player) {
-		awardOnce(player, "first_trade:villager", 15);
+	public static void awardFirstVillagerTrade(ServerPlayer player, Villager villager) {
+		String profession = villager.getVillagerData().profession().unwrapKey()
+			.map(key -> key.identifier().toString()).orElse("minecraft:none");
+		awardOnce(player, "first_trade:villager:" + profession, 30);
 	}
 
 	public static void awardFirstPiglinTrade(Piglin piglin) {
@@ -123,7 +140,7 @@ public final class XpProgression {
 		}
 		Player nearest = level.getNearestPlayer(piglin.getX(), piglin.getY(), piglin.getZ(), 8.0, candidate -> candidate instanceof ServerPlayer);
 		if (nearest instanceof ServerPlayer player) {
-			awardOnce(player, "first_trade:piglin", 15);
+			awardOnce(player, "first_trade:piglin", 30);
 		}
 	}
 
@@ -132,7 +149,7 @@ public final class XpProgression {
 			candidate -> candidate instanceof ServerPlayer);
 		if (nearest instanceof ServerPlayer player) {
 			player.giveExperiencePoints(2);
-			awardOnce(player, "first_hatch:" + EntityType.getKey(eggType), 5);
+			awardOnce(player, "first_hatch:" + EntityType.getKey(eggType), 10);
 		}
 	}
 
@@ -144,10 +161,20 @@ public final class XpProgression {
 		for (net.minecraft.core.BlockPos pos : net.minecraft.core.BlockPos.betweenClosed(
 			clicked.offset(-2, -1, -2), clicked.offset(2, 3, 2))) {
 			if (level.getBlockState(pos).is(Blocks.NETHER_PORTAL)) {
-				awardOnce(player, "portal:minecraft:the_nether", 25);
+				awardOnce(player, "portal:minecraft:the_nether", 75);
 				return;
 			}
 		}
+	}
+
+	public static boolean awardFirstBeaconActivation(ServerLevel level, net.minecraft.core.BlockPos pos) {
+		Player nearest = level.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 32.0,
+			candidate -> candidate instanceof ServerPlayer);
+		if (nearest instanceof ServerPlayer player) {
+			awardOnce(player, "beacon:first_activation", 75);
+			return true;
+		}
+		return false;
 	}
 
 	public static void awardArmorTrim(Player player, ItemStack result) {

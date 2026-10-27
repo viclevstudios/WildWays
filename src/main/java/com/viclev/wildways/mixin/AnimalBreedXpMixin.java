@@ -25,8 +25,8 @@ public abstract class AnimalBreedXpMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;<init>(Lnet/minecraft/world/level/Level;DDDI)V"),
 		index = 4
 	)
-	private int wildways$tripleFirstBreedXp(int xp) {
-		return this.wildways$tripleBreedXp ? xp * 3 : xp;
+	private int wildways$increaseFirstBreedXp(int xp) {
+		return this.wildways$tripleBreedXp ? xp * 9 : xp;
 	}
 
 	@Inject(method = "finalizeSpawnChildFromBreeding", at = @At("TAIL"))

@@ -156,7 +156,7 @@ public final class PortalEyeManager {
 		}
 		level.globalLevelEvent(1038, corner.offset(1, 0, 1), 0);
 		if (player != null) {
-			XpProgression.awardOnce(player, "portal:minecraft:the_end", 25);
+			XpProgression.awardOnce(player, "portal:minecraft:the_end", 75);
 		}
 	}
 

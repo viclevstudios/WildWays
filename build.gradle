@@ -51,6 +51,31 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": version
 	}
+
+	// Author nest textures at one pixel per model unit (12x12 per image).
+	// Ship 4x nearest-neighbour copies so 12px sprites do not cap the whole
+	// block atlas at mip level 2; 48px images support vanilla's mip level 4.
+	doLast {
+		def texturePath = 'assets/wildways/textures/block'
+		def sourceTextures = file("src/main/resources/${texturePath}")
+		def outputTextures = new File(destinationDir, texturePath)
+		['endermite_nest_top', 'endermite_nest_top_open', 'endermite_nest_side'].each { name ->
+			def sourceImage = javax.imageio.ImageIO.read(new File(sourceTextures, "${name}.png"))
+			if (sourceImage.width != 12 || sourceImage.height != 12) {
+				throw new GradleException("${name}.png must be a single 12x12 texture")
+			}
+			def outputImage = new java.awt.image.BufferedImage(
+				sourceImage.width * 4, sourceImage.height * 4, java.awt.image.BufferedImage.TYPE_INT_ARGB)
+			for (int y = 0; y < outputImage.height; y++) {
+				for (int x = 0; x < outputImage.width; x++) {
+					outputImage.setRGB(x, y, sourceImage.getRGB(x.intdiv(4), y.intdiv(4)))
+				}
+			}
+			javax.imageio.ImageIO.write(outputImage, 'PNG', new File(outputTextures, "${name}.png"))
+		}
+		// Copy tasks can retain removed files from earlier builds.
+		delete new File(outputTextures, 'endermite_nest_side.png.mcmeta')
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {

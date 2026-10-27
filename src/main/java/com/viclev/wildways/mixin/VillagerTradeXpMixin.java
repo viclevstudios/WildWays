@@ -20,8 +20,8 @@ public abstract class VillagerTradeXpMixin {
 
 	@Inject(method = "onTake", at = @At("TAIL"))
 	private void wildways$rewardFirstVillagerTrade(Player player, ItemStack result, CallbackInfo ci) {
-		if (this.merchant instanceof Villager && player instanceof ServerPlayer serverPlayer && !result.isEmpty()) {
-			XpProgression.awardFirstVillagerTrade(serverPlayer);
+		if (this.merchant instanceof Villager villager && player instanceof ServerPlayer serverPlayer && !result.isEmpty()) {
+			XpProgression.awardFirstVillagerTrade(serverPlayer, villager);
 		}
 	}
 }
