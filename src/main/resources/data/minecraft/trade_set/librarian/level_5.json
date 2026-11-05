@@ -1,7 +1,6 @@
 {
   "trades": [
-    "minecraft:librarian/5/emerald_yellow_candle",
-    "minecraft:librarian/5/emerald_red_candle"
+    "wildways:librarian/regional_book"
   ],
   "amount": 1,
   "random_sequence": "minecraft:trade_set/librarian/level_5"

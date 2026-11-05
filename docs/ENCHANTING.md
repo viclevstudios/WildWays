@@ -55,15 +55,24 @@ The Eye of Enchanting (`wildways:enchanted_eye`) requires an Attunement enchante
 
 ## Librarians
 
-New librarians use JSON trade sets with at most two offers per level. The variable offer is selected once when that level unlocks; the fixed offers are added when the trading screen opens. Interacting with an existing librarian removes old random enchanted-book sales and previously unlocked catalyst offers, reduces excess offers from earlier WildWays versions, and retains ordinary bookshelf sales without resetting the uses of kept offers.
+Librarians unlock two offers per level, with three at journeyman. JSON trade sets select variable offers when their level unlocks. Opening the trade screen fills in missing fixed offers and migrates old trades. Existing librarians below journeyman lose their old Chiseled Bookshelf sale, and retained offers keep their uses.
 
 | Profession level | Offer |
 | --- | --- |
-| Novice | Ordinary Bookshelf for 9 emeralds; either paper purchase or Chiseled Bookshelf for 5 emeralds |
+| Novice | Ordinary Bookshelf for 9 emeralds, and 24 paper for 1 emerald |
 | Apprentice | Book purchase; either Copper Rune for 10 emeralds or Iron Rune for 20 emeralds |
-| Journeyman | Ink sac purchase |
-| Expert | Two of writable book purchase, clock sale and compass sale |
-| Master | Attunement enchanted book for 18 emeralds; either red or yellow candle |
+| Journeyman | 5 ink sacs for 1 emerald, 2 writable books for 1 emerald, and Chiseled Bookshelf for 5 emeralds |
+| Expert | Golden Rune for 30 emeralds, and either a clock for 5 emeralds or a compass for 4 emeralds |
+| Master | Attunement enchanted book for 18 emeralds, plus a regional enchanted book for one plain book and a base price of 10–38 emeralds in steps of two |
+
+| Villager type | Regional book |
+| --- | --- |
+| Snow | Unbreaking |
+| Savanna and Jungle | Sharpness |
+| Plains and Taiga | Efficiency |
+| Swamp and Desert | Protection |
+
+The regional book is based on the villager's type and is first offered at master level. Each book follows the usual WildWays enchanting rules. The trade uses vanilla Mending pricing. The base price is rolled once per offer. Moving the villager or replacing its lectern leaves its specialty tied to its type. Existing masters replace their old candle trade when the trading screen opens.
 
 The Attunement book is always available at master level, without a donation or other unlock. The catalyst is obtained through its crafting recipe, not librarian trading. The Attunement offer restocks through vanilla merchant data.
 
@@ -86,7 +95,7 @@ JSON defines Mending's disabled orb effect, precious-enchantment tags and librar
 6. Give `/give @s wildways:enchanted_eye` and `/give @s minecraft:enchanted_book[minecraft:stored_enchantments={"wildways:attunement":1}]`. With rune 1, lapis and one XP level, enchant the eye and verify that it works in an End Portal Frame. A plain book must fail.
 7. Damage an item with Mending, collect XP, and confirm it stays damaged. Repair it at an anvil with its material: diamond for diamond equipment, refined Volcanite for Volcanite, or Netherite Scrap for Netherite. Check that one material fully repairs it and that Mending alone costs three levels. Remove Mending and verify material repair is unavailable.
 8. Combine damaged copies of the same item at an anvil, including enchanted copies. Repeat to observe linear prior-work growth, and verify combinations above forty levels when enough XP is available. Attempt to apply or combine enchanted books; no output should appear.
-9. Level a librarian through the new offers. Check that each level adds at most two trades: Novice always sells an ordinary Bookshelf, Apprentice sells either a Copper or Iron Rune (never both), Expert adds two offers, and Master always sells Attunement for eighteen emeralds alongside only one candle color. Holding an enchanted book while opening the trade screen must not consume it. Reload the world and check that the Attunement offer persists and restocks; old catalyst offers should disappear.
+9. Level a librarian through the new offers. Check that Novice sells an ordinary Bookshelf and buys paper, and Apprentice sells either a Copper or Iron Rune. Journeyman buys ink sacs and writable books and sells a Chiseled Bookshelf for 5 emeralds. Expert sells a Golden Rune for 30 emeralds and either a clock or a compass. Master sells Attunement for 18 emeralds and the regional book for an even base price of 10–38 emeralds plus one plain book. Check masters from different village types, including an existing master whose candle offer should be replaced. Holding an enchanted book while opening the trade screen must not consume it. Reload the world and check that the offers persist and restock. Old catalyst offers should disappear.
 10. Leave ingredients in the Enchanting Table and both inputs in an anvil, close each screen and reload the world. Confirm they remain in the correct workstation and appear outside it, with the anvil items lying flat. Break each block and check that the stored items are returned exactly once.
 
 Automated server integration tests run with `.\gradlew.bat runGameTest`. They exercise actual menu transactions, the universal catalyst at every rune tier, live shelf checks, Mending data and repairs, book normalization, Attunement Shift-click, librarian offer migration, anvil combinations, both rune-5 recipes, the catalyst crafting result, book conversion recipes, custom book loot tables and planned trader offers. Client layout and survival pacing remain manual checks.

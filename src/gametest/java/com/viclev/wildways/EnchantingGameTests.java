@@ -1,6 +1,7 @@
 package com.viclev.wildways;
 
 import java.util.List;
+import java.util.Map;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AnvilMenu;
@@ -298,17 +300,39 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void newLibrariansHaveAtMostTwoOffersPerLevel(GameTestHelper helper) {
+	public void newLibrariansGenerateExpectedOffersPerLevel(GameTestHelper helper) {
 		Player player = this.player(helper, 0);
 		for (int level = 1; level <= 5; level++) {
 			Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
 			villager.setVillagerData(villager.getVillagerData().withProfession(helper.getLevel().registryAccess(), VillagerProfession.LIBRARIAN).withLevel(level));
 			var offers = villager.getOffers();
-			helper.assertTrue(offers.size() <= 2, "A new librarian level must generate at most two offers");
+			int maximumOffers = level == 3 ? 3 : 2;
+			helper.assertTrue(offers.size() <= maximumOffers, "A new librarian level must respect its offer limit");
+			if (level == 1) {
+				helper.assertTrue(offers.size() == 1 && offers.getFirst().getBaseCostA().is(Items.PAPER),
+					"New novices must generate a paper purchase");
+				offers.clear();
+				offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CHISELED_BOOKSHELF), 12, 1, 0.05F));
+			}
+			if (level == 3) {
+				helper.assertTrue(offers.size() == 3 && offers.stream().anyMatch(offer -> offer.getBaseCostA().is(Items.INK_SAC)
+					&& offer.getResult().is(Items.EMERALD)), "New journeymen must still buy ink sacs");
+				helper.assertTrue(offers.removeIf(offer -> offer.getBaseCostA().is(Items.WRITABLE_BOOK)),
+					"New journeymen must also buy writable books");
+				helper.assertTrue(offers.removeIf(offer -> offer.getResult().is(Items.CHISELED_BOOKSHELF)),
+					"New journeymen must generate a chiseled bookshelf sale");
+			}
 			UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
+			helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(ModItems.BIOME_COMPASS)), "Librarians must not sell a biome compass");
 			if (level == 1) {
 				helper.assertTrue(offers.size() == 2 && offers.stream().anyMatch(offer -> offer.getResult().is(Items.BOOKSHELF)
-					&& offer.getBaseCostA().getCount() == 9), "Novices need one ordinary Bookshelf and one alternative offer");
+					&& offer.getBaseCostA().getCount() == 9) && offers.stream().anyMatch(offer -> offer.getBaseCostA().is(Items.PAPER)
+					&& offer.getBaseCostA().getCount() == 24 && offer.getResult().is(Items.EMERALD)),
+					"An old novice must sell ordinary bookshelves and buy paper");
+			}
+			if (level < 3) {
+				helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(Items.CHISELED_BOOKSHELF)),
+					"The chiseled bookshelf must not be available before journeyman");
 			}
 			if (level == 2) {
 				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(EnchantingItems.RUNES.get(0))
@@ -316,15 +340,25 @@ public class EnchantingGameTests {
 				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.EMERALD)
 					&& offer.getBaseCostA().is(Items.BOOK)).count() == 1, "Apprentices also buy books");
 			}
+			if (level == 3) {
+				helper.assertTrue(offers.stream().filter(offer -> offer.getBaseCostA().is(Items.WRITABLE_BOOK)
+					&& offer.getBaseCostA().getCount() == 2 && offer.getResult().is(Items.EMERALD)).count() == 1,
+					"The old ink-only journeyman must gain the writable book purchase at the original price");
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.CHISELED_BOOKSHELF)
+					&& offer.getBaseCostA().is(Items.EMERALD) && offer.getBaseCostA().getCount() == 5).count() == 1,
+					"An old journeyman must gain a chiseled bookshelf sale for five emeralds");
+			}
 			if (level == 4) {
 				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.CLOCK)
-					|| offer.getResult().is(Items.COMPASS) || offer.getBaseCostA().is(Items.WRITABLE_BOOK)).count() == 2,
-					"Experts may add only two level-four trades");
+					|| offer.getResult().is(Items.COMPASS)).count() == 1, "Experts must sell either a clock or a compass");
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(EnchantingItems.RUNES.get(2))
+					&& offer.getBaseCostA().is(Items.EMERALD) && offer.getBaseCostA().getCount() == 30).count() == 1,
+					"Every expert must sell a Golden Rune for thirty emeralds");
 			}
 			if (level == 5) {
 				var attunement = this.enchantment(helper, ResourceKey.create(Registries.ENCHANTMENT, Wildways.id("attunement")));
-				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.DYED_CANDLE.red())
-					|| offer.getResult().is(Items.DYED_CANDLE.yellow())).count() == 1, "Masters must offer only one candle color");
+				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 2,
+					"Masters must offer the regional book and Attunement");
 				helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)
 					&& offer.getResult().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(attunement) == 1
 					&& offer.getBaseCostA().getCount() == 18).count() == 1, "Every master must sell Attunement for eighteen emeralds");
@@ -337,50 +371,105 @@ public class EnchantingGameTests {
 	public void existingLibrariansLoseExcessTradesWithoutDonations(GameTestHelper helper) {
 		Player player = this.player(helper, 0);
 		Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
-		villager.setVillagerData(villager.getVillagerData().withProfession(helper.getLevel().registryAccess(), VillagerProfession.LIBRARIAN).withLevel(5));
+		var registries = helper.getLevel().registryAccess();
+		villager.setVillagerData(villager.getVillagerData().withProfession(registries, VillagerProfession.LIBRARIAN)
+			.withType(registries, VillagerType.PLAINS).withLevel(5));
 		var offers = villager.getOffers();
+		offers.removeIf(offer -> offer.getResult().is(Items.ENCHANTED_BOOK));
 		var attunement = this.enchantment(helper, ResourceKey.create(Registries.ENCHANTMENT, Wildways.id("attunement")));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 9), new ItemStack(Items.BOOKSHELF), 12, 1, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.PAPER, 24), new ItemStack(Items.EMERALD), 16, 2, 0.05F));
-		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CHISELED_BOOKSHELF), 12, 1, 0.05F));
+		MerchantOffer chiseledBookshelfOffer = new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CHISELED_BOOKSHELF), 12, 1, 0.05F);
+		chiseledBookshelfOffer.increaseUses();
+		offers.add(chiseledBookshelfOffer);
 		offers.add(new MerchantOffer(new ItemCost(Items.BOOK, 4), new ItemStack(Items.EMERALD), 12, 10, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 10), new ItemStack(EnchantingItems.RUNES.get(0)), 12, 5, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), new ItemStack(EnchantingItems.RUNES.get(1)), 12, 5, 0.05F));
-		offers.add(new MerchantOffer(new ItemCost(Items.WRITABLE_BOOK, 2), new ItemStack(Items.EMERALD), 12, 15, 0.05F));
-		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CLOCK), 12, 15, 0.05F));
+		MerchantOffer writableBookOffer = new MerchantOffer(new ItemCost(Items.WRITABLE_BOOK, 2), new ItemStack(Items.EMERALD), 12, 30, 0.05F);
+		writableBookOffer.increaseUses();
+		offers.add(writableBookOffer);
+		MerchantOffer clockOffer = new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CLOCK), 12, 15, 0.05F);
+		clockOffer.increaseUses();
+		offers.add(clockOffer);
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.COMPASS), 12, 15, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(ModItems.BIOME_COMPASS), 12, 10, 0.05F));
-		Item otherCandle = offers.stream().anyMatch(offer -> offer.getResult().is(Items.DYED_CANDLE.red()))
-			? Items.DYED_CANDLE.yellow() : Items.DYED_CANDLE.red();
-		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 3), new ItemStack(otherCandle), 12, 30, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 3), new ItemStack(Items.DYED_CANDLE.red()), 12, 30, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 18), new ItemStack(EnchantingItems.CATALYST), 12, 30, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 18), this.book(helper, Enchantments.MENDING, 1), 12, 30, 0.05F));
 		player.setItemInHand(InteractionHand.MAIN_HAND, this.book(helper, Enchantments.UNBREAKING, 1));
 		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
 		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.BOOKSHELF)).count() == 1,
 			"Existing ordinary bookshelf sales must remain available without duplication");
-		helper.assertTrue(offers.stream().filter(offer -> offer.getBaseCostA().is(Items.PAPER)
-			|| offer.getResult().is(Items.CHISELED_BOOKSHELF)).count() == 1, "Only one novice alternative may remain");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getBaseCostA().is(Items.PAPER)).count() == 1,
+			"The novice paper purchase must remain available");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.CHISELED_BOOKSHELF)).count() == 1
+			&& offers.contains(chiseledBookshelfOffer) && chiseledBookshelfOffer.getUses() == 1,
+			"Existing masters must keep their chiseled bookshelf sale and its uses");
 		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(EnchantingItems.RUNES.get(0))
 			|| offer.getResult().is(EnchantingItems.RUNES.get(1))).count() == 1, "Only one apprentice rune may remain");
-		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.CLOCK)
-			|| offer.getResult().is(Items.COMPASS) || offer.getBaseCostA().is(Items.WRITABLE_BOOK)).count() == 2,
-			"Existing experts must keep no more than two level-four trades");
-		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.DYED_CANDLE.red())
-			|| offer.getResult().is(Items.DYED_CANDLE.yellow())).count() == 1, "Only one master candle may remain");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.CLOCK) || offer.getResult().is(Items.COMPASS)).count() == 1
+			&& offers.contains(clockOffer) && clockOffer.getUses() == 1, "Migration must preserve the used navigation offer");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getBaseCostA().is(Items.WRITABLE_BOOK)).count() == 1
+			&& offers.contains(writableBookOffer) && writableBookOffer.getUses() == 1, "Migration must retain a used writable book purchase");
+		helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(Items.DYED_CANDLE.red())
+			|| offer.getResult().is(Items.DYED_CANDLE.yellow())), "The old master candle offer must be removed");
 		helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(ModItems.BIOME_COMPASS)),
 			"Old librarian biome compass offers must be removed");
 		helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(EnchantingItems.CATALYST)),
 			"Old catalyst offers must be removed");
-		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 1,
-			"Only the fixed Attunement book may be sold");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 2
+			&& offers.stream().anyMatch(offer -> ItemStack.matches(offer.getResult(), this.book(helper, Enchantments.EFFICIENCY, 1))),
+			"The old master must gain the regional book and lose the unrelated book");
 		helper.assertTrue(offers.stream().anyMatch(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)
 			&& offer.getResult().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(attunement) == 1
 			&& offer.getBaseCostA().getCount() == 18), "Master librarians must sell Attunement for eighteen emeralds");
 		helper.assertTrue(player.getMainHandItem().is(Items.ENCHANTED_BOOK), "Interacting must not donate the held book");
 		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
-		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 1,
-			"Opening the same librarian twice must not duplicate the Attunement offer");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(EnchantingItems.RUNES.get(2))).count() == 1,
+			"Opening an existing master twice must grant exactly one Golden Rune offer");
+		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 2,
+			"Opening the same librarian twice must not duplicate either master book");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void regionalBookTradesFollowAllSevenVillagerTypes(GameTestHelper helper) {
+		var level = helper.getLevel();
+		Player player = this.player(helper, 0);
+		var regionalBooks = Map.of(VillagerType.SNOW, Enchantments.UNBREAKING,
+			VillagerType.SAVANNA, Enchantments.SHARPNESS, VillagerType.JUNGLE, Enchantments.SHARPNESS,
+			VillagerType.PLAINS, Enchantments.EFFICIENCY, VillagerType.TAIGA, Enchantments.EFFICIENCY,
+			VillagerType.SWAMP, Enchantments.PROTECTION, VillagerType.DESERT, Enchantments.PROTECTION);
+		for (var regionalBook : regionalBooks.entrySet()) {
+			Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
+			villager.setVillagerData(villager.getVillagerData().withProfession(level.registryAccess(), VillagerProfession.LIBRARIAN)
+				.withType(level.registryAccess(), regionalBook.getKey()).withLevel(5));
+			var offers = villager.getOffers();
+			helper.assertTrue(offers.size() == 1, "Each master type must generate one regional offer");
+			MerchantOffer offer = offers.getFirst();
+			int price = offer.getBaseCostA().getCount();
+			helper.assertTrue(ItemStack.matches(offer.getResult(), this.book(helper, regionalBook.getValue(), 1))
+				&& offer.getBaseCostA().is(Items.EMERALD) && price >= 10 && price <= 38 && price % 2 == 0
+				&& offer.getCostB().is(Items.BOOK) && offer.getCostB().getCount() == 1 && offer.getPriceMultiplier() == 0.2F,
+				"Wrong regional book or price for " + regionalBook.getKey().identifier());
+			offer.increaseUses();
+			UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, villager, null);
+			helper.assertTrue(offers.contains(offer) && offer.getUses() == 1 && offer.getBaseCostA().getCount() == price,
+				"Opening the trade must retain the generated price and its uses");
+
+			int offerIndex = offers.indexOf(offer);
+			MerchantOffer legacyOffer = new MerchantOffer(new ItemCost(Items.EMERALD, 20), offer.getItemCostB(),
+				offer.getResult(), 12, 12, 30, 0.05F, 2);
+			offers.set(offerIndex, legacyOffer);
+			UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, villager, null);
+			MerchantOffer migrated = offers.get(offerIndex);
+			int migratedPrice = migrated.getBaseCostA().getCount();
+			helper.assertTrue(migrated != legacyOffer && migrated.getPriceMultiplier() == 0.2F
+				&& migratedPrice >= 10 && migratedPrice <= 38 && migratedPrice % 2 == 0
+				&& migrated.isOutOfStock() && migrated.getDemand() == 2, "Old offers must migrate without resetting stock or demand");
+			UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, villager, null);
+			helper.assertTrue(offers.get(offerIndex) == migrated, "The migrated price must remain fixed after reopening the trade");
+		}
 		helper.succeed();
 	}
 

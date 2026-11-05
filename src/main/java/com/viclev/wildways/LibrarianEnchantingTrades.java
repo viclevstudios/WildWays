@@ -1,12 +1,14 @@
 package com.viclev.wildways;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
@@ -17,10 +19,17 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.item.trading.VillagerTrade;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.jspecify.annotations.Nullable;
 
 /** Updates existing librarians to the current trades when they are opened. */
 public final class LibrarianEnchantingTrades {
 	private static final ResourceKey<Enchantment> ATTUNEMENT = ResourceKey.create(Registries.ENCHANTMENT, Wildways.id("attunement"));
+	private static final ResourceKey<VillagerTrade> REGIONAL_BOOK = ResourceKey.create(Registries.VILLAGER_TRADE, Wildways.id("librarian/regional_book"));
 
 	private LibrarianEnchantingTrades() {
 	}
@@ -32,26 +41,34 @@ public final class LibrarianEnchantingTrades {
 				return InteractionResult.PASS;
 			}
 			if (level instanceof ServerLevel serverLevel) {
+				int professionLevel = villager.getVillagerData().level();
 				MerchantOffers offers = villager.getOffers();
-				ItemStack attunementBook = attunementBook(serverLevel);
+				ItemStack attunementBook = EnchantedBookSources.book(serverLevel, ATTUNEMENT);
+				MerchantOffer regionalBook = professionLevel >= 5 ? regionalBookOffer(serverLevel, villager) : null;
+				Predicate<MerchantOffer> isRegionalBook = offer -> regionalBook != null
+					&& ItemStack.matches(offer.getResult(), regionalBook.getResult())
+					&& ItemStack.isSameItemSameComponents(offer.getBaseCostA(), regionalBook.getBaseCostA())
+					&& ItemStack.matches(offer.getCostB(), regionalBook.getCostB());
 				// Remove old random book sales and offers replaced by the current trade sets.
 				offers.removeIf(offer -> offer.getResult().is(EnchantingItems.CATALYST)
 					|| offer.getResult().is(ModItems.BIOME_COMPASS)
 					|| offer.getResult().is(Items.LANTERN) || offer.getResult().is(Items.GLASS)
+					|| offer.getResult().is(Items.DYED_CANDLE.red()) || offer.getResult().is(Items.DYED_CANDLE.yellow())
+					|| (professionLevel < 3 && offer.getResult().is(Items.CHISELED_BOOKSHELF))
 					|| (offer.getResult().is(Items.ENCHANTED_BOOK)
-						&& !ItemStack.isSameItemSameComponents(offer.getResult(), attunementBook)));
+						&& !ItemStack.isSameItemSameComponents(offer.getResult(), attunementBook) && !isRegionalBook.test(offer)));
 				// Earlier versions granted every alternative; keep only the permitted number per level.
-				keepAtMost(offers, offer -> isPaperSale(offer) || offer.getResult().is(Items.CHISELED_BOOKSHELF), 1, villager.getRandom());
+				keepAtMost(offers, LibrarianEnchantingTrades::isPaperSale, 1, villager.getRandom());
+				keepAtMost(offers, offer -> offer.getResult().is(Items.CHISELED_BOOKSHELF), 1, villager.getRandom());
 				keepAtMost(offers, offer -> isRune(offer), 1, villager.getRandom());
-				keepAtMost(offers, offer -> isWritableBookSale(offer) || offer.getResult().is(Items.CLOCK)
-					|| offer.getResult().is(Items.COMPASS), 2, villager.getRandom());
-				keepAtMost(offers, offer -> offer.getResult().is(Items.DYED_CANDLE.red())
-					|| offer.getResult().is(Items.DYED_CANDLE.yellow()), 1, villager.getRandom());
+				keepAtMost(offers, LibrarianEnchantingTrades::isWritableBookSale, 1, villager.getRandom());
+				keepAtMost(offers, offer -> offer.getResult().is(Items.CLOCK) || offer.getResult().is(Items.COMPASS), 1, villager.getRandom());
+				keepAtMost(offers, isRegionalBook, 1, villager.getRandom());
 				ensureOffer(offers, Items.BOOKSHELF, 9, 1);
-				if (offers.stream().noneMatch(offer -> isPaperSale(offer) || offer.getResult().is(Items.CHISELED_BOOKSHELF))) {
-					ensureOffer(offers, Items.CHISELED_BOOKSHELF, 5, 1);
+				if (offers.stream().noneMatch(LibrarianEnchantingTrades::isPaperSale)) {
+					offers.add(new MerchantOffer(new ItemCost(Items.PAPER, 24), new ItemStack(Items.EMERALD), 16, 2, 0.05F));
 				}
-				if (villager.getVillagerData().level() >= 2) {
+				if (professionLevel >= 2) {
 					if (offers.stream().noneMatch(LibrarianEnchantingTrades::isBookSale)) {
 						offers.add(new MerchantOffer(new ItemCost(Items.BOOK, 4), new ItemStack(Items.EMERALD), 12, 10, 0.05F));
 					}
@@ -60,18 +77,49 @@ public final class LibrarianEnchantingTrades {
 						ensureOffer(offers, EnchantingItems.RUNES.get(tier), tier == 0 ? 10 : 20, 5);
 					}
 				}
-				if (villager.getVillagerData().level() >= 5 && !hasOffer(offers, attunementBook)) {
+				if (professionLevel >= 3) {
+					if (offers.stream().noneMatch(LibrarianEnchantingTrades::isWritableBookSale)) {
+						offers.add(new MerchantOffer(new ItemCost(Items.WRITABLE_BOOK, 2), new ItemStack(Items.EMERALD), 12, 30, 0.05F));
+					}
+					ensureOffer(offers, Items.CHISELED_BOOKSHELF, 5, 1);
+				}
+				if (professionLevel >= 4) {
+					ensureOffer(offers, EnchantingItems.RUNES.get(2), 30, 15);
+				}
+				if (professionLevel >= 5 && !hasOffer(offers, attunementBook)) {
 					offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 18), attunementBook, 12, 30, 0.05F));
+				}
+				if (regionalBook != null) {
+					ensureRegionalBookOffer(offers, isRegionalBook, regionalBook);
 				}
 			}
 			return InteractionResult.PASS;
 		});
 	}
 
-	private static ItemStack attunementBook(ServerLevel level) {
-		ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
-		book.enchant(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ATTUNEMENT), 1);
-		return book;
+	private static void ensureRegionalBookOffer(MerchantOffers offers, Predicate<MerchantOffer> isRegionalBook, MerchantOffer regionalBook) {
+		for (int index = 0; index < offers.size(); index++) {
+			MerchantOffer existing = offers.get(index);
+			if (isRegionalBook.test(existing)) {
+				int price = existing.getBaseCostA().getCount();
+				if (existing.getPriceMultiplier() != regionalBook.getPriceMultiplier() || price < 10 || price > 38 || price % 2 != 0) {
+					offers.set(index, new MerchantOffer(regionalBook.getItemCostA(), regionalBook.getItemCostB(), regionalBook.getResult(),
+						existing.getUses(), regionalBook.getMaxUses(), regionalBook.getXp(), regionalBook.getPriceMultiplier(), existing.getDemand()));
+				}
+				return;
+			}
+		}
+		offers.add(regionalBook);
+	}
+
+	private static @Nullable MerchantOffer regionalBookOffer(ServerLevel level, Villager villager) {
+		LootParams params = new LootParams.Builder(level)
+			.withParameter(LootContextParams.ORIGIN, villager.position())
+			.withParameter(LootContextParams.THIS_ENTITY, villager)
+			.withParameter(LootContextParams.ADDITIONAL_COST_COMPONENT_ALLOWED, Unit.INSTANCE)
+			.create(LootContextParamSets.VILLAGER_TRADE);
+		LootContext context = new LootContext.Builder(params).create(Optional.empty());
+		return level.registryAccess().lookupOrThrow(Registries.VILLAGER_TRADE).getOrThrow(REGIONAL_BOOK).value().getOffer(context);
 	}
 
 	private static boolean hasOffer(MerchantOffers offers, Item item) {
