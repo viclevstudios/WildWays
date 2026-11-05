@@ -1,0 +1,18 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_all_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["minecraft:ender_eye"] },
+          { "items": ["wildways:volcanite"] }
+        ]
+      }
+    }
+  },
+  "requirements": [["has_all_ingredients"]],
+  "rewards": {
+    "recipes": ["wildways:eye_of_volcanite"]
+  }
+}

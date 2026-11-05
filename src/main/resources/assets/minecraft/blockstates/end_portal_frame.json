@@ -16,6 +16,8 @@
     { "when": { "eye": "true", "wildways_eye_type": "9" }, "apply": { "model": "wildways:block/portal_eye/eye_of_the_creaking" } },
     { "when": { "eye": "true", "wildways_eye_type": "10" }, "apply": { "model": "wildways:block/portal_eye/eye_of_brewing" } },
     { "when": { "eye": "true", "wildways_eye_type": "11" }, "apply": { "model": "wildways:block/portal_eye/enchanted_eye" } },
-    { "when": { "eye": "true", "wildways_eye_type": "12" }, "apply": { "model": "wildways:block/portal_eye/eye_of_endermites" } }
+    { "when": { "eye": "true", "wildways_eye_type": "12" }, "apply": { "model": "wildways:block/portal_eye/eye_of_endermites" } },
+    { "when": { "eye": "true", "wildways_eye_type": "13" }, "apply": { "model": "wildways:block/portal_eye/eye_of_sulfur" } },
+    { "when": { "eye": "true", "wildways_eye_type": "14" }, "apply": { "model": "wildways:block/portal_eye/attuned_eye_of_volcanite" } }
   ]
 }

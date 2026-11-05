@@ -1,0 +1,6 @@
+{
+  "parent": "wildways:block/portal_eye/overlay",
+  "textures": {
+    "eye": "wildways:block/portal_eye/attuned_eye_of_volcanite"
+  }
+}

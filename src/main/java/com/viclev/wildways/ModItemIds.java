@@ -34,6 +34,9 @@ public final class ModItemIds {
 	public static final ResourceKey<Item> EYE_OF_BREWING = create("eye_of_brewing");
 	public static final ResourceKey<Item> ENCHANTED_EYE = create("enchanted_eye");
 	public static final ResourceKey<Item> EYE_OF_ENDERMITES = create("eye_of_endermites");
+	public static final ResourceKey<Item> EYE_OF_SULFUR = create("eye_of_sulfur");
+	public static final ResourceKey<Item> EYE_OF_VOLCANITE = create("eye_of_volcanite");
+	public static final ResourceKey<Item> ATTUNED_EYE_OF_VOLCANITE = create("attuned_eye_of_volcanite");
 	public static final ResourceKey<Item> AWKWARD_EYE = create("awkward_eye");
 	public static final ResourceKey<Item> THICK_EYE = create("thick_eye");
 

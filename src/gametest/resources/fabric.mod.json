@@ -8,6 +8,7 @@
     "fabric-gametest": [
       "com.viclev.wildways.EnchantingGameTests",
       "com.viclev.wildways.EndermiteBoxGameTests",
+      "com.viclev.wildways.PortalEyeGameTests",
       "com.viclev.wildways.VolcaniteGameTests",
       "com.viclev.wildways.VolcaniteTrimGameTests",
       "com.viclev.wildways.SpearGameTests",

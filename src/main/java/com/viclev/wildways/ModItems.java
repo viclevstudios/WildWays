@@ -56,6 +56,13 @@ public final class ModItems {
 	public static final PortalEyeItem EYE_OF_BREWING = portalEye(ModItemIds.EYE_OF_BREWING, false);
 	public static final PortalEyeItem ENCHANTED_EYE = portalEye(ModItemIds.ENCHANTED_EYE, true);
 	public static final PortalEyeItem EYE_OF_ENDERMITES = portalEye(ModItemIds.EYE_OF_ENDERMITES, false);
+	public static final PortalEyeItem EYE_OF_SULFUR = portalEye(ModItemIds.EYE_OF_SULFUR, false);
+	public static final Item EYE_OF_VOLCANITE = register(ModItemIds.EYE_OF_VOLCANITE, Item::new, new Item.Properties().stacksTo(16).fireResistant());
+	public static final PortalEyeItem ATTUNED_EYE_OF_VOLCANITE = register(
+		ModItemIds.ATTUNED_EYE_OF_VOLCANITE,
+		properties -> new PortalEyeItem(properties, false),
+		new Item.Properties().stacksTo(16).fireResistant()
+	);
 	public static final Item AWKWARD_EYE = register(ModItemIds.AWKWARD_EYE, Item::new, new Item.Properties().stacksTo(16));
 	public static final Item THICK_EYE = register(ModItemIds.THICK_EYE, Item::new, new Item.Properties().stacksTo(16));
 
@@ -71,7 +78,9 @@ public final class ModItems {
 		EYE_OF_THE_CREAKING,
 		EYE_OF_BREWING,
 		ENCHANTED_EYE,
-		EYE_OF_ENDERMITES
+		EYE_OF_ENDERMITES,
+		EYE_OF_SULFUR,
+		ATTUNED_EYE_OF_VOLCANITE
 	);
 	public static final Set<Item> PORTAL_EYE_SET = Set.copyOf(PORTAL_EYES);
 
@@ -113,6 +122,7 @@ public final class ModItems {
 				output.accept(ENDERMITE_SHELL);
 				output.accept(AWKWARD_EYE);
 				output.accept(THICK_EYE);
+				output.accept(EYE_OF_VOLCANITE);
 				PORTAL_EYES.forEach(output::accept);
 			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)

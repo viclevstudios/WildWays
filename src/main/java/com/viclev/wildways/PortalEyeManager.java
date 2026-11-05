@@ -3,9 +3,9 @@ package com.viclev.wildways;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,13 +20,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EndPortalFrameBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.pattern.BlockPattern;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public final class PortalEyeManager {
-	private static final int FRAME_SCAN_RADIUS = 5;
+	private record PortalRing(BlockPos center, List<BlockPos> frames) {
+	}
 
 	private PortalEyeManager() {
 	}
@@ -88,7 +90,8 @@ public final class PortalEyeManager {
 		ServerLevel serverLevel = (ServerLevel)level;
 		PortalEyeData data = data(serverLevel);
 		ItemStack placedStack = context.getItemInHand();
-		if (containsEyeType(serverLevel, data, pos, placedStack.getItem())) {
+		PortalRing ring = findPortalRing(serverLevel, pos, state.getValue(EndPortalFrameBlock.FACING));
+		if (ring != null && ring.frames().stream().anyMatch(frame -> eyeInFrame(serverLevel, data, frame).is(placedStack.getItem()))) {
 			Player player = context.getPlayer();
 			if (player != null) {
 				player.sendOverlayMessage(Component.translatable("message.wildways.duplicate_portal_eye"));
@@ -104,7 +107,9 @@ public final class PortalEyeManager {
 		data.put(pos, placedStack);
 		placedStack.shrink(1);
 		level.levelEvent(1503, pos, 0);
-		tryOpenPortal(serverLevel, pos, data, context.getPlayer() instanceof ServerPlayer serverPlayer ? serverPlayer : null);
+		if (ring != null) {
+			tryOpenPortal(serverLevel, ring, data, context.getPlayer() instanceof ServerPlayer serverPlayer ? serverPlayer : null);
+		}
 		return InteractionResult.SUCCESS_SERVER;
 	}
 
@@ -118,73 +123,75 @@ public final class PortalEyeManager {
 		level.setBlock(pos, state.setValue(EndPortalFrameBlock.HAS_EYE, false)
 			.setValue(PortalEyeStates.EYE_TYPE, 0), Block.UPDATE_ALL);
 		level.updateNeighbourForOutputSignal(pos, Blocks.END_PORTAL_FRAME);
-		closeNearbyPortal(level, pos);
+		PortalRing ring = findPortalRing(level, pos, state.getValue(EndPortalFrameBlock.FACING));
+		if (ring != null) {
+			for (BlockPos interior : portalInterior(ring.center())) {
+				if (level.getBlockState(interior).is(Blocks.END_PORTAL)) {
+					level.setBlock(interior, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+				}
+			}
+		}
 		if (!player.getInventory().add(stack)) {
 			player.drop(stack, false);
 		}
 		level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
 
-	private static boolean containsEyeType(ServerLevel level, PortalEyeData data, BlockPos center, Item type) {
-		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-FRAME_SCAN_RADIUS, -1, -FRAME_SCAN_RADIUS), center.offset(FRAME_SCAN_RADIUS, 1, FRAME_SCAN_RADIUS))) {
-			BlockState state = level.getBlockState(pos);
-			if (!state.is(Blocks.END_PORTAL_FRAME) || !state.getValue(EndPortalFrameBlock.HAS_EYE)) {
-				data.remove(pos);
-				continue;
-			}
-
-			if (data.get(pos).is(type)) {
-				return true;
+	private static PortalRing findPortalRing(ServerLevel level, BlockPos frame, Direction inward) {
+		BlockPos middle = frame.relative(inward, 2);
+		Direction across = inward.getClockWise();
+		for (int offset = -1; offset <= 1; offset++) {
+			BlockPos center = middle.relative(across, offset);
+			List<BlockPos> frames = findFrames(level, center);
+			if (!frames.isEmpty()) {
+				return new PortalRing(center, frames);
 			}
 		}
-		return false;
+		return null;
 	}
 
-	private static void tryOpenPortal(ServerLevel level, BlockPos insertedAt, PortalEyeData data, ServerPlayer player) {
-		BlockPattern.BlockPatternMatch match = EndPortalFrameBlock.getOrCreatePortalShape().find(level, insertedAt);
-		if (match == null || !hasAllUniqueEyes(level, data, insertedAt)) {
-			return;
-		}
-
-		BlockPos corner = match.getFrontTopLeft().offset(-3, 0, -3);
-		for (int x = 0; x < 3; x++) {
-			for (int z = 0; z < 3; z++) {
-				BlockPos portalPos = corner.offset(x, 0, z);
-				level.destroyBlock(portalPos, false);
-				level.setBlock(portalPos, Blocks.END_PORTAL.defaultBlockState(), Block.UPDATE_CLIENTS);
+	private static List<BlockPos> findFrames(ServerLevel level, BlockPos center) {
+		List<BlockPos> frames = new ArrayList<>(12);
+		for (Direction outward : Direction.Plane.HORIZONTAL) {
+			BlockPos side = center.relative(outward, 2);
+			for (int offset = -1; offset <= 1; offset++) {
+				BlockPos pos = side.relative(outward.getClockWise(), offset);
+				BlockState state = level.getBlockState(pos);
+				if (!state.is(Blocks.END_PORTAL_FRAME) || state.getValue(EndPortalFrameBlock.FACING) != outward.getOpposite()) {
+					return List.of();
+				}
+				frames.add(pos);
 			}
 		}
-		level.globalLevelEvent(1038, corner.offset(1, 0, 1), 0);
+		return frames;
+	}
+
+	private static ItemStack eyeInFrame(ServerLevel level, PortalEyeData data, BlockPos frame) {
+		BlockState state = level.getBlockState(frame);
+		return state.is(Blocks.END_PORTAL_FRAME) && state.getValue(EndPortalFrameBlock.HAS_EYE) ? data.get(frame) : ItemStack.EMPTY;
+	}
+
+	private static void tryOpenPortal(ServerLevel level, PortalRing ring, PortalEyeData data, ServerPlayer player) {
+		Set<Item> found = new HashSet<>();
+		for (BlockPos frame : ring.frames()) {
+			Item eye = eyeInFrame(level, data, frame).getItem();
+			if (!ModItems.isPortalEye(eye) || !found.add(eye)) {
+				return;
+			}
+		}
+
+		for (BlockPos pos : portalInterior(ring.center())) {
+			level.destroyBlock(pos, false);
+			level.setBlock(pos, Blocks.END_PORTAL.defaultBlockState(), Block.UPDATE_CLIENTS);
+		}
+		level.globalLevelEvent(1038, ring.center(), 0);
 		if (player != null) {
 			XpProgression.awardOnce(player, "portal:minecraft:the_end", 75);
 		}
 	}
 
-	private static boolean hasAllUniqueEyes(ServerLevel level, PortalEyeData data, BlockPos center) {
-		Set<Item> found = new HashSet<>();
-		int frames = 0;
-		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-FRAME_SCAN_RADIUS, -1, -FRAME_SCAN_RADIUS), center.offset(FRAME_SCAN_RADIUS, 1, FRAME_SCAN_RADIUS))) {
-			BlockState state = level.getBlockState(pos);
-			if (!state.is(Blocks.END_PORTAL_FRAME) || !state.getValue(EndPortalFrameBlock.HAS_EYE)) {
-				continue;
-			}
-
-			ItemStack stack = data.get(pos);
-			if (!ModItems.isPortalEye(stack.getItem())) {
-				return false;
-			}
-			frames++;
-			found.add(stack.getItem());
-		}
-		return frames == ModItems.PORTAL_EYES.size() && found.containsAll(ModItems.PORTAL_EYE_SET);
-	}
-
-	private static void closeNearbyPortal(ServerLevel level, BlockPos center) {
-		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-4, -1, -4), center.offset(4, 1, 4))) {
-			if (level.getBlockState(pos).is(Blocks.END_PORTAL)) {
-				level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
-			}
-		}
+	private static Iterable<BlockPos> portalInterior(BlockPos center) {
+		return BlockPos.betweenClosed(center.offset(-1, 0, -1), center.offset(1, 0, 1));
 	}
 
 	private static PortalEyeData data(ServerLevel level) {

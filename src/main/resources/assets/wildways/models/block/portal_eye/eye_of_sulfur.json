@@ -1,0 +1,6 @@
+{
+  "parent": "wildways:block/portal_eye/overlay",
+  "textures": {
+    "eye": "wildways:block/portal_eye/eye_of_sulfur"
+  }
+}

@@ -4,7 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public final class PortalEyeStates {
-	public static final IntegerProperty EYE_TYPE = IntegerProperty.create("wildways_eye_type", 0, 12);
+	public static final IntegerProperty EYE_TYPE = IntegerProperty.create("wildways_eye_type", 0, 14);
 
 	private PortalEyeStates() {
 	}

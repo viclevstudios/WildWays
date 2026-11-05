@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "V": "wildways:volcanite",
+    "E": "minecraft:ender_eye"
+  },
+  "pattern": [
+    " V ",
+    "VEV",
+    " V "
+  ],
+  "result": {
+    "count": 1,
+    "id": "wildways:eye_of_volcanite"
+  }
+}
