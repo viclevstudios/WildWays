@@ -1,0 +1,117 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:component",
+    "component": "wildways:fishing_bait",
+    "fallback": {
+      "type": "minecraft:condition",
+      "property": "minecraft:fishing_rod/cast",
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "minecraft:item/fishing_rod"
+      },
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "minecraft:item/fishing_rod_cast"
+      }
+    },
+    "cases": [
+      {
+        "when": [
+          { "type": "beetroot_dough", "charges": 1 },
+          { "type": "beetroot_dough", "charges": 2 },
+          { "type": "beetroot_dough", "charges": 3 },
+          { "type": "beetroot_dough", "charges": 4 },
+          { "type": "beetroot_dough", "charges": 5 },
+          { "type": "beetroot_dough", "charges": 6 },
+          { "type": "beetroot_dough", "charges": 7 },
+          { "type": "beetroot_dough", "charges": 8 },
+          { "type": "beetroot_dough", "charges": 9 },
+          { "type": "beetroot_dough", "charges": 10 },
+          { "type": "beetroot_dough", "charges": 11 },
+          { "type": "beetroot_dough", "charges": 12 },
+          { "type": "beetroot_dough", "charges": 13 },
+          { "type": "beetroot_dough", "charges": 14 },
+          { "type": "beetroot_dough", "charges": 15 },
+          { "type": "beetroot_dough", "charges": 16 }
+        ],
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:fishing_rod/cast",
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "wildways:item/fishing_rod/beetroot_dough"
+          },
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "wildways:item/fishing_rod/beetroot_dough_cast"
+          }
+        }
+      },
+      {
+        "when": [
+          { "type": "candied_bait", "charges": 1 },
+          { "type": "candied_bait", "charges": 2 },
+          { "type": "candied_bait", "charges": 3 },
+          { "type": "candied_bait", "charges": 4 },
+          { "type": "candied_bait", "charges": 5 },
+          { "type": "candied_bait", "charges": 6 },
+          { "type": "candied_bait", "charges": 7 },
+          { "type": "candied_bait", "charges": 8 },
+          { "type": "candied_bait", "charges": 9 },
+          { "type": "candied_bait", "charges": 10 },
+          { "type": "candied_bait", "charges": 11 },
+          { "type": "candied_bait", "charges": 12 },
+          { "type": "candied_bait", "charges": 13 },
+          { "type": "candied_bait", "charges": 14 },
+          { "type": "candied_bait", "charges": 15 },
+          { "type": "candied_bait", "charges": 16 }
+        ],
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:fishing_rod/cast",
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "wildways:item/fishing_rod/candied_bait"
+          },
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "wildways:item/fishing_rod/candied_bait_cast"
+          }
+        }
+      },
+      {
+        "when": [
+          { "type": "amethyst_blinker", "charges": 1 },
+          { "type": "amethyst_blinker", "charges": 2 },
+          { "type": "amethyst_blinker", "charges": 3 },
+          { "type": "amethyst_blinker", "charges": 4 },
+          { "type": "amethyst_blinker", "charges": 5 },
+          { "type": "amethyst_blinker", "charges": 6 },
+          { "type": "amethyst_blinker", "charges": 7 },
+          { "type": "amethyst_blinker", "charges": 8 },
+          { "type": "amethyst_blinker", "charges": 9 },
+          { "type": "amethyst_blinker", "charges": 10 },
+          { "type": "amethyst_blinker", "charges": 11 },
+          { "type": "amethyst_blinker", "charges": 12 },
+          { "type": "amethyst_blinker", "charges": 13 },
+          { "type": "amethyst_blinker", "charges": 14 },
+          { "type": "amethyst_blinker", "charges": 15 },
+          { "type": "amethyst_blinker", "charges": 16 }
+        ],
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:fishing_rod/cast",
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "wildways:item/fishing_rod/amethyst_blinker"
+          },
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "wildways:item/fishing_rod/amethyst_blinker_cast"
+          }
+        }
+      }
+    ]
+  }
+}

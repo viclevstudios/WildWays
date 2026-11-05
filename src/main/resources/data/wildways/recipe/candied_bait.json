@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:spider_eye",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "wildways:candied_bait"
+  }
+}

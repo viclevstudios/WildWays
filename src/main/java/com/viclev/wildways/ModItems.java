@@ -1,8 +1,10 @@
 package com.viclev.wildways;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -10,6 +12,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.DispenserBlock;
 
@@ -41,6 +44,9 @@ public final class ModItems {
 		Item::new,
 		new Item.Properties()
 	);
+	public static final Item BEETROOT_DOUGH = fishingBait(ModItemIds.BEETROOT_DOUGH);
+	public static final Item CANDIED_BAIT = fishingBait(ModItemIds.CANDIED_BAIT);
+	public static final Item AMETHYST_BLINKER = fishingBait(ModItemIds.AMETHYST_BLINKER);
 	public static final ArrowItem TURTLE_ARROW = register(ModItemIds.TURTLE_ARROW, TurtleArrowItem::new, new Item.Properties());
 	public static final ArrowItem RANGE_ARROW = register(ModItemIds.RANGE_ARROW, RangeArrowItem::new, new Item.Properties());
 	public static final ArrowItem EXPLOSIVE_ARROW = register(ModItemIds.EXPLOSIVE_ARROW, ExplosiveArrowItem::new, new Item.Properties());
@@ -106,6 +112,13 @@ public final class ModItems {
 		);
 	}
 
+	private static Item fishingBait(ResourceKey<Item> key) {
+		return register(key, Item::new, new Item.Properties().component(DataComponents.LORE, new ItemLore(List.of(
+			Component.translatable(key.identifier().toLanguageKey("item") + ".effect"),
+			Component.translatable("wildways.fishing.bait.load", FishingBait.MAX_CHARGES)
+		))));
+	}
+
 	public static boolean isPortalEye(Item item) {
 		return PORTAL_EYE_SET.contains(item);
 	}
@@ -128,6 +141,9 @@ public final class ModItems {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(output -> {
 				output.accept(BIOME_COMPASS);
+				output.accept(BEETROOT_DOUGH);
+				output.accept(CANDIED_BAIT);
+				output.accept(AMETHYST_BLINKER);
 			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT)
 			.register(output -> {

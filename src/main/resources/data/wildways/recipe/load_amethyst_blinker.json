@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "equipment",
+  "input": "minecraft:fishing_rod",
+  "material": "wildways:amethyst_blinker",
+  "result": {
+    "id": "minecraft:fishing_rod",
+    "components": {
+      "wildways:fishing_bait": {
+        "type": "amethyst_blinker",
+        "charges": 16
+      }
+    }
+  }
+}

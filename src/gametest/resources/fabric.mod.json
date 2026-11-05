@@ -13,7 +13,8 @@
       "com.viclev.wildways.VolcaniteTrimGameTests",
       "com.viclev.wildways.SpearGameTests",
       "com.viclev.wildways.GoldToolGameTests",
-      "com.viclev.wildways.BookLootGameTests"
+      "com.viclev.wildways.BookLootGameTests",
+      "com.viclev.wildways.FishingBaitGameTests"
     ]
   },
   "depends": {

@@ -1,0 +1,15 @@
+{
+  "wildways.fishing.ready": "Bereit machen",
+  "wildways.fishing.follow": "Folge dem Ziel mit der Maus",
+  "wildways.fishing.chance": "%s %% Fangchance",
+  "wildways.fishing.escaped": "Der Fang ist entkommen.",
+  "item.wildways.beetroot_dough": "Rübenteig",
+  "item.wildways.beetroot_dough.effect": "Mehr Fisch, der mehr Hunger stillt und länger sättigt",
+  "item.wildways.candied_bait": "Zuckerauge",
+  "item.wildways.candied_bait.effect": "3 s Einholen, 50 % breiteres Ziel, halbierte Müllchance",
+  "item.wildways.amethyst_blinker": "Amethystblinker",
+  "item.wildways.amethyst_blinker.effect": "Doppelte Schatzchance in offenem Wasser",
+  "wildways.fishing.bait.load": "Mit einer Angel craften, um %s Ladungen zu erhalten",
+  "wildways.fishing.bait.loaded": "%s · %s/%s Ladungen",
+  "wildways.fishing.rich_fish": "Stillt mehr Hunger und gibt 30 % mehr Sättigung"
+}

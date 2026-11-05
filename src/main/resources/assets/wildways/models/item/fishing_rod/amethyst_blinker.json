@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/fishing_rod",
+  "textures": {
+    "layer1": "wildways:item/fishing/rod_amethyst_blinker"
+  }
+}

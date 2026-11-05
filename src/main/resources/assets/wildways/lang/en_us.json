@@ -208,5 +208,18 @@
   "item.wildways.diamond_refinement.base_slot": "Add Quartz, Amethyst or Gold equipment",
   "item.wildways.volcanite_refinement.base_slot": "Add Quartz, Amethyst or Gold equipment",
   "item.wildways.refinement.additions_slot": "Leave this slot empty",
-  "trim_material.wildways.volcanite": "Volcanite Material"
+  "trim_material.wildways.volcanite": "Volcanite Material",
+  "wildways.fishing.ready": "Get ready",
+  "wildways.fishing.follow": "Follow the target with your mouse",
+  "wildways.fishing.chance": "%s%% catch chance",
+  "wildways.fishing.escaped": "The catch got away.",
+  "item.wildways.beetroot_dough": "Beetroot Dough",
+  "item.wildways.beetroot_dough.effect": "More fish, with extra hunger and saturation restored",
+  "item.wildways.candied_bait": "Candied Bait",
+  "item.wildways.candied_bait.effect": "3s reel, 50% wider target, half the junk chance",
+  "item.wildways.amethyst_blinker": "Amethyst Blinker",
+  "item.wildways.amethyst_blinker.effect": "Double the treasure chance in open water",
+  "wildways.fishing.bait.load": "Craft with a fishing rod to load %s charges",
+  "wildways.fishing.bait.loaded": "%s · %s/%s charges",
+  "wildways.fishing.rich_fish": "Restores more hunger and 30% extra saturation"
 }

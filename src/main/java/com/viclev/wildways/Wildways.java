@@ -40,6 +40,8 @@ public class Wildways implements ModInitializer {
 		EnchantedBookDrops.initialize();
 		EyeTransformations.initialize();
 		XpProgression.initialize();
+		FishingBait.initialize();
+		FishingMinigame.initialize();
 	}
 
 	public static Identifier id(String path) {

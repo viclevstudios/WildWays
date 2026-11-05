@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:wheat",
+    "minecraft:beetroot"
+  ],
+  "result": {
+    "id": "wildways:beetroot_dough"
+  }
+}
