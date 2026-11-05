@@ -41,7 +41,7 @@ public final class ModItems {
 	);
 	public static final Item BIOME_COMPASS = register(
 		ModItemIds.BIOME_COMPASS,
-		Item::new,
+		BiomeCompassItem::new,
 		new Item.Properties()
 	);
 	public static final Item BEETROOT_DOUGH = fishingBait(ModItemIds.BEETROOT_DOUGH);

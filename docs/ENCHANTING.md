@@ -61,7 +61,7 @@ New librarians use JSON trade sets with at most two offers per level. The variab
 | --- | --- |
 | Novice | Ordinary Bookshelf for 9 emeralds; either paper purchase or Chiseled Bookshelf for 5 emeralds |
 | Apprentice | Book purchase; either Copper Rune for 10 emeralds or Iron Rune for 20 emeralds |
-| Journeyman | Ink sac purchase; Biome Compass for 5 emeralds |
+| Journeyman | Ink sac purchase |
 | Expert | Two of writable book purchase, clock sale and compass sale |
 | Master | Attunement enchanted book for 18 emeralds; either red or yellow candle |
 

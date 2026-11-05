@@ -68,7 +68,10 @@ Suggested smoke checks:
 - Close and reopen an Enchanting Table and an anvil with inputs inside, reload the world, then break each workstation. Check that the inputs persist, render outside the block and drop exactly once when it is broken.
 
 - Hold a compass and verify that the action bar shows `X`, `Y`, `Z`, and the current cardinal or intercardinal direction.
-- Hold the clock, Biome Compass, and Light Sensor in turn and verify their action-bar information.
+- Hold the clock and Light Sensor in turn and verify their action-bar information.
+- Open a Wandering Trader's offers (use `/summon minecraft:wandering_trader` for a quick check). Buy a Biome Compass for 20 emeralds and confirm the offer is sold out, including after reopening the screen. Check a journeyman Librarian, including one from an older save. It should buy ink sacs, and any Biome Compass offer should be gone. Check that the old map-and-iron recipe is absent. Hold the compass and right-click to select a biome, then confirm. Turn around and check that the needle follows the target and the action bar shows both biomes. Verify the target survives a relog and cannot be changed. Try an old stack of blank compasses to confirm only one is bound.
+- Compare the blank and bound Biome Compass in the hotbar and in hand. Both should use the blue-and-green Biome Compass sprite. The bound compass should have a gold needle that turns toward the target as you turn.
+- Find several villages in newly generated chunks. Some should have one trader near the town center when first generated. Revisit a village after the trader leaves and check that the village itself does not produce a replacement.
 - Open a Fletching Table. Verify the title and feather placeholder, then place a feather, stick, and flint to receive five arrows. Confirm that no placeholder is shown for the stick, flint, or result slots. Test each special-arrow conversion recipe.
 - Test Turtle, Range, and Explosive Arrows in a safe world to verify their increased damage, faster flight, and small explosion respectively.
 - Open an Endermite Nest with contents and verify its inventory, comparator output, and portable contents. Verify Endermite Brick recipes and shapes.

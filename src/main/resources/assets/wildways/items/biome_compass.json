@@ -1,6 +1,445 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "wildways:item/biome_compass"
+    "type": "minecraft:condition",
+    "property": "minecraft:has_component",
+    "component": "minecraft:lodestone_tracker",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "wildways:item/biome_compass"
+    },
+    "on_true": {
+      "type": "minecraft:composite",
+      "models": [
+        {
+          "type": "minecraft:model",
+          "model": "wildways:item/biome_compass"
+        },
+        {
+          "type": "minecraft:range_dispatch",
+          "property": "minecraft:compass",
+          "target": "lodestone",
+          "scale": 32,
+          "entries": [
+            {
+              "threshold": 0,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle"
+              }
+            },
+            {
+              "threshold": 0.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [-0.0879378, 0.10715252, 0],
+                  "left_rotation": [0, 0, -0.09801714, 0.99518473],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 1.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [-0.15328148, 0.22940195, 0],
+                  "left_rotation": [0, 0, -0.19509032, 0.98078528],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 2.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [-0.19351992, 0.36205031, 0],
+                  "left_rotation": [0, 0, -0.29028468, 0.95694034],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 3.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [-0.20710678, 0.5, 0],
+                  "left_rotation": [0, 0, -0.38268343, 0.92387953],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 4.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [-0.19351992, 0.63794969, 0],
+                  "left_rotation": [0, 0, -0.47139674, 0.88192126],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 5.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [-0.15328148, 0.77059805, 0],
+                  "left_rotation": [0, 0, -0.55557023, 0.83146961],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 6.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [-0.0879378, 0.89284748, 0],
+                  "left_rotation": [0, 0, -0.63439328, 0.77301045],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 7.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0, 1, 0],
+                  "left_rotation": [0, 0, -0.70710678, 0.70710678],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 8.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.10715252, 1.0879378, 0],
+                  "left_rotation": [0, 0, -0.77301045, 0.63439328],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 9.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.22940195, 1.15328148, 0],
+                  "left_rotation": [0, 0, -0.83146961, 0.55557023],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 10.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.36205031, 1.19351992, 0],
+                  "left_rotation": [0, 0, -0.88192126, 0.47139674],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 11.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.5, 1.20710678, 0],
+                  "left_rotation": [0, 0, -0.92387953, 0.38268343],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 12.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.63794969, 1.19351992, 0],
+                  "left_rotation": [0, 0, -0.95694034, 0.29028468],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 13.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.77059805, 1.15328148, 0],
+                  "left_rotation": [0, 0, -0.98078528, 0.19509032],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 14.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.89284748, 1.0879378, 0],
+                  "left_rotation": [0, 0, -0.99518473, 0.09801714],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 15.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1, 1, 0],
+                  "left_rotation": [0, 0, -1, 0],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 16.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1.0879378, 0.89284748, 0],
+                  "left_rotation": [0, 0, 0.99518473, 0.09801714],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 17.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1.15328148, 0.77059805, 0],
+                  "left_rotation": [0, 0, 0.98078528, 0.19509032],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 18.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1.19351992, 0.63794969, 0],
+                  "left_rotation": [0, 0, 0.95694034, 0.29028468],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 19.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1.20710678, 0.5, 0],
+                  "left_rotation": [0, 0, 0.92387953, 0.38268343],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 20.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1.19351992, 0.36205031, 0],
+                  "left_rotation": [0, 0, 0.88192126, 0.47139674],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 21.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1.15328148, 0.22940195, 0],
+                  "left_rotation": [0, 0, 0.83146961, 0.55557023],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 22.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1.0879378, 0.10715252, 0],
+                  "left_rotation": [0, 0, 0.77301045, 0.63439328],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 23.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [1, 0, 0],
+                  "left_rotation": [0, 0, 0.70710678, 0.70710678],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 24.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.89284748, -0.0879378, 0],
+                  "left_rotation": [0, 0, 0.63439328, 0.77301045],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 25.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.77059805, -0.15328148, 0],
+                  "left_rotation": [0, 0, 0.55557023, 0.83146961],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 26.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.63794969, -0.19351992, 0],
+                  "left_rotation": [0, 0, 0.47139674, 0.88192126],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 27.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.5, -0.20710678, 0],
+                  "left_rotation": [0, 0, 0.38268343, 0.92387953],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 28.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.36205031, -0.19351992, 0],
+                  "left_rotation": [0, 0, 0.29028468, 0.95694034],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 29.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.22940195, -0.15328148, 0],
+                  "left_rotation": [0, 0, 0.19509032, 0.98078528],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 30.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle",
+                "transformation": {
+                  "translation": [0.10715252, -0.0879378, 0],
+                  "left_rotation": [0, 0, 0.09801714, 0.99518473],
+                  "scale": [1, 1, 1],
+                  "right_rotation": [0, 0, 0, 1]
+                }
+              }
+            },
+            {
+              "threshold": 31.5,
+              "model": {
+                "type": "minecraft:model",
+                "model": "wildways:item/biome_compass_needle"
+              }
+            }
+          ]
+        }
+      ]
+    }
   }
 }

@@ -349,6 +349,7 @@ public class EnchantingGameTests {
 		offers.add(new MerchantOffer(new ItemCost(Items.WRITABLE_BOOK, 2), new ItemStack(Items.EMERALD), 12, 15, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.CLOCK), 12, 15, 0.05F));
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(Items.COMPASS), 12, 15, 0.05F));
+		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), new ItemStack(ModItems.BIOME_COMPASS), 12, 10, 0.05F));
 		Item otherCandle = offers.stream().anyMatch(offer -> offer.getResult().is(Items.DYED_CANDLE.red()))
 			? Items.DYED_CANDLE.yellow() : Items.DYED_CANDLE.red();
 		offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 3), new ItemStack(otherCandle), 12, 30, 0.05F));
@@ -367,7 +368,8 @@ public class EnchantingGameTests {
 			"Existing experts must keep no more than two level-four trades");
 		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.DYED_CANDLE.red())
 			|| offer.getResult().is(Items.DYED_CANDLE.yellow())).count() == 1, "Only one master candle may remain");
-		helper.assertTrue(offers.stream().anyMatch(offer -> offer.getResult().is(ModItems.BIOME_COMPASS) && offer.getBaseCostA().getCount() == 5), "Journeyman biome compass must cost five emeralds");
+		helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(ModItems.BIOME_COMPASS)),
+			"Old librarian biome compass offers must be removed");
 		helper.assertFalse(offers.stream().anyMatch(offer -> offer.getResult().is(EnchantingItems.CATALYST)),
 			"Old catalyst offers must be removed");
 		helper.assertTrue(offers.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).count() == 1,
@@ -433,7 +435,7 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void plannedMasterTradesReplaceAnOfferAndWandererAddsOneBook(GameTestHelper helper) {
+	public void plannedMasterTradesReplaceAnOfferAndWandererAddsBookAndCompass(GameTestHelper helper) {
 		Player player = this.player(helper, 0);
 		for (var entry : List.of(
 			new Object[]{VillagerProfession.TOOLSMITH, Enchantments.FORTUNE},
@@ -456,9 +458,27 @@ public class EnchantingGameTests {
 		WanderingTrader trader = helper.spawn(EntityTypes.WANDERING_TRADER, new BlockPos(3, 2, 3));
 		int before = trader.getOffers().size();
 		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, trader, null);
-		helper.assertTrue(trader.getOffers().size() == before + 1, "The wanderer must add one random book offer");
+		helper.assertTrue(trader.getOffers().size() == before + 2, "The wanderer must add a book and a compass offer");
+		helper.assertTrue(trader.getOffers().get(before).getResult().is(Items.ENCHANTED_BOOK), "The book offer must remain available");
+		MerchantOffer compassOffer = trader.getOffers().get(before + 1);
+		helper.assertTrue(compassOffer.getResult().is(ModItems.BIOME_COMPASS) && compassOffer.getBaseCostA().is(Items.EMERALD)
+			&& compassOffer.getBaseCostA().getCount() == 20 && compassOffer.getMaxUses() == 1 && !compassOffer.isOutOfStock(),
+			"A new trader must have one compass for twenty emeralds");
+		compassOffer.increaseUses();
 		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, trader, null);
-		helper.assertTrue(trader.getOffers().size() == before + 1, "The book offer must not duplicate on a second interaction");
+		helper.assertTrue(trader.getOffers().size() == before + 2 && trader.getOffers().get(before + 1).isOutOfStock(),
+			"Reopening the menu after a purchase must keep the compass sold out");
+		for (boolean bought : List.of(false, true)) {
+			MerchantOffer legacyOffer = new MerchantOffer(new ItemCost(Items.EMERALD, 20), new ItemStack(ModItems.BIOME_COMPASS), 12, 10, 0.0F);
+			if (bought) {
+				legacyOffer.increaseUses();
+			}
+			trader.getOffers().set(before + 1, legacyOffer);
+			UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, trader, null);
+			MerchantOffer migrated = trader.getOffers().get(before + 1);
+			helper.assertTrue(migrated.getMaxUses() == 1 && migrated.isOutOfStock() == bought,
+				"An old trader must keep the compass in stock only if it has never been sold");
+		}
 		helper.succeed();
 	}
 

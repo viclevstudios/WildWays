@@ -21,6 +21,7 @@ public class WildwaysClient implements ClientModInitializer {
 		MenuScreens.register(ModMenuTypes.ENCHANTING, WildwaysEnchantingScreen::new);
 		MenuScreens.register(ModMenuTypes.ENDERMITE_BOX, EndermiteBoxScreen::new);
 		MenuScreens.register(ModMenuTypes.FLETCHING_TABLE, FletchingTableScreen::new);
+		MenuScreens.register(ModMenuTypes.BIOME_COMPASS, BiomeCompassScreen::new);
 		BlockEntityRenderers.register(BlockEntityTypes.ENCHANTING_TABLE, EnchantingItemsRenderer::new);
 		BlockEntityRenderers.register(ModBlockEntities.ANVIL_STORAGE, AnvilItemsRenderer::new);
 		EntityRenderers.register(ModEntityTypes.TURTLE_ARROW, context -> new SpecialArrowRenderer<>(context, Wildways.id("textures/entity/projectiles/turtle_arrow.png")));

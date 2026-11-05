@@ -1,4 +1,12 @@
 {
+  "item.wildways.biome_compass": "Biomkompass",
+  "wildways.biome_compass.title": "Biom auswählen",
+  "wildways.biome_compass.instruction": "Dieser Kompass lässt sich einmalig binden.",
+  "wildways.biome_compass.bind": "Kompass binden",
+  "wildways.biome_compass.missing_biome": "Biom nicht in Reichweite.",
+  "wildways.biome_compass.current": "Biom: %s",
+  "wildways.biome_compass.current_and_target": "Biom: %s | Ziel: %s",
+  "wildways.biome_compass.unknown": "Unbekannt",
   "wildways.fishing.ready": "Bereit machen",
   "wildways.fishing.follow": "Folge dem Ziel mit der Maus",
   "wildways.fishing.chance": "%s %% Fangchance",

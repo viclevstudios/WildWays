@@ -1,11 +1,14 @@
 package com.viclev.wildways.client;
 
+import com.viclev.wildways.BiomeCompassItem;
 import com.viclev.wildways.ModBlocks;
 import com.viclev.wildways.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,7 +36,8 @@ public final class HeldItemInfoHud {
 	}
 
 	private static Component getInformation(LocalPlayer player) {
-		Item item = getInformationItem(player);
+		ItemStack stack = getInformationStack(player);
+		Item item = stack.getItem();
 		BlockPos pos = player.blockPosition();
 		if (item == Items.COMPASS) {
 			return Component.literal("X:" + pos.getX() + " Y:" + pos.getY() + " Z:" + pos.getZ() + " | " + getDirection(player.getYRot()));
@@ -42,10 +46,12 @@ public final class HeldItemInfoHud {
 			return Component.literal("Day: " + player.level().getOverworldClockTime() / 24000L);
 		}
 		if (item == ModItems.BIOME_COMPASS) {
-			String biome = player.level().getBiome(pos).unwrapKey()
-				.map(key -> formatBiomeName(key.identifier().getPath()))
-				.orElse("unknown");
-			return Component.literal("Biome: " + biome);
+			Component biome = player.level().getBiome(pos).unwrapKey()
+				.map(key -> BiomeCompassItem.biomeName(key.identifier()))
+				.orElseGet(() -> Component.translatable("wildways.biome_compass.unknown"));
+			Identifier target = stack.get(BiomeCompassItem.TARGET_BIOME);
+			return target == null ? Component.translatable("wildways.biome_compass.current", biome)
+				: Component.translatable("wildways.biome_compass.current_and_target", biome, BiomeCompassItem.biomeName(target));
 		}
 		if (item == ModBlocks.LIGHT_SENSOR.asItem()) {
 			return Component.literal("Light: " + player.level().getMaxLocalRawBrightness(pos));
@@ -63,33 +69,25 @@ public final class HeldItemInfoHud {
 		if (message == null) {
 			return false;
 		}
+		if (message.getContents() instanceof TranslatableContents translated) {
+			return translated.getKey().equals("wildways.biome_compass.current")
+				|| translated.getKey().equals("wildways.biome_compass.current_and_target");
+		}
 
 		String text = message.getString();
 		return text.startsWith("X: ")
 			|| text.startsWith("Day: ")
-			|| text.startsWith("Biome: ")
 			|| text.startsWith("Light: ");
 	}
 
-	private static String formatBiomeName(String biomeId) {
-		StringBuilder displayName = new StringBuilder();
-		for (String word : biomeId.split("_")) {
-			if (!displayName.isEmpty()) {
-				displayName.append(' ');
-			}
-			displayName.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
-		}
-		return displayName.toString();
-	}
-
-	private static Item getInformationItem(LocalPlayer player) {
+	private static ItemStack getInformationStack(LocalPlayer player) {
 		ItemStack mainHand = player.getMainHandItem();
 		if (isInformationItem(mainHand.getItem())) {
-			return mainHand.getItem();
+			return mainHand;
 		}
 
 		ItemStack offHand = player.getOffhandItem();
-		return isInformationItem(offHand.getItem()) ? offHand.getItem() : Items.AIR;
+		return isInformationItem(offHand.getItem()) ? offHand : ItemStack.EMPTY;
 	}
 
 	private static boolean isInformationItem(Item item) {

@@ -36,6 +36,7 @@ public final class LibrarianEnchantingTrades {
 				ItemStack attunementBook = attunementBook(serverLevel);
 				// Remove old random book sales and offers replaced by the current trade sets.
 				offers.removeIf(offer -> offer.getResult().is(EnchantingItems.CATALYST)
+					|| offer.getResult().is(ModItems.BIOME_COMPASS)
 					|| offer.getResult().is(Items.LANTERN) || offer.getResult().is(Items.GLASS)
 					|| (offer.getResult().is(Items.ENCHANTED_BOOK)
 						&& !ItemStack.isSameItemSameComponents(offer.getResult(), attunementBook)));
@@ -58,9 +59,6 @@ public final class LibrarianEnchantingTrades {
 						int tier = villager.getRandom().nextInt(2);
 						ensureOffer(offers, EnchantingItems.RUNES.get(tier), tier == 0 ? 10 : 20, 5);
 					}
-				}
-				if (villager.getVillagerData().level() >= 3) {
-					ensureOffer(offers, ModItems.BIOME_COMPASS, 5, 10);
 				}
 				if (villager.getVillagerData().level() >= 5 && !hasOffer(offers, attunementBook)) {
 					offers.add(new MerchantOffer(new ItemCost(Items.EMERALD, 18), attunementBook, 12, 30, 0.05F));

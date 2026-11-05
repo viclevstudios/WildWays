@@ -1,5 +1,6 @@
 package com.viclev.wildways;
 
+import java.util.Optional;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -29,9 +30,13 @@ public final class EnchantedBookTrades {
 			if (!(world instanceof ServerLevel level) || player.isSpectator() || !entity.isAlive()) {
 				return InteractionResult.PASS;
 			}
-			if (entity instanceof WanderingTrader trader && !trader.entityTags().contains(TRADER_MARKER)) {
-				trader.getOffers().add(offer(EnchantedBookSources.randomBook(level, trader.getRandom()), 20));
-				trader.addTag(TRADER_MARKER);
+			if (entity instanceof WanderingTrader trader) {
+				MerchantOffers offers = trader.getOffers();
+				if (!trader.entityTags().contains(TRADER_MARKER)) {
+					offers.add(offer(EnchantedBookSources.randomBook(level, trader.getRandom()), 20));
+					trader.addTag(TRADER_MARKER);
+				}
+				ensureCompassOffer(offers);
 			} else if (entity instanceof Villager villager && !villager.isBaby()
 				&& villager.getVillagerData().level() >= 5 && !villager.entityTags().contains(MASTER_MARKER)) {
 				ResourceKey<Enchantment> enchantment = masterBook(villager);
@@ -48,6 +53,23 @@ public final class EnchantedBookTrades {
 			}
 			return InteractionResult.PASS;
 		});
+	}
+
+	private static void ensureCompassOffer(MerchantOffers offers) {
+		for (int index = 0; index < offers.size(); index++) {
+			MerchantOffer existing = offers.get(index);
+			if (existing.getResult().is(ModItems.BIOME_COMPASS)) {
+				if (existing.getMaxUses() != 1) {
+					offers.set(index, compassOffer(Math.min(existing.getUses(), 1)));
+				}
+				return;
+			}
+		}
+		offers.add(compassOffer(0));
+	}
+
+	private static MerchantOffer compassOffer(int uses) {
+		return new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.empty(), new ItemStack(ModItems.BIOME_COMPASS), uses, 1, 10, 0.0F);
 	}
 
 	private static ResourceKey<Enchantment> masterBook(Villager villager) {

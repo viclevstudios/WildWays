@@ -14,6 +14,7 @@
       "com.viclev.wildways.SpearGameTests",
       "com.viclev.wildways.GoldToolGameTests",
       "com.viclev.wildways.BookLootGameTests",
+      "com.viclev.wildways.BiomeCompassGameTests",
       "com.viclev.wildways.FishingBaitGameTests"
     ]
   },

@@ -1,8 +1,7 @@
 {
   "trades": [
-    "minecraft:librarian/3/ink_sac_emerald",
-    "wildways:librarian/biome_compass"
+    "minecraft:librarian/3/ink_sac_emerald"
   ],
-  "amount": 2,
+  "amount": 1,
   "random_sequence": "minecraft:trade_set/librarian/level_3"
 }

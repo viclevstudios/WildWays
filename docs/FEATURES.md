@@ -13,7 +13,8 @@ This page describes gameplay features currently present in WildWays. Planned wor
 
 - Holding a vanilla compass displays block coordinates and one of the eight cardinal or intercardinal directions in the action bar.
 - Holding a clock displays the current overworld day.
-- The Biome Compass is crafted from a map surrounded by four iron ingots and displays the current biome.
+- Wandering Trader spawn attempts run 1.5 times as often. Newly generated villages get a 50% chance to start with a Wandering Trader at the town center if there is a safe spot.
+- The Biome Compass is sold by Wandering Traders for 20 emeralds, with one compass per trader. Right-click with a blank compass to select a biome in the current dimension. A successful search permanently binds that compass to the located position. The needle points there, and the action bar displays the current biome and the selected biome.
 - Holding a Light Sensor displays the local raw light level. It is crafted with a daylight detector at the top centre, redstone at the centre, copper at the bottom centre, iron ingots in the four corners, and planks at the middle left and right. Its top, sides, and bottom use distinct textures.
 - Quarantine Grounds can generate in selected taiga biomes. Their terrain-aware pieces follow local ground, their placed Endermites persist, and hospital-house weathering can convert regular spruce logs into correctly orientated stripped spruce logs.
 
