@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EndPortalFrameBlock;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class PortalEyeGameTests {
 		helper.succeed();
 	}
 
-	@GameTest
+	@GameTest(maxTicks = 80)
 	public void craftsAndTransformsEyesInSulfurWaterAndFire(GameTestHelper helper) {
 		ItemStack ingot = new ItemStack(ModItems.VOLCANITE);
 		ItemStack enderEye = new ItemStack(Items.ENDER_EYE);
@@ -96,13 +97,28 @@ public class PortalEyeGameTests {
 		var sulfurEye = helper.spawnItem(Items.ENDER_EYE, 1.5F, 2.2F, 1.5F);
 		var ordinaryEye = helper.spawnItem(Items.ENDER_EYE, 2.5F, 2.2F, 2.5F);
 		var volcaniteEye = helper.spawnItem(craftedEye.getItem(), 3.5F, 2.2F, 3.5F);
+		volcaniteEye.setDeltaMovement(Vec3.ZERO);
+		double fireY = helper.absolutePos(new BlockPos(3, 2, 3)).getY();
 
 		helper.runAfterDelay(5, () -> {
 			helper.assertTrue(sulfurEye.getItem().is(ModItems.EYE_OF_SULFUR), "Potent sulfur water should convert an Eye of Ender");
 			helper.assertTrue(ordinaryEye.getItem().is(Items.ENDER_EYE), "Ordinary water should leave an Eye of Ender intact");
+		});
+		helper.runAfterDelay(9, () -> {
+			helper.assertFalse(EyeTransformations.isVolcaniteRising(volcaniteEye), "The eye should keep falling normally during the first half second");
+			helper.assertTrue(volcaniteEye.getY() < fireY + 0.15, "The eye should settle into the fire before rising");
+		});
+		helper.runAfterDelay(30, () -> {
+			helper.assertTrue(EyeTransformations.isVolcaniteRising(volcaniteEye), "The eye should rise after the first half second");
+			helper.assertTrue(volcaniteEye.getItem().is(ModItems.EYE_OF_VOLCANITE), "Volcanite eye should remain unattuned during the ascent");
+			helper.assertTrue(volcaniteEye.getY() > fireY + 0.5 && volcaniteEye.getY() < fireY + 1.5,
+				"Volcanite eye should be about halfway through its ascent");
+		});
+		helper.succeedWhen(() -> {
 			helper.assertTrue(volcaniteEye.isAlive() && volcaniteEye.getItem().is(ModItems.ATTUNED_EYE_OF_VOLCANITE),
-				"Fire should attune the Eye of Volcanite");
-			helper.succeed();
+				"Fire should attune the Eye of Volcanite after the ascent");
+			helper.assertTrue(Math.abs(volcaniteEye.getY() - fireY - 2) < 0.15,
+				"Volcanite eye should attune about two blocks above its starting position");
 		});
 	}
 
