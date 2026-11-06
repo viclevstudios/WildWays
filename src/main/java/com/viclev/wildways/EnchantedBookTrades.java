@@ -94,9 +94,6 @@ public final class EnchantedBookTrades {
 		if (profession.is(VillagerProfession.FLETCHER)) {
 			return Enchantments.INFINITY;
 		}
-		if (profession.is(VillagerProfession.ARMORER)) {
-			return null;
-		}
 		if (profession.is(VillagerProfession.FISHERMAN)) {
 			return villager.getRandom().nextBoolean() ? Enchantments.LUCK_OF_THE_SEA : Enchantments.LURE;
 		}
@@ -108,7 +105,7 @@ public final class EnchantedBookTrades {
 			|| enchantment == Enchantments.LOOTING) {
 			return 24;
 		}
-		return enchantment == Enchantments.THORNS ? 20 : 16;
+		return 16;
 	}
 
 	private static MerchantOffer offer(ItemStack book, int emeralds) {

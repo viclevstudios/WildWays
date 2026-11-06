@@ -1,0 +1,9 @@
+{
+  "trades": [
+    "minecraft:armorer/5/emerald_enchanted_diamond_helmet",
+    "minecraft:armorer/5/emerald_enchanted_diamond_chestplate",
+    "wildways:armorer/thorns_book"
+  ],
+  "amount": 2,
+  "random_sequence": "minecraft:trade_set/armorer/level_5"
+}

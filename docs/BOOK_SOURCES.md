@@ -20,7 +20,7 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 | Fire Protection | Crafted from Protection, four Blaze Powder and four Lapis; Nether Fortress chests |
 | Blast Protection | Crafted from Protection, Obsidian, three Iron Ingots and four Lapis, or a 50% chance from a Ghast killed by its reflected fireball |
 | Projectile Protection | Crafted from Protection, a Shield, three Iron Ingots and four Lapis |
-| Thorns | 5% Guardian drop; 50% chance that a master Armorer sells it |
+| Thorns | 5% Guardian drop; new master Armorer offers include it for 20 emeralds with a 2 in 3 chance. Each master rolls two distinct offers from the book, enchanted Amethyst Helmet and enchanted Amethyst Chestplate. |
 | Aqua Affinity / Respiration | Shipwreck treasure and Buried Treasure chests |
 | Depth Strider | Two new supply chests in each Ocean Monument entry room, each with a 75% book chance and Sponge, Nautilus Shell, Prismarine Shard or Gold Ingot loot |
 | Frost Walker | Igloo and snowy-village house chests |

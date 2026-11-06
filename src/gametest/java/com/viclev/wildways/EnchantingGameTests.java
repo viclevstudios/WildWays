@@ -3,6 +3,8 @@ package com.viclev.wildways;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.BlockPos;
@@ -588,6 +590,42 @@ public class EnchantingGameTests {
 			helper.assertTrue(migrated.getMaxUses() == 1 && migrated.isOutOfStock() == bought,
 				"An old trader must keep the compass in stock only if it has never been sold");
 		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void masterArmorersRollTwoOfThreeOffers(GameTestHelper helper) {
+		var level = helper.getLevel();
+		Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
+		villager.setVillagerData(villager.getVillagerData().withProfession(level.registryAccess(), VillagerProfession.ARMORER).withLevel(5));
+		var tradeSet = level.registryAccess().lookupOrThrow(Registries.TRADE_SET)
+			.getOrThrow(villager.getVillagerData().profession().value().getTrades(5)).value();
+		LootParams params = new LootParams.Builder(level)
+			.withParameter(LootContextParams.ORIGIN, villager.position())
+			.withParameter(LootContextParams.THIS_ENTITY, villager)
+			.withParameter(LootContextParams.ADDITIONAL_COST_COMPONENT_ALLOWED, Unit.INSTANCE)
+			.create(LootContextParamSets.VILLAGER_TRADE);
+		LootContext context = new LootContext.Builder(params).withOptionalRandomSeed(42L).create(Optional.empty());
+		helper.assertTrue(tradeSet.trades().size() == 3, "The master armorer must have three candidates, found " + tradeSet.trades().size());
+		helper.assertTrue(tradeSet.calculateNumberOfTrades(context) == 2 && !tradeSet.allowDuplicates(),
+			"The master armorer must draw two distinct offers");
+		var candidates = tradeSet.trades().stream().map(trade -> trade.value().getOffer(context)).toList();
+		helper.assertTrue(candidates.stream().allMatch(offer -> offer != null), "All master armorer candidates must generate a valid offer");
+		var expectedItems = Set.of(ProgressionItems.AMETHYST_HELMET, ProgressionItems.AMETHYST_CHESTPLATE, Items.ENCHANTED_BOOK);
+		helper.assertTrue(candidates.stream().map(offer -> offer.getResult().getItem()).collect(Collectors.toSet()).equals(expectedItems),
+			"The master pool must contain an amethyst helmet, an amethyst chestplate and an enchanted book");
+		var thornsOffer = candidates.stream().filter(offer -> offer.getResult().is(Items.ENCHANTED_BOOK)).findFirst().orElseThrow();
+		helper.assertTrue(ItemStack.matches(thornsOffer.getResult(), this.book(helper, Enchantments.THORNS, 1))
+			&& thornsOffer.getBaseCostA().is(Items.EMERALD) && thornsOffer.getBaseCostA().getCount() == 20 && thornsOffer.getCostB().isEmpty(),
+			"The enchanted book must be Thorns for twenty emeralds");
+
+		var offers = villager.getOffers();
+		helper.assertTrue(offers.size() == 2 && offers.get(0).getResult().getItem() != offers.get(1).getResult().getItem()
+			&& offers.stream().allMatch(offer -> expectedItems.contains(offer.getResult().getItem())),
+			"A fresh master armorer must generate exactly two distinct offers from the master pool");
+		var originalOffers = List.copyOf(offers);
+		UseEntityCallback.EVENT.invoker().interact(this.player(helper, 0), level, InteractionHand.MAIN_HAND, villager, null);
+		helper.assertTrue(offers.equals(originalOffers), "Opening the trades must preserve the two rolled offers");
 		helper.succeed();
 	}
 
