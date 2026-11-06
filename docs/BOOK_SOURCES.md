@@ -16,7 +16,7 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 | Unbreaking | 10% in common Trail Ruins archaeology, or a possible Hero of the Village gift from a Toolsmith or Armorer |
 | Mending | Recipe using Unbreaking, a Ghast Tear, an XP Bottle, two Volcanite Ingots and four Lapis; 10% in End City treasure chests |
 | Curse of Binding / Vanishing | Each has a 5% Witch drop chance |
-| Protection | 12.5% in Desert Pyramid or Desert Well archaeology, or 30% in monster-room chests |
+| Protection | 10% in Desert Pyramid or Desert Well archaeology, or 20% in monster-room chests |
 | Fire Protection | Crafted from Protection, four Blaze Powder and four Lapis; Nether Fortress chests |
 | Blast Protection | Crafted from Protection, Obsidian, three Iron Ingots and four Lapis, or a 50% chance from a Ghast killed by its reflected fireball |
 | Projectile Protection | Crafted from Protection, a Shield, three Iron Ingots and four Lapis |
@@ -25,10 +25,10 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 | Depth Strider | Two new supply chests in each Ocean Monument entry room, each with a 75% book chance and Sponge, Nautilus Shell, Prismarine Shard or Gold Ingot loot |
 | Frost Walker | Igloo and snowy-village house chests |
 | Feather Falling | Crafted from Protection, Phantom Membranes, Feathers and Lapis |
-| Efficiency | Mineshaft minecart chests and 10% in common Trail Ruins archaeology |
-| Fortune / Silk Touch | Rare Mineshaft minecart chests; guaranteed master Toolsmith / Mason trade respectively |
+| Efficiency | 15% in Mineshaft minecart chests and 10% in common Trail Ruins archaeology |
+| Fortune / Silk Touch | 5% each in Mineshaft minecart chests; guaranteed master Toolsmith / Mason trade respectively |
 | Sharpness | 50% Weaponsmith village chest, 25% Woodland Mansion chest, possible Hero of the Village Weaponsmith gift |
-| Smite / Bane of Arthropods / Power | 50% in a Zombie / Spider / Skeleton monster-room chest, selected from the actual spawner; Power also drops from Skeletons (2.5%) and Strays or Bogged (5%) |
+| Smite / Bane of Arthropods / Power | 20% in a Zombie / Spider / Skeleton monster-room chest, selected from the actual spawner; Power also drops from Skeletons (2.5%) and Strays or Bogged (5%) |
 | Knockback / Fire Aspect / Sweeping Edge | Crafted from Sharpness; Fire Aspect also occurs in Ruined Portal chests |
 | Looting | Guaranteed master Weaponsmith trade |
 | Lunge | 50% drop from a Zombie carrying a spear |
@@ -42,6 +42,6 @@ All eleven conversion recipes live in `data/wildways/recipe/book_*.json`. Their 
 
 ## In-game checks
 
-Use a **new world or new chunks** for structure changes. Open a Zombie, Spider and Skeleton spawner dungeon and check for ordinary loot, Protection and a 50% chance for the spawner's matching book. An Ocean Monument's entry room has two supply chests, with Depth Strider frequently present. Find the Endermite Nest in Quarantine Grounds and check that it starts with one or two of the seven listed common books. Try a master Toolsmith, Mason, Weaponsmith, Fletcher, Fisherman and Armorer, then a Wandering Trader. Reopen their trade screens to check for duplicate offers. For drops, kill spear Zombies, Pillagers during an active raid and Parched. Check the Parched for Weakness arrows and an occasional Power book. Test a reflected Ghast fireball and a book dropped into a lightning strike.
+Use a **new world or new chunks** for structure changes. Open chests in Zombie, Spider and Skeleton spawner dungeons and check for ordinary loot and separate 20% rolls for Protection and the spawner's matching book. An Ocean Monument's entry room has two supply chests, with Depth Strider frequently present. Find the Endermite Nest in Quarantine Grounds and check that it starts with one or two of the seven listed common books. Try a master Toolsmith, Mason, Weaponsmith, Fletcher, Fisherman and Armorer, then a Wandering Trader. Reopen their trade screens to check for duplicate offers. For drops, kill spear Zombies, Pillagers during an active raid and Parched. Check the Parched for Weakness arrows and an occasional Power book. Test a reflected Ghast fireball and a book dropped into a lightning strike.
 
 Run `.\gradlew.bat build runGameTest` with Java 25 for server-side checks. The automated tests cover actual recipe matching, the three custom chest tables, preservation of Volcanite Bastion loot, master-trade replacement, the wandering book offer and lightning conversion. Structure layout and rare drop rates still benefit from an in-game playtest.

@@ -6,27 +6,27 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:arms_up_pottery_sherd",
-          "weight": 14
+          "weight": 18
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:brewer_pottery_sherd",
-          "weight": 14
+          "weight": 18
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:brick",
-          "weight": 7
+          "weight": 9
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:emerald",
-          "weight": 7
+          "weight": 9
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:stick",
-          "weight": 7
+          "weight": 9
         },
         {
           "type": "minecraft:item",
@@ -84,7 +84,7 @@
             ]
           },
           "name": "minecraft:suspicious_stew",
-          "weight": 7
+          "weight": 9
         },
         {
           "type": "minecraft:item",

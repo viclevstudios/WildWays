@@ -88,9 +88,9 @@ public final class StructureMaps {
 				|| key.equals(BuiltInLootTables.ABANDONED_CAMP_SECRET_CHEST)) {
 				table.withPool(mapPool(registries, DUNGEON).when(chance(0.25F)));
 			} else if (key.equals(QUARANTINE_ANCHOR)) {
-				table.withPool(mapPool(registries, TRAIL_RUINS));
+				table.withPool(mapPool(registries, TRAIL_RUINS).when(chance(0.50F)));
 			} else if (key.equals(BuiltInLootTables.VILLAGE_SNOWY_HOUSE)) {
-				table.withPool(mapPool(registries, IGLOO).when(chance(0.25F)));
+				table.withPool(mapPool(registries, IGLOO).when(chance(0.30F)));
 			} else if (key.equals(PILLAGER_LOOT)) {
 				table.withPool(mapPool(registries, PILLAGER_OUTPOST).when(patrolCaptain()));
 			} else if (key.equals(BuiltInLootTables.FISHING_TREASURE)) {
@@ -104,7 +104,8 @@ public final class StructureMaps {
 			} else if (key.equals(BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY)) {
 				var book = ItemPredicate.Builder.item()
 					.of(registries.lookupOrThrow(Registries.ITEM), Items.ENCHANTED_BOOK).build();
-				var desertMap = replacement(registries, DESERT_PYRAMID, chance(0.20F));
+				// The Protection book takes 10% of the finds, so 5/18 of the rest yields 25% overall.
+				var desertMap = replacement(registries, DESERT_PYRAMID, chance(5.0F / 18.0F));
 				table.apply(Holder.direct(FilteredFunction.filtered(book).onFail(desertMap.value()).build()));
 			} else if (key.equals(BuiltInLootTables.TRIAL_CHAMBERS_SUPPLY)) {
 				table.withPool(mapPool(registries, ANCIENT_CITY).when(chance(0.25F)));

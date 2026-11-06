@@ -153,10 +153,10 @@ def main(jar_path):
             "chests/abandoned_mineshaft": {
                 "rolls": 1,
                 "entries": [
-                    book("minecraft:efficiency", 4),
+                    book("minecraft:efficiency", 3),
                     book("minecraft:fortune"),
                     book("minecraft:silk_touch"),
-                    {"type": "minecraft:empty", "weight": 14},
+                    {"type": "minecraft:empty", "weight": 15},
                 ],
             },
             "chests/underwater_ruin_big": chance_book(TRIDENT, 1, 4),
@@ -166,7 +166,7 @@ def main(jar_path):
             "chests/woodland_mansion": choice_book(
                 ["minecraft:quick_charge", "minecraft:multishot", "minecraft:piercing"], 5, 100
             ),
-            "chests/simple_dungeon": chance_book("minecraft:protection", 3, 10),
+            "chests/simple_dungeon": chance_book("minecraft:protection", 1, 5),
             "gameplay/fishing/treasure": chance_book(FISHING, 1, 6),
         }
         for path, pool in themed.items():
@@ -232,8 +232,8 @@ def main(jar_path):
         tables["entities/parched"] = parched
 
         archaeology = {
-            "desert_pyramid": [(book("minecraft:protection"), Fraction(1, 8))],
-            "desert_well": [(book("minecraft:protection"), Fraction(1, 8))],
+            "desert_pyramid": [(book("minecraft:protection"), Fraction(1, 10))],
+            "desert_well": [(book("minecraft:protection"), Fraction(1, 10))],
             "trail_ruins_common": [
                 ({"type": "minecraft:item", "name": "wildways:lost_eye"}, Fraction(2, 47)),
                 (book("minecraft:unbreaking"), Fraction(1, 10)),
@@ -283,7 +283,7 @@ def main(jar_path):
             ("skeleton", "minecraft:power"),
         ):
             variant = json.loads(json.dumps(dungeon))
-            add(variant, chance_book(enchantment, 1, 2))
+            add(variant, chance_book(enchantment, 1, 5))
             output = ROOT / f"src/main/resources/data/wildways/loot_table/chests/dungeon_{mob}.json"
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(json.dumps(variant, indent=2) + "\n", encoding="utf-8")
