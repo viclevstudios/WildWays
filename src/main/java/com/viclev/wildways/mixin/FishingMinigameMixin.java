@@ -56,6 +56,10 @@ public abstract class FishingMinigameMixin extends Projectile implements Fishing
 	public void applyOnProjectileSpawned(ServerLevel level, ItemStack rod) {
 		super.applyOnProjectileSpawned(level, rod);
 		this.wildways$castRod = rod;
+		FishingBait bait = rod.get(FishingBait.LOADED_BAIT);
+		if (bait != null) {
+			this.setAttached(FishingMinigame.CAST_BAIT, bait.type());
+		}
 	}
 
 	@ModifyExpressionValue(method = "catchingFish", at = @At(value = "INVOKE", ordinal = 0,

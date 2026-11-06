@@ -105,7 +105,7 @@ public record FishingBait(Type type, int charges) {
 		CANDIED_BAIT("candied_bait"),
 		AMETHYST_BLINKER("amethyst_blinker");
 
-		private static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
+		static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 		private final String id;
 
 		Type(String id) {

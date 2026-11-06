@@ -1,6 +1,9 @@
 package com.viclev.wildways;
 
 import java.util.Random;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -16,6 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public final class FishingMinigame {
+	public static final AttachmentType<FishingBait.Type> CAST_BAIT = AttachmentRegistry.create(
+		Wildways.id("fishing_bobber_bait"), builder -> builder.syncWith(ByteBufCodecs.fromCodec(FishingBait.Type.CODEC), AttachmentSyncPredicate.all())
+	);
 	public static final int READY_MILLIS = 400;
 	private static final int SAMPLE_MILLIS = 50;
 	private static final float TARGET_SPEED = 1.75F;
