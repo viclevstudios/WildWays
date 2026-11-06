@@ -9,6 +9,8 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Refinement tooltips name the compatible input equipment and state that no extra material is needed and the refinement is consumed. At the Smithing Table, the addition slot stays empty and has no misleading material icon. Quartz, Amethyst and Gold refine Iron; Diamond and Volcanite refine Quartz, Amethyst or Gold equipment.
 - All five refinement templates use their supplied custom item sprites. Quartz, Amethyst and Volcanite armor inventory icons overlay the vanilla trim sprites for all eleven vanilla trim materials. Untrimmed armor keeps its normal icon; as in vanilla, the icon indicates trim material color while the worn armor displays the actual trim pattern.
 
+- Armorers, toolsmiths and weaponsmiths sell Amethyst equivalents of their diamond equipment offers. They use the original enchantment rolls and charge 75% of the original emerald base price, including the enchantment surcharge, rounded to the nearest emerald. Existing offers keep their enchantments and stock when converted. Master toolsmiths and weaponsmiths offer the equipment alongside their guaranteed books.
+
 ## Exploration and information
 
 - Holding a vanilla compass displays block coordinates and one of the eight cardinal or intercardinal directions in the action bar.

@@ -55,6 +55,7 @@
 		"TurtleEggHatchXpMixin",
 		"SnifferEggHatchXpMixin",
 		"VillagerTradeXpMixin",
+		"AmethystTradePriceMixin",
 		"WanderingTraderSpawnerMixin",
 		"VillageTraderMixin",
 		"PiglinTradeXpMixin",

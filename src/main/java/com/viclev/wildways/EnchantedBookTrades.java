@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -37,22 +38,29 @@ public final class EnchantedBookTrades {
 					trader.addTag(TRADER_MARKER);
 				}
 				ensureCompassOffer(offers);
-			} else if (entity instanceof Villager villager && !villager.isBaby()
-				&& villager.getVillagerData().level() >= 5 && !villager.entityTags().contains(MASTER_MARKER)) {
-				ResourceKey<Enchantment> enchantment = masterBook(villager);
-				if (enchantment != null) {
-					MerchantOffers offers = villager.getOffers();
-					// Vanilla picks up to two offers at each level. Replace one master
-					// offer so the new book never creates a third one.
-					if (!offers.isEmpty()) {
-						offers.remove(offers.size() - 1);
-					}
-					offers.add(offer(EnchantedBookSources.book(level, enchantment), price(enchantment)));
+			} else if (entity instanceof Villager villager && !villager.isBaby() && !villager.isTrading()) {
+				boolean masterBookAdded = villager.entityTags().contains(MASTER_MARKER);
+				AmethystEquipmentTrades.update(level, villager, masterBookAdded);
+				if (villager.getVillagerData().level() >= 5 && !masterBookAdded) {
+					addMasterBook(level, villager);
 				}
-				villager.addTag(MASTER_MARKER);
 			}
 			return InteractionResult.PASS;
 		});
+	}
+
+	private static void addMasterBook(ServerLevel level, Villager villager) {
+		ResourceKey<Enchantment> enchantment = masterBook(villager);
+		if (enchantment != null) {
+			MerchantOffers offers = villager.getOffers();
+			Item masterEquipment = AmethystEquipmentTrades.masterEquipment(villager);
+			// Toolsmiths and weaponsmiths have one vanilla master offer. Keep it alongside the book.
+			if (!offers.isEmpty() && (masterEquipment == null || !offers.getLast().getResult().is(masterEquipment))) {
+				offers.removeLast();
+			}
+			offers.add(offer(EnchantedBookSources.book(level, enchantment), price(enchantment)));
+		}
+		villager.addTag(MASTER_MARKER);
 	}
 
 	private static void ensureCompassOffer(MerchantOffers offers) {

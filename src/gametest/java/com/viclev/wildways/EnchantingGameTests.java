@@ -2,6 +2,7 @@ package com.viclev.wildways;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -36,6 +39,10 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EnchantingTableBlock;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 /** Exercises real menu transactions, enchantment data and applied anvil mixins. */
 public class EnchantingGameTests {
@@ -524,7 +531,7 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void plannedMasterTradesReplaceAnOfferAndWandererAddsBookAndCompass(GameTestHelper helper) {
+	public void plannedMasterTradesKeepSmithEquipmentAndWandererAddsBookAndCompass(GameTestHelper helper) {
 		Player player = this.player(helper, 0);
 		for (var entry : List.of(
 			new Object[]{VillagerProfession.TOOLSMITH, Enchantments.FORTUNE},
@@ -538,11 +545,24 @@ public class EnchantingGameTests {
 			villager.setVillagerData(villager.getVillagerData()
 				.withProfession(helper.getLevel().registryAccess(), profession).withLevel(5));
 			int before = villager.getOffers().size();
+			Item equipment = profession.equals(VillagerProfession.TOOLSMITH) ? ProgressionItems.AMETHYST_PICKAXE
+				: profession.equals(VillagerProfession.WEAPONSMITH) ? ProgressionItems.AMETHYST_SWORD : null;
 			UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
-			helper.assertTrue(villager.getOffers().size() == before, "A master book must replace one trade");
+			helper.assertTrue(villager.getOffers().size() == before + (equipment == null ? 0 : 1), "The master book must keep smith equipment available");
 			helper.assertTrue(villager.getOffers().stream().anyMatch(offer ->
 				offer.getResult().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
 					.getLevel(this.enchantment(helper, target)) == 1), "The guaranteed master book must be present");
+			if (equipment != null) {
+				MerchantOffer equipmentOffer = villager.getOffers().stream().filter(offer -> offer.getResult().is(equipment)).findFirst().orElseThrow();
+				helper.assertFalse(equipmentOffer.getResult().getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty(),
+					"A master smith must still sell enchanted equipment");
+				// Simulate an existing master whose equipment was replaced by the guaranteed book.
+				villager.getOffers().remove(equipmentOffer);
+				UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
+				UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, villager, null);
+				helper.assertTrue(villager.getOffers().stream().filter(offer -> offer.getResult().is(equipment)).count() == 1,
+					"An existing master must regain the equipment offer exactly once");
+			}
 		}
 		WanderingTrader trader = helper.spawn(EntityTypes.WANDERING_TRADER, new BlockPos(3, 2, 3));
 		int before = trader.getOffers().size();
@@ -568,6 +588,53 @@ public class EnchantingGameTests {
 			helper.assertTrue(migrated.getMaxUses() == 1 && migrated.isOutOfStock() == bought,
 				"An old trader must keep the compass in stock only if it has never been sold");
 		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void savedDiamondEquipmentTradesKeepEnchantmentsAndStock(GameTestHelper helper) {
+		var level = helper.getLevel();
+		Villager villager = helper.spawn(EntityTypes.VILLAGER, new BlockPos(2, 2, 2));
+		villager.setVillagerData(villager.getVillagerData().withProfession(level.registryAccess(), VillagerProfession.ARMORER).withLevel(4));
+		var protection = this.enchantment(helper, Enchantments.PROTECTION);
+		ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
+		boots.enchant(protection, 3);
+		var offers = villager.getOffers();
+		LootParams params = new LootParams.Builder(level)
+			.withParameter(LootContextParams.ORIGIN, villager.position())
+			.withParameter(LootContextParams.THIS_ENTITY, villager)
+			.withParameter(LootContextParams.ADDITIONAL_COST_COMPONENT_ALLOWED, Unit.INSTANCE)
+			.create(LootContextParamSets.VILLAGER_TRADE);
+		var bootsTradeKey = ResourceKey.create(Registries.VILLAGER_TRADE,
+			Identifier.withDefaultNamespace("armorer/4/emerald_enchanted_diamond_boots"));
+		var bootsTrade = level.registryAccess().lookupOrThrow(Registries.VILLAGER_TRADE).getOrThrow(bootsTradeKey).value();
+		LootContext context = new LootContext.Builder(params).withOptionalRandomSeed(42L).create(Optional.empty());
+		MerchantOffer generated = bootsTrade.getOffer(context);
+		helper.assertTrue(generated != null && generated.getResult().is(ProgressionItems.AMETHYST_BOOTS)
+			&& !generated.getResult().getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty(),
+			"The standard boots trade must generate enchanted amethyst boots");
+		int originalPrice = generated.getItemCostA().count();
+		int price = Math.round(originalPrice * 0.75F);
+		helper.assertTrue(generated.getBaseCostA().getCount() == price && generated.getCostA().getCount() == price,
+			"The display and purchase must use 75 percent of the full enchanted price");
+		ItemStack emeralds = new ItemStack(Items.EMERALD, price);
+		helper.assertTrue(generated.take(emeralds, ItemStack.EMPTY) && emeralds.isEmpty(), "The discounted emerald price must complete the purchase");
+		MerchantOffer savedOffer = new MerchantOffer(new ItemCost(Items.EMERALD, 18), Optional.of(new ItemCost(Items.DIAMOND, 2)),
+			boots, 3, 3, 15, 0.2F, 2);
+		savedOffer.setSpecialPriceDiff(-1);
+		offers.add(savedOffer);
+		Player player = this.player(helper, 0);
+		UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, villager, null);
+		MerchantOffer migrated = offers.getLast();
+		helper.assertTrue(migrated.getResult().is(ProgressionItems.AMETHYST_BOOTS)
+			&& migrated.getResult().getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(protection) == 3,
+			"A saved diamond offer must keep its rolled enchantment");
+		helper.assertTrue(migrated.isOutOfStock() && migrated.getDemand() == 2 && migrated.getXp() == 15
+			&& migrated.getItemCostA().count() == 18 && migrated.getBaseCostA().getCount() == 14 && migrated.getCostA().getCount() == 18
+			&& ItemStack.matches(migrated.getCostB(), savedOffer.getCostB()),
+			"Migration must preserve stock and the second cost, and apply demand and reputation to the rounded base price");
+		UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, villager, null);
+		helper.assertTrue(offers.getLast() == migrated, "Reopening a converted offer must retain it");
 		helper.succeed();
 	}
 
