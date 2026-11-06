@@ -35,6 +35,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class FishingMinigameMixin extends Projectile implements FishingMinigame.Hook {
 	@Unique
 	private static final int WILDWAYS_REPLY_GRACE_MILLIS = 4_000;
+	@Unique
+	private static final float WILDWAYS_BITE_TIME_SCALE = 0.75F;
 	@Shadow
 	private int nibble;
 	@Shadow @Final
@@ -65,14 +67,14 @@ public abstract class FishingMinigameMixin extends Projectile implements Fishing
 	@ModifyExpressionValue(method = "catchingFish", at = @At(value = "INVOKE", ordinal = 1,
 		target = "Lnet/minecraft/util/Mth;nextInt(Lnet/minecraft/util/RandomSource;II)I"))
 	private int wildways$shortenFishApproach(int ticks) {
-		return Math.ceilDiv(ticks, 2);
+		return Math.round(ticks * WILDWAYS_BITE_TIME_SCALE);
 	}
 
 	@ModifyExpressionValue(method = "catchingFish", at = @At(value = "INVOKE", ordinal = 2,
 		target = "Lnet/minecraft/util/Mth;nextInt(Lnet/minecraft/util/RandomSource;II)I"))
 	private int wildways$shortenFishingWait(int ticks) {
 		// Vanilla subtracts lureSpeed immediately after this roll.
-		return this.lureSpeed + Math.ceilDiv(ticks - this.lureSpeed, 2);
+		return this.lureSpeed + Math.round((ticks - this.lureSpeed) * WILDWAYS_BITE_TIME_SCALE);
 	}
 
 	@WrapOperation(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/syncher/SynchedEntityData;set(Lnet/minecraft/network/syncher/EntityDataAccessor;Ljava/lang/Object;)V"))
