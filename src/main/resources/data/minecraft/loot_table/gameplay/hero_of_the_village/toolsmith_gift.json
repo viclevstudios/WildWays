@@ -23,15 +23,13 @@
           "type": "minecraft:item",
           "name": "minecraft:book",
           "weight": 1,
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly",
-              "options": "minecraft:unbreaking"
-            }
-          ]
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "minecraft:unbreaking"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "minecraft:gameplay/hero_of_the_village/toolsmith_gift"

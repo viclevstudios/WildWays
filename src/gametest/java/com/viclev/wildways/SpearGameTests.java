@@ -33,7 +33,7 @@ public class SpearGameTests {
 			"Amethyst and Volcanite spears must share their tool tier's durability");
 		this.assertClose(helper, this.modifier(amethyst, Attributes.ATTACK_SPEED) - this.modifier(iron, Attributes.ATTACK_SPEED),
 			0.2, "Amethyst must add 0.2 attacks per second");
-		helper.assertTrue(amethyst.get(DataComponents.SWING_ANIMATION).duration() < iron.get(DataComponents.SWING_ANIMATION).duration(),
+		helper.assertTrue(amethyst.get(DataComponents.ATTACK_ANIMATION).duration() < iron.get(DataComponents.ATTACK_ANIMATION).duration(),
 			"Amethyst must also shorten the visible stab animation");
 		var ironRange = iron.get(DataComponents.ATTACK_RANGE);
 		var volcaniteRange = volcanite.get(DataComponents.ATTACK_RANGE);

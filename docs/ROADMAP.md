@@ -4,7 +4,7 @@ This roadmap describes the intended direction for WildWays. Items may move as th
 
 ## Phase 1: Foundation
 
-- Keep the Fabric 26.2 project building cleanly on Java 25.
+- Keep the Fabric 26.3 project building cleanly on Java 25.
 - Replace template metadata, example code, and placeholder mixins with real mod structure.
 - Establish common registries, identifiers, and configuration patterns.
 - Document testing and release expectations.

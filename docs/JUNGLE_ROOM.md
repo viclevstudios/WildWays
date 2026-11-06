@@ -1,6 +1,6 @@
-# Editing the Jungle Temple book alcove
+# Jungle Temple book alcove prototype
 
-The current Projectile Protection location is a **small carved alcove**, not a separately authored temple room. Its geometry is in `JungleTempleBookRoomMixin.java`; its contents are in `data/wildways/loot_table/chests/jungle_hidden_room.json`. Both apply only when a new Jungle Temple generates.
+The prototype places a **small carved alcove** with a Projectile Protection book chest. Its mixin registration is disabled. The prototype geometry is in `JungleTempleBookRoomMixin.java` and its loot is in `data/wildways/loot_table/chests/jungle_hidden_room.json`.
 
 The mixin runs after Minecraft builds the ordinary temple. All coordinates in its `postProcess` method are **local to the temple**, so Minecraft rotates them with the structure:
 

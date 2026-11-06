@@ -7,8 +7,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +15,6 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.component.DamageResistant;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
@@ -136,15 +133,15 @@ public final class ProgressionItems {
 	}
 
 	private static Item axe(String name, ToolMaterial material, float damage, float speed) {
-		return register(name, properties -> new AxeItem(material, damage, speed, properties), new Item.Properties());
+		return register(name, Item::new, new Item.Properties().axe(material, damage, speed));
 	}
 
 	private static Item shovel(String name, ToolMaterial material, float damage, float speed) {
-		return register(name, properties -> new ShovelItem(material, damage, speed, properties), new Item.Properties());
+		return register(name, Item::new, new Item.Properties().shovel(material, damage, speed));
 	}
 
 	private static Item hoe(String name, ToolMaterial material, float damage, float speed) {
-		return register(name, properties -> new HoeItem(material, damage, speed, properties), new Item.Properties());
+		return register(name, Item::new, new Item.Properties().hoe(material, damage, speed));
 	}
 
 	private static Item armor(String name, ArmorMaterial material, ArmorType type, boolean amethyst, boolean volcanite) {

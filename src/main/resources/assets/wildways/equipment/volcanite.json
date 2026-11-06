@@ -9,5 +9,11 @@
     "humanoid_leggings": [
       { "texture": "wildways:volcanite" }
     ]
-  }
+  },
+  "trim_overrides": [
+    {
+      "when": { "material": "wildways:volcanite" },
+      "palette": "wildways:trim/volcanite_contrast"
+    }
+  ]
 }

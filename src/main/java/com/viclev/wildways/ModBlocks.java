@@ -45,7 +45,7 @@ public final class ModBlocks {
 			.strength(2.0F)
 			.sound(SoundType.STONE)
 			.noOcclusion()
-			.pushReaction(PushReaction.DESTROY)
+			.pushReaction(PushReaction.POPPED)
 	);
 	public static final Block ENDERMITE_BRICKS = registerBlock(
 		ModBlockItemIds.ENDERMITE_BRICKS,

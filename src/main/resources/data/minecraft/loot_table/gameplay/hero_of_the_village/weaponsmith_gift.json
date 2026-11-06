@@ -19,15 +19,13 @@
           "type": "minecraft:item",
           "name": "minecraft:book",
           "weight": 1,
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly",
-              "options": "minecraft:sharpness"
-            }
-          ]
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "minecraft:sharpness"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "minecraft:gameplay/hero_of_the_village/weaponsmith_gift"

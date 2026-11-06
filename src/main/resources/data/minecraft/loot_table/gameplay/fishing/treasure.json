@@ -13,18 +13,18 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.25,
                 "min": 0.0
-              },
-              "function": "minecraft:set_damage"
+              }
             },
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             }
           ],
@@ -32,18 +32,18 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.25,
                 "min": 0.0
-              },
-              "function": "minecraft:set_damage"
+              }
             },
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             }
           ],
@@ -57,15 +57,13 @@
           "type": "minecraft:item",
           "name": "minecraft:book",
           "weight": 1,
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly",
-              "options": "#wildways:fishing_books"
-            }
-          ]
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "#wildways:fishing_books"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "minecraft:gameplay/fishing/treasure"

@@ -45,8 +45,9 @@ public abstract class VillageTraderMixin {
 			return;
 		}
 
-		for (BlockPos pos : BlockPos.withinManhattan(center, 5, 2, 5)) {
-			if (!chunkBounds.isInside(pos) || !centerBounds.isInside(pos)
+		for (BlockPos pos : BlockPos.withinManhattan(center, 12)) {
+			if (Math.abs(pos.getX() - center.getX()) > 5 || Math.abs(pos.getY() - center.getY()) > 2
+				|| Math.abs(pos.getZ() - center.getZ()) > 5 || !chunkBounds.isInside(pos) || !centerBounds.isInside(pos)
 				|| !SpawnPlacements.isSpawnPositionOk(EntityTypes.WANDERING_TRADER, level, pos)
 				|| level.getBiome(pos).is(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS)
 				|| !level.noCollision(EntityTypes.WANDERING_TRADER.getSpawnAABB(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5))) {

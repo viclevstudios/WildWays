@@ -1,6 +1,5 @@
 package com.viclev.wildways;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -21,11 +20,6 @@ public class LightSensorBlock extends Block {
 	public LightSensorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(POWER, 0));
-	}
-
-	@Override
-	protected MapCodec<? extends Block> codec() {
-		return simpleCodec(LightSensorBlock::new);
 	}
 
 	@Override

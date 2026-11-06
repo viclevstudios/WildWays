@@ -1,6 +1,5 @@
 package com.viclev.wildways;
 
-import net.fabricmc.fabric.api.loot.v3.FabricLootTableBuilder;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -10,19 +9,16 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 
 public final class ModLootTables {
-	private static final ResourceKey<LootTable> IGLOO = vanilla("chests/igloo_chest");
-	private static final ResourceKey<LootTable> SNOWY_VILLAGE = vanilla("chests/village/village_snowy_house");
-	private static final ResourceKey<LootTable> TRAIL_RUINS_COMMON = vanilla("archaeology/trail_ruins_common");
 	private static final ResourceKey<LootTable> PIGLIN_BRUTE = vanilla("entities/piglin_brute");
 	private static final ResourceKey<LootTable> BASTION_TREASURE = vanilla("chests/bastion_treasure");
 	private static final java.util.Set<ResourceKey<LootTable>> BASTION_CHESTS = java.util.Set.of(
 		vanilla("chests/bastion_bridge"), vanilla("chests/bastion_hoglin_stable"),
-		vanilla("chests/bastion_other"), BASTION_TREASURE
+		BASTION_TREASURE
 	);
 
 	private ModLootTables() {
@@ -37,20 +33,12 @@ public final class ModLootTables {
 			if (isTrialVault(key)) {
 				tableBuilder.withPool(LootPool.lootPool()
 					.add(LootItem.lootTableItem(Items.BOOK).setWeight(1)
-						.apply(EnchantRandomlyFunction.randomApplicableEnchantment(registries)))
+						.apply(EnchantRandomlyFunction.randomApplicableEnchantment(registries.lookupOrThrow(Registries.ENCHANTMENT))))
 					.add(EmptyLootItem.emptyItem().setWeight(9)));
 			}
 
-			if (key.equals(IGLOO)) {
-				tableBuilder.withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.EYE_OF_ICE)));
-			} else if (key.equals(SNOWY_VILLAGE)) {
-				tableBuilder.withPool(chancePool(ModItems.EYE_OF_ICE, 1, 9));
-			} else if (key.equals(PIGLIN_BRUTE)) {
+			if (key.equals(PIGLIN_BRUTE)) {
 				tableBuilder.withPool(chancePool(ModItems.EYE_OF_THE_BRUTE, 1, 2));
-			} else if (key.equals(TRAIL_RUINS_COMMON)) {
-				((FabricLootTableBuilder)(Object)tableBuilder).modifyPools(
-					pool -> pool.add(LootItem.lootTableItem(ModItems.LOST_EYE).setWeight(2))
-				);
 			}
 
 			if (BASTION_CHESTS.contains(key)) {
@@ -58,7 +46,7 @@ public final class ModLootTables {
 				tableBuilder.withPool(LootPool.lootPool()
 					.add(LootItem.lootTableItem(ModItems.VOLCANITE)
 						.setWeight(treasure ? 3 : 1)
-						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+						.apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 2))))
 					.add(EmptyLootItem.emptyItem().setWeight(treasure ? 17 : 19)));
 			}
 		});
@@ -67,9 +55,7 @@ public final class ModLootTables {
 	private static boolean isTrialVault(ResourceKey<LootTable> key) {
 		String path = key.identifier().getPath();
 		return path.equals("chests/trial_chambers/reward_common")
-			|| path.equals("chests/trial_chambers/reward_rare")
-			|| path.equals("chests/trial_chambers/reward_ominous_common")
-			|| path.equals("chests/trial_chambers/reward_ominous_rare");
+			|| path.equals("chests/trial_chambers/reward_ominous_common");
 	}
 
 	private static LootPool.Builder chancePool(net.minecraft.world.item.Item item, int itemWeight, int emptyWeight) {

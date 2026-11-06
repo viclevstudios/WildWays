@@ -8,11 +8,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.component.MapDecorations;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.DispenserBlock;
 
@@ -26,9 +25,12 @@ public final class ModItems {
 	public static final Item VOLCANITE_SWORD = register(ModItemIds.VOLCANITE_SWORD, Item::new, ProgressionItems.volcaniteProperties().sword(VolcaniteMaterials.TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED));
 	public static final Item VOLCANITE_SPEAR = register(ModItemIds.VOLCANITE_SPEAR, Item::new, ProgressionSpears.volcaniteProperties());
 	public static final Item VOLCANITE_PICKAXE = register(ModItemIds.VOLCANITE_PICKAXE, Item::new, ProgressionItems.volcaniteProperties().pickaxe(VolcaniteMaterials.TOOL, ProgressionMaterials.PICKAXE_ATTACK_DAMAGE, ProgressionMaterials.PICKAXE_ATTACK_SPEED));
-	public static final Item VOLCANITE_SHOVEL = register(ModItemIds.VOLCANITE_SHOVEL, properties -> new ShovelItem(VolcaniteMaterials.TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED, properties), ProgressionItems.volcaniteProperties());
-	public static final Item VOLCANITE_AXE = register(ModItemIds.VOLCANITE_AXE, properties -> new AxeItem(VolcaniteMaterials.TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED, properties), ProgressionItems.volcaniteProperties());
-	public static final Item VOLCANITE_HOE = register(ModItemIds.VOLCANITE_HOE, properties -> new HoeItem(VolcaniteMaterials.TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED, properties), ProgressionItems.volcaniteProperties());
+	public static final Item VOLCANITE_SHOVEL = register(ModItemIds.VOLCANITE_SHOVEL, Item::new, ProgressionItems.volcaniteProperties()
+		.shovel(VolcaniteMaterials.TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED));
+	public static final Item VOLCANITE_AXE = register(ModItemIds.VOLCANITE_AXE, Item::new, ProgressionItems.volcaniteProperties()
+		.axe(VolcaniteMaterials.TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED));
+	public static final Item VOLCANITE_HOE = register(ModItemIds.VOLCANITE_HOE, Item::new, ProgressionItems.volcaniteProperties()
+		.hoe(VolcaniteMaterials.TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED));
 	public static final List<Item> VOLCANITE_TOOLS = List.of(VOLCANITE_SWORD, VOLCANITE_SPEAR, VOLCANITE_PICKAXE, VOLCANITE_AXE, VOLCANITE_SHOVEL, VOLCANITE_HOE);
 	public static final Item VOLCANITE_HELMET = register(ModItemIds.VOLCANITE_HELMET, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.HELMET));
 	public static final Item VOLCANITE_CHESTPLATE = register(ModItemIds.VOLCANITE_CHESTPLATE, Item::new, ProgressionItems.volcaniteArmorProperties(ArmorType.CHESTPLATE));
@@ -47,6 +49,10 @@ public final class ModItems {
 	public static final Item BEETROOT_DOUGH = fishingBait(ModItemIds.BEETROOT_DOUGH);
 	public static final Item CANDIED_BAIT = fishingBait(ModItemIds.CANDIED_BAIT);
 	public static final Item AMETHYST_BLINKER = fishingBait(ModItemIds.AMETHYST_BLINKER);
+	public static final Item DUNGEON_MAP = explorationMap(ModItemIds.DUNGEON_MAP);
+	public static final Item TRAIL_RUINS_MAP = explorationMap(ModItemIds.TRAIL_RUINS_MAP);
+	public static final Item IGLOO_MAP = explorationMap(ModItemIds.IGLOO_MAP);
+	public static final Item PILLAGER_OUTPOST_MAP = explorationMap(ModItemIds.PILLAGER_OUTPOST_MAP);
 	public static final ArrowItem TURTLE_ARROW = register(ModItemIds.TURTLE_ARROW, TurtleArrowItem::new, new Item.Properties());
 	public static final ArrowItem RANGE_ARROW = register(ModItemIds.RANGE_ARROW, RangeArrowItem::new, new Item.Properties());
 	public static final ArrowItem EXPLOSIVE_ARROW = register(ModItemIds.EXPLOSIVE_ARROW, ExplosiveArrowItem::new, new Item.Properties());
@@ -117,6 +123,10 @@ public final class ModItems {
 			Component.translatable(key.identifier().toLanguageKey("item") + ".effect"),
 			Component.translatable("wildways.fishing.bait.load", FishingBait.MAX_CHARGES)
 		))));
+	}
+
+	private static Item explorationMap(ResourceKey<Item> key) {
+		return register(key, MapItem::new, new Item.Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
 	}
 
 	public static boolean isPortalEye(Item item) {

@@ -12,16 +12,24 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 
 /** Exercises the loaded loot tables, including existing Bastion rewards. */
 public class BookLootGameTests {
@@ -78,6 +86,91 @@ public class BookLootGameTests {
 		helper.assertTrue(item.getItem().getOrDefault(DataComponents.STORED_ENCHANTMENTS,
 			ItemEnchantments.EMPTY).getLevel(channeling) == 1,
 			"A lightning-struck ordinary book must become a Channeling book");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void mobLootKeepsKillConditionsAndSpecialDrops(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var player = helper.makeMockPlayer(GameType.SURVIVAL);
+		var endermite = helper.spawn(EntityTypes.ENDERMITE, new BlockPos(1, 2, 1));
+		var parched = helper.spawn(EntityTypes.PARCHED, new BlockPos(2, 2, 1));
+		var shellTable = table(helper, "minecraft:entities/endermite");
+		var parchedTable = table(helper, "minecraft:entities/parched");
+		var power = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.POWER);
+		var endermiteLoot = mobLoot(helper, endermite, null);
+		var parchedLoot = mobLoot(helper, parched, null);
+		var playerEndermiteLoot = mobLoot(helper, endermite, player);
+		var playerParchedLoot = mobLoot(helper, parched, player);
+
+		Set<Integer> shellCounts = new HashSet<>();
+		boolean hasPowerBook = false;
+		boolean hasWeaknessArrow = false;
+		for (int roll = 1; roll <= 256; roll++) {
+			long seed = roll * 104729L;
+			helper.assertTrue(shellTable.getRandomItems(endermiteLoot, seed).isEmpty(),
+				"An Endermite must need a player kill to drop shells");
+			shellCounts.add(shellTable.getRandomItems(playerEndermiteLoot, seed).stream()
+				.filter(item -> item.is(ModItems.ENDERMITE_SHELL)).mapToInt(ItemStack::getCount).sum());
+			helper.assertTrue(parchedTable.getRandomItems(parchedLoot, seed).stream().noneMatch(item -> item.is(Items.ENCHANTED_BOOK)),
+				"A Parched must need a player kill to drop a Power book");
+			for (ItemStack drop : parchedTable.getRandomItems(playerParchedLoot, seed)) {
+				helper.assertFalse(drop.is(Items.BOOK), "A Parched book drop must be enchanted");
+				hasPowerBook |= drop.is(Items.ENCHANTED_BOOK)
+					&& drop.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(power) == 1;
+				hasWeaknessArrow |= drop.is(Items.TIPPED_ARROW)
+					&& drop.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion().filter(Potions.WEAKNESS::equals).isPresent();
+			}
+		}
+		helper.assertTrue(shellCounts.equals(Set.of(0, 1, 2)), "Player kills should roll between zero and two shells");
+		helper.assertTrue(hasPowerBook && hasWeaknessArrow, "Parched must retain both Power books and vanilla Weakness arrows");
+		helper.succeed();
+	}
+
+	private static LootParams mobLoot(GameTestHelper helper, LivingEntity mob, @Nullable Player player) {
+		var level = helper.getLevel();
+		return new LootParams.Builder(level)
+			.withParameter(LootContextParams.ORIGIN, mob.position())
+			.withParameter(LootContextParams.THIS_ENTITY, mob)
+			.withParameter(LootContextParams.DAMAGE_SOURCE, player == null ? level.damageSources().generic() : level.damageSources().playerAttack(player))
+			.withOptionalParameter(LootContextParams.ATTACKING_ENTITY, player)
+			.withOptionalParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
+			.create(LootContextParamSets.ENTITY);
+	}
+
+	@GameTest
+	public void combatBooksUseTheMobsStateAtDeath(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var source = level.damageSources().playerAttack(helper.makeMockPlayer(GameType.SURVIVAL));
+		BlockPos position = new BlockPos(2, 2, 2);
+		var raid = new Raid(helper.absolutePos(position), level.getDifficulty());
+		for (int attempt = 0; attempt < 48; attempt++) {
+			var raider = helper.spawn(EntityTypes.PILLAGER, position);
+			raider.setCurrentRaid(raid);
+			raider.setWave(1);
+			raid.addWaveMob(level, 1, raider, true);
+			raider.hurtServer(level, source, 1000);
+			helper.assertFalse(raider.hasActiveRaid(), "A dead Pillager must have left the raid");
+		}
+		for (int attempt = 0; attempt < 16; attempt++) {
+			var zombie = helper.spawn(EntityTypes.ZOMBIE, position);
+			zombie.setBaby(false);
+			zombie.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SPEAR));
+			zombie.setDropChance(EquipmentSlot.MAINHAND, 2.0F);
+			zombie.hurtServer(level, source, 1000);
+			helper.assertTrue(zombie.getMainHandItem().isEmpty(), "A zombie that drops its spear must clear the hand slot");
+		}
+		var enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+		var piercing = enchantments.getOrThrow(Enchantments.PIERCING);
+		var lunge = enchantments.getOrThrow(Enchantments.LUNGE);
+		var books = helper.findEntities(EntityTypes.ITEM, Vec3.atCenterOf(position), 3).stream()
+			.map(ItemEntity::getItem)
+			.filter(stack -> stack.is(Items.ENCHANTED_BOOK))
+			.map(stack -> stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)).toList();
+		helper.assertTrue(books.stream().anyMatch(book -> book.getLevel(piercing) == 1),
+			"Killing active raiders must be able to drop Piercing");
+		helper.assertTrue(books.stream().anyMatch(book -> book.getLevel(lunge) == 1),
+			"Zombies that drop their spear must still be able to drop Lunge");
 		helper.succeed();
 	}
 

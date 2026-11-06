@@ -45,7 +45,7 @@ public class EnchantingItemsRenderer extends EnchantTableRenderer {
 		if (!state.items[0].isEmpty()) {
 			poseStack.pushPose();
 			poseStack.translate(0.5F, 1.45F + (float)Math.sin(state.time * 0.09F) * 0.05F, 0.5F);
-			poseStack.mulPose(Axis.YP.rotation(state.time * 0.035F));
+			poseStack.rotate(Axis.YP, state.time * 0.035F);
 			poseStack.scale(0.75F, 0.75F, 0.75F);
 			state.items[0].submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 			poseStack.popPose();
@@ -57,7 +57,7 @@ public class EnchantingItemsRenderer extends EnchantTableRenderer {
 			poseStack.translate(0.5F + (float)Math.cos(angle) * 0.45F,
 				1.25F + (float)Math.sin(state.time * 0.08F + i) * 0.03F,
 				0.5F + (float)Math.sin(angle) * 0.45F);
-			poseStack.mulPose(Axis.YP.rotation(-angle));
+			poseStack.rotate(Axis.YP, -angle);
 			poseStack.scale(0.37F, 0.37F, 0.37F);
 			state.items[i].submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 			poseStack.popPose();

@@ -14,7 +14,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "wildways:load_amethyst_blinker"
+        "recipes": "wildways:load_amethyst_blinker"
       }
     }
   },

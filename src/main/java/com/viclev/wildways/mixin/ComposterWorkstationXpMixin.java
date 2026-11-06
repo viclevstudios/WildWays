@@ -2,6 +2,7 @@ package com.viclev.wildways.mixin;
 
 import com.viclev.wildways.XpProgression;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,7 +27,7 @@ public abstract class ComposterWorkstationXpMixin {
 	private void wildways$recordComposterInput(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
 		InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
 		this.wildways$validCompostingInput = state.getValue(ComposterBlock.LEVEL) < 7
-			&& ComposterBlock.COMPOSTABLES.containsKey(stack.getItem());
+			&& stack.has(DataComponents.COMPOSTABLE);
 	}
 
 	@Inject(method = "useItemOn", at = @At("TAIL"))

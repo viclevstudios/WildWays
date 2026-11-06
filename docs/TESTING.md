@@ -1,6 +1,6 @@
 # Testing
 
-WildWays is a Fabric mod targeting Minecraft 26.2 and Java 25. Use the Gradle wrapper for all checks.
+WildWays is a Fabric mod targeting Minecraft 26.3 and Java 25. Use the Gradle wrapper for all checks.
 
 ## Required Tools
 
@@ -29,6 +29,23 @@ This should compile the mod, process resources, validate mixins through Loom tas
 
 Run `.\gradlew.bat runGameTest` for the Fabric test server. This uses a separate test mod and run directory; the test classes are not included in the distributable mod JAR. Tests cover real enchanting/anvil transactions and librarian offers. Compilation alone does not validate gameplay behavior or mixin invocation targets.
 
+## Structure Maps
+
+Use a default Overworld with structures enabled. Vanilla abandoned camps generate in new terrain. Previously unopened containers can use the updated loot tables after upgrading a world.
+
+| Destination | In-game check |
+| --- | --- |
+| Mineshaft | Open a spawner-dungeon chest (25% when a target is found) or the secret chest in a vanilla abandoned camp (vanilla loot). |
+| Spawner dungeon | Load chunks around a dungeon, then check unopened abandoned camp chests or mineshaft chest minecarts in the same area. Each has a 25% roll and needs a known dungeon within 1,024 blocks. Check the marker against the spawner's X and Z coordinates. |
+| Trail Ruins | Open an anchor chest in Quarantine Grounds. It should give a map when the search finds Trail Ruins. |
+| Igloo | Open unopened snowy village house chests (25% when a target is found). |
+| Pillager Outpost | Kill the banner captain of a newly spawned patrol with an outpost in the area. Compare it with an ordinary patrol member and a captain spawned at an outpost. |
+| Jungle Pyramid and Swamp Hut | Fish in open water in a jungle biome or a regular swamp and complete the minigame. Approximately one in seven treasure catches in each eligible biome becomes its map when the search succeeds. Check with and without bait. |
+| Desert Pyramid | Brush suspicious sand at a desert well near a pyramid. A successful search replaces 20% of ordinary finds. |
+| Ancient City | Open Trial Chambers supply chests (25% when a target is found). |
+
+Hold each map to see its marker, then clone it with an empty map in a crafting grid. For a repeatable loot check near a target, run `/loot give @s loot minecraft:chests/trial_chambers/supply` or substitute another chest's loot-table ID.
+
 ## Client Smoke Test
 
 For gameplay or client-visible changes, run:
@@ -50,7 +67,7 @@ Suggested smoke checks:
 - Cast a fishing rod into water and reel in when the bobber dips. Follow the target and watch the chance rise. A round spent in green reaches 100%, yellow reaches 50%, and outside stays at 0%. Try switching zones mid-round and moving to green just before time runs out. Confirm the screen closes after five seconds and that Escape or either Shift key lets the catch go. Compare several casts with vanilla to check the shorter wait and longer reaction window. Check that successful catches still produce loot, XP and rod wear.
 - Craft each bait and combine it with an enchanted, damaged fishing rod. Check the different rod sprites before and after casting. Reel in early and check that the tooltip still reads 16 charges. Wait for a bite and check that it reads 15, including after letting the bite expire or cancelling the round. Confirm that the three-second Candied Bait round uses the wider zones and moves at the same speed as a normal round. Catch fish with Beetroot Dough and compare their sprites and restored hunger with ordinary fish before and after cooking. Check that pufferfish from that bait are ordinary. Compare Amethyst Blinker catches in open water and a confined pond.
 - Restart the client for the new Volcanite trim registry entry and ingot component. At a Smithing Table, place an armor-trim template on the left, armor in the middle and one `wildways:volcanite` ingot on the right. Confirm that the preview, result tooltip and inventory icon show Volcanite Material, and that the worn armor uses the selected pattern. Compare Iron, Diamond, Netherite, Quartz, Amethyst, colored Leather armor and Turtle Shells; compare different patterns including Sentry, Silence, Flow and Bolt.
-- Compare Redstone and Volcanite trims side by side: Volcanite should have lighter coral/rose highlights. On Volcanite armor, verify the automatically selected red/rose contrast variant in both the inventory and worn layers (including leggings). Existing trims must retain their original colors, and names, enchantments, damage and leather dye must survive trimming. Reapplying an identical material/pattern must give no result. Automated `VolcaniteTrimGameTests` cover all eighteen vanilla patterns, all 41 armor items and the material/contrast mapping.
+- Compare Redstone and Volcanite trims side by side. Volcanite should have lighter coral/rose highlights. On Volcanite armor, verify the automatically selected red/rose contrast variant in both the inventory and worn layers (including leggings). Existing trims must retain their original colors, and names, enchantments, damage and leather dye must survive trimming. Reapplying an identical material/pattern must give no result. Automated `VolcaniteTrimGameTests` cover all eighteen vanilla patterns, all 41 armor items and the palette ID.
 
 - Reload resources with F3+T. In Ingredients, verify that the five refinement templates have their custom sprites. At a Smithing Table, apply trims to Quartz, Amethyst and Volcanite helmets, chestplates, leggings and boots. Verify that the preview/result and inventory icons show the trim material color, untrimmed copies retain their base sprites, and worn armor retains the selected pattern. Try each of the eleven vanilla trim materials, including Resin; changing the pattern with the same material should keep the same inventory overlay, as in vanilla.
 

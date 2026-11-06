@@ -1,4 +1,8 @@
 {
+  "item.wildways.dungeon_map": "Karte zu einem Spawner-Dungeon",
+  "item.wildways.trail_ruins_map": "Pfadruinenkarte",
+  "item.wildways.igloo_map": "Iglukarte",
+  "item.wildways.pillager_outpost_map": "Plünderer-Außenpostenkarte",
   "item.wildways.biome_compass": "Biomkompass",
   "wildways.biome_compass.title": "Biom auswählen",
   "wildways.biome_compass.instruction": "Dieser Kompass lässt sich einmalig binden.",

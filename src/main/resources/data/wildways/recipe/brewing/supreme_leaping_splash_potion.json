@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "minecraft:splash_potion",
+    "potion_contents": {
+      "potions": "minecraft:strong_leaping"
+    }
+  },
+  "reagent": {
+    "item": "minecraft:popped_chorus_fruit"
+  },
+  "output": {
+    "id": "minecraft:splash_potion",
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "wildways:supreme_leaping"
+      }
+    }
+  }
+}

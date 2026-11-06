@@ -19,6 +19,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - The Biome Compass is sold by Wandering Traders for 20 emeralds, with one compass per trader. Right-click with a blank compass to select a biome in the current dimension. A successful search permanently binds that compass to the located position. The needle points there, and the action bar displays the current biome and the selected biome.
 - Holding a Light Sensor displays the local raw light level. It is crafted with a daylight detector at the top centre, redstone at the centre, copper at the bottom centre, iron ingots in the four corners, and planks at the middle left and right. Its top, sides, and bottom use distinct textures.
 - Quarantine Grounds can generate in selected taiga biomes. Their terrain-aware pieces follow local ground, their placed Endermites persist, and hospital-house weathering can convert regular spruce logs into correctly orientated stripped spruce logs.
+- Explorer maps connect abandoned camps, mineshafts, spawner dungeons, Trail Ruins, igloos, Pillager Outposts, jungle and desert pyramids, swamp huts, and Ancient Cities. See [structure map sources and testing](TESTING.md#structure-maps).
 
 ## Fishing
 
@@ -32,12 +33,12 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Raw and refined Volcanite each pack into a matching storage block in a 3×3 grid; each block unpacks into nine items and requires an iron-tier pickaxe.
 - Six weapons/tools and four armor pieces use Volcanite's progression values, are obtained through Smithing Table refinements, are repaired with refined Volcanite when enchanted with Mending, and can be upgraded to Netherite.
 - Bastion Bridge, Hoglin Stable, and Other chests each have a 5% chance for 1-2 refined Volcanite; Treasure chests have a 15% chance. Ore generation rates remain provisional. See [prototype details and testing](VOLCANITE.md).
-- Volcanite Ingots also work as an armor-trim material with all eighteen vanilla patterns. A coral-red palette distinguishes the trim from Redstone; Volcanite armor automatically uses a brighter contrast palette. Both worn armor and all 41 vanilla/Wildways armor inventory icons support it, including dyed leather and the Turtle Shell. The two eight-color palette PNGs under `assets/wildways/textures/trims/color_palettes/` are AI-designed and generated with code; existing vanilla pattern textures are reused. The trim does not grant Volcanite equipment attributes.
+- Volcanite Ingots also work as an armor-trim material with all eighteen vanilla patterns. A coral-red palette distinguishes the trim from Redstone; Volcanite armor automatically uses a brighter contrast palette. Both worn armor and all 41 vanilla/Wildways armor inventory icons support it, including dyed leather and the Turtle Shell. The two eight-color palette PNGs under `assets/wildways/textures/palettes/trim/` are AI-designed and generated with code; existing vanilla pattern textures are reused. The trim does not grant Volcanite equipment attributes.
 
 ## Enchanting prototype
 
-- Enchanted books now have the planned exploration, mob, trade, fishing, archaeology and crafting sources; see [Book sources](BOOK_SOURCES.md). General random books remain in temples, Strongholds and Trial Chambers. Specific books come from themed locations and actions, including spawner-dependent dungeon chests, a Jungle Temple alcove and Ocean Monument supply chests.
-- Quarantine Grounds' Endermite Nest contains one or two common enchanted books. The Jungle Temple alcove can be adjusted through its [local structure coordinates](JUNGLE_ROOM.md).
+- Enchanted books come from exploration, mobs, trading, fishing, archaeology and crafting. See [Book sources](BOOK_SOURCES.md). General random books remain in temples, Strongholds and Trial Chambers. Specific books come from themed locations and actions, including spawner-dependent dungeon chests and Ocean Monument supply chests.
+- Quarantine Grounds' Endermite Nest contains one or two common enchanted books.
 
 - Enchanting Tables use a reusable enchanted recipe book, one lapis and a rune that selects the enchantment level. A higher rune can substitute for the matching one without raising the level, bookshelf requirement or XP price above the enchantment's maximum. Mending, Silk Touch, Channeling and Multishot require at least a Golden Rune and cost three levels.
 - One universal catalyst halves XP costs, rounded up, for every rune tier and lasts four uses. Books have no displayed levels and cannot be used in an anvil.

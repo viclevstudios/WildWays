@@ -1,32 +1,22 @@
 package com.viclev.wildways.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viclev.wildways.XpProgression;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.projectile.FishingHook;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FishingHook.class)
 public abstract class FishingTreasureXpMixin {
-	@Inject(method = "retrieve", at = @At("TAIL"))
-	private void wildways$doubleFishingTreasureXp(net.minecraft.world.item.ItemStack rod, CallbackInfoReturnable<Integer> cir) {
-		FishingHook hook = (FishingHook)(Object)this;
-		if (cir.getReturnValue() <= 0 || !(hook.level() instanceof ServerLevel level)
-			|| !(hook.getPlayerOwner() instanceof ServerPlayer player)) {
-			return;
-		}
-		AABB area = hook.getBoundingBox().inflate(2.0);
-		boolean treasure = level.getEntitiesOfClass(ItemEntity.class, area).stream()
-			.anyMatch(item -> XpProgression.isFishingTreasure(item.getItem()));
-		if (treasure) {
-			// FishingHook awards 1-6 XP for this catch; add a matching amount for treasure loot.
-			player.giveExperiencePoints(level.getRandom().nextInt(6) + 1);
-		}
+	@WrapOperation(method = "retrieve", at = @At(value = "NEW",
+		target = "(Lnet/minecraft/world/level/Level;DDDI)Lnet/minecraft/world/entity/ExperienceOrb;"))
+	private ExperienceOrb wildways$doubleFishingTreasureXp(Level level, double x, double y, double z, int xp,
+		Operation<ExperienceOrb> original, @Local(ordinal = 1) ItemStack caught) {
+		return original.call(level, x, y, z, XpProgression.isFishingTreasure(caught) ? xp * 2 : xp);
 	}
 }

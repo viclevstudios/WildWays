@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "wildways:awkward_eye"
+  },
+  "reagent": {
+    "item": "minecraft:phantom_membrane"
+  },
+  "output": {
+    "id": "wildways:thick_eye"
+  }
+}

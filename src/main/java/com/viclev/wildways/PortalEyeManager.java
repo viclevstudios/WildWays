@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -132,7 +133,7 @@ public final class PortalEyeManager {
 			}
 		}
 		if (!player.getInventory().add(stack)) {
-			player.drop(stack, false);
+			player.drop(stack, false, Prediction.SERVER_ONLY);
 		}
 		level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
 	}

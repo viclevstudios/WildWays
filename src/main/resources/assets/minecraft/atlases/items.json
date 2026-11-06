@@ -8,10 +8,10 @@
         "minecraft:trims/items/leggings_trim",
         "minecraft:trims/items/boots_trim"
       ],
-      "palette_key": "minecraft:trims/color_palettes/trim_palette",
+      "palette_key": "minecraft:trim_base",
       "permutations": {
-        "wildways_volcanite": "wildways:trims/color_palettes/volcanite",
-        "wildways_volcanite_contrast": "wildways:trims/color_palettes/volcanite_contrast"
+        "wildways_volcanite": "wildways:trim/volcanite",
+        "wildways_volcanite_contrast": "wildways:trim/volcanite_contrast"
       }
     }
   ]

@@ -18,7 +18,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -38,6 +38,12 @@ public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubPro
 	) {
 		super(output, registriesFuture, LootContextParamSets.CHEST);
 		this.registriesFuture = registriesFuture;
+	}
+
+	@Override
+	public void run() {
+		// Fabric's standalone provider calls generate with its own table exporter.
+		throw new UnsupportedOperationException("Use the Fabric data provider with a CachedOutput");
 	}
 
 	@Override
@@ -92,7 +98,7 @@ public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubPro
 			entry(Items.DIAMOND, 2),
 			entry(Items.ECHO_SHARD, 1)
 		)).withPool(LootPool.lootPool()
-			.setRolls(UniformGenerator.between(1, 2))
+			.setRolls(ContextIntProviders.between(1, 2))
 			.add(LootItem.lootTableItem(Items.BOOK)
 				.apply(EnchantRandomlyFunction.randomEnchantment()
 					.withOneOf(nestBooks)))));
@@ -103,7 +109,7 @@ public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubPro
 	}
 
 	private static LootPool.Builder weightedPool(int minRolls, int maxRolls, LootItem.Builder<?>... entries) {
-		LootPool.Builder pool = LootPool.lootPool().setRolls(UniformGenerator.between(minRolls, maxRolls));
+		LootPool.Builder pool = LootPool.lootPool().setRolls(ContextIntProviders.between(minRolls, maxRolls));
 		for (LootItem.Builder<?> entry : entries) {
 			pool.add(entry);
 		}

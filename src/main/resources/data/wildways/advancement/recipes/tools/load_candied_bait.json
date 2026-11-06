@@ -14,7 +14,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "wildways:load_candied_bait"
+        "recipes": "wildways:load_candied_bait"
       }
     }
   },

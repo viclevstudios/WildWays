@@ -22,6 +22,10 @@ public final class ModItemIds {
 	public static final ResourceKey<Item> BEETROOT_DOUGH = create("beetroot_dough");
 	public static final ResourceKey<Item> CANDIED_BAIT = create("candied_bait");
 	public static final ResourceKey<Item> AMETHYST_BLINKER = create("amethyst_blinker");
+	public static final ResourceKey<Item> DUNGEON_MAP = create("dungeon_map");
+	public static final ResourceKey<Item> TRAIL_RUINS_MAP = create("trail_ruins_map");
+	public static final ResourceKey<Item> IGLOO_MAP = create("igloo_map");
+	public static final ResourceKey<Item> PILLAGER_OUTPOST_MAP = create("pillager_outpost_map");
 	public static final ResourceKey<Item> TURTLE_ARROW = create("turtle_arrow");
 	public static final ResourceKey<Item> RANGE_ARROW = create("range_arrow");
 	public static final ResourceKey<Item> EXPLOSIVE_ARROW = create("explosive_arrow");

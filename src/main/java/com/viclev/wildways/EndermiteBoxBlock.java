@@ -1,6 +1,5 @@
 package com.viclev.wildways;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -53,11 +52,6 @@ public class EndermiteBoxBlock extends BaseEntityBlock implements SimpleWaterlog
 	public EndermiteBoxBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return simpleCodec(EndermiteBoxBlock::new);
 	}
 
 	@Override

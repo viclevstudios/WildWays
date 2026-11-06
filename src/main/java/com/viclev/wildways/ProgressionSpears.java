@@ -54,7 +54,7 @@ public final class ProgressionSpears {
 					new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -3.0, AttributeModifier.Operation.ADD_VALUE),
 					EquipmentSlotGroup.MAINHAND)
 				.build());
-			components.set(DataComponents.SWING_ANIMATION, new SwingAnimation(SwingAnimationType.STAB, 20));
+			components.set(DataComponents.ATTACK_ANIMATION, new SwingAnimation(SwingAnimationType.STAB, 20));
 			// Midpoints of the iron and diamond spear profiles, including the charged attack.
 			components.set(DataComponents.KINETIC_WEAPON, new KineticWeapon(10, 11,
 				KineticWeapon.Condition.ofAttackerSpeed(55, 10.5F),

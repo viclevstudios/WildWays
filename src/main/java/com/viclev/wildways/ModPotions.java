@@ -1,7 +1,6 @@
 package com.viclev.wildways;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,7 +14,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Optional;
 
@@ -46,25 +44,6 @@ public final class ModPotions {
 	}
 
 	public static void initialize() {
-		FabricPotionBrewingBuilder.BUILD.register(builder -> {
-			builder.registerPotionRecipe(Potions.AWKWARD, Ingredient.of(ModItems.ENDERMITE_SHELL), UNEASE);
-			builder.registerPotionRecipe(UNEASE, Ingredient.of(Items.GLOWSTONE_DUST), STRONG_UNEASE);
-			registerChorusRecipe(builder, Potions.STRONG_SWIFTNESS, SUPREME_SWIFTNESS);
-			registerChorusRecipe(builder, Potions.STRONG_LEAPING, SUPREME_LEAPING);
-			registerChorusRecipe(builder, Potions.STRONG_STRENGTH, SUPREME_STRENGTH);
-			registerChorusRecipe(builder, Potions.STRONG_HEALING, SUPREME_HEALING);
-			registerChorusRecipe(builder, Potions.STRONG_REGENERATION, SUPREME_REGENERATION);
-			registerChorusRecipe(builder, Potions.LONG_FIRE_RESISTANCE, SUPREME_FIRE_RESISTANCE);
-			registerChorusRecipe(builder, Potions.LONG_WATER_BREATHING, SUPREME_WATER_BREATHING);
-			registerChorusRecipe(builder, Potions.LONG_NIGHT_VISION, SUPREME_NIGHT_VISION);
-			registerChorusRecipe(builder, Potions.LONG_INVISIBILITY, SUPREME_INVISIBILITY);
-			registerChorusRecipe(builder, Potions.LONG_SLOW_FALLING, SUPREME_SLOW_FALLING);
-			registerChorusRecipe(builder, Potions.STRONG_SLOWNESS, FATAL_SLOWNESS);
-			registerChorusRecipe(builder, Potions.STRONG_HARMING, FATAL_HARMING);
-			registerChorusRecipe(builder, Potions.STRONG_POISON, FATAL_POISON);
-			registerChorusRecipe(builder, Potions.LONG_WEAKNESS, FATAL_WEAKNESS);
-		});
-
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(output -> {
 			output.accept(PotionContents.createItemStack(Items.POTION, UNEASE));
 			output.accept(PotionContents.createItemStack(Items.SPLASH_POTION, UNEASE));
@@ -105,10 +84,6 @@ public final class ModPotions {
 			addTippedArrowAfter(output, Potions.STRONG_POISON, FATAL_POISON);
 			addTippedArrowAfter(output, Potions.LONG_WEAKNESS, FATAL_WEAKNESS);
 		});
-	}
-
-	private static void registerChorusRecipe(FabricPotionBrewingBuilder builder, Holder<Potion> input, Holder<Potion> output) {
-		builder.registerPotionRecipe(input, Ingredient.of(Items.POPPED_CHORUS_FRUIT), output);
 	}
 
 	private static void addPotionAfter(net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTabOutput output, Holder<Potion> base, Holder<Potion> upgrade) {

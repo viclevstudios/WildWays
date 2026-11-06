@@ -32,7 +32,7 @@ WildWays currently includes exploration utilities, Quarantine Grounds, Endermite
 
 ## Development
 
-- Minecraft: 26.2
+- Minecraft: 26.3
 - Loader: Fabric
 - Java: 25
 - Build: `.\gradlew.bat build`

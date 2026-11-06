@@ -6,174 +6,183 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:emerald",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:wheat",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:wooden_hoe",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:clay",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:brick",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:yellow_dye",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:blue_dye",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:light_blue_dye",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:white_dye",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:orange_dye",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:red_candle",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:green_candle",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:purple_candle",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:brown_candle",
-          "weight": 2
+          "weight": 712
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:magenta_stained_glass_pane"
+          "name": "minecraft:magenta_stained_glass_pane",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:pink_stained_glass_pane"
+          "name": "minecraft:pink_stained_glass_pane",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:blue_stained_glass_pane"
+          "name": "minecraft:blue_stained_glass_pane",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:light_blue_stained_glass_pane"
+          "name": "minecraft:light_blue_stained_glass_pane",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:red_stained_glass_pane"
+          "name": "minecraft:red_stained_glass_pane",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:yellow_stained_glass_pane"
+          "name": "minecraft:yellow_stained_glass_pane",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:purple_stained_glass_pane"
+          "name": "minecraft:purple_stained_glass_pane",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:spruce_hanging_sign"
+          "name": "minecraft:spruce_hanging_sign",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:oak_hanging_sign"
+          "name": "minecraft:oak_hanging_sign",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:gold_nugget"
+          "name": "minecraft:gold_nugget",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:coal"
+          "name": "minecraft:coal",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:wheat_seeds"
+          "name": "minecraft:wheat_seeds",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:beetroot_seeds"
+          "name": "minecraft:beetroot_seeds",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:dead_bush"
+          "name": "minecraft:dead_bush",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:flower_pot"
+          "name": "minecraft:flower_pot",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:string"
+          "name": "minecraft:string",
+          "weight": 356
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:lead"
+          "name": "minecraft:lead",
+          "weight": 356
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildways:lost_eye",
+          "weight": 900
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 2115,
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "minecraft:unbreaking"
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 2115,
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "minecraft:efficiency"
+          }
         }
       ],
-      "rolls": 1.0
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:book",
-          "weight": 2,
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly",
-              "options": "minecraft:unbreaking"
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:book",
-          "weight": 2,
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly",
-              "options": "minecraft:efficiency"
-            }
-          ]
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 4
-        }
-      ]
+      "rolls": 1
     }
   ],
   "random_sequence": "minecraft:archaeology/trail_ruins_common"

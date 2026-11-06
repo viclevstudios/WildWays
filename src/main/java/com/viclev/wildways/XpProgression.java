@@ -195,7 +195,8 @@ public final class XpProgression {
 
 	public static boolean isFishingTreasure(ItemStack stack) {
 		return stack.is(Items.BOW) || stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.FISHING_ROD)
-			|| stack.is(Items.NAME_TAG) || stack.is(Items.NAUTILUS_SHELL) || stack.is(Items.SADDLE);
+			|| stack.is(Items.NAME_TAG) || stack.is(Items.NAUTILUS_SHELL) || stack.is(Items.SADDLE)
+			|| stack.is(Items.JUNGLE_PYRAMID_MAP) || stack.is(Items.SWAMP_HUT_MAP);
 	}
 
 	public static void awardOnce(ServerPlayer player, String key, int xp) {

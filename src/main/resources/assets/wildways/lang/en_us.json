@@ -1,4 +1,8 @@
 {
+  "item.wildways.dungeon_map": "Buried Dungeon Map",
+  "item.wildways.trail_ruins_map": "Trail Ruins Map",
+  "item.wildways.igloo_map": "Igloo Map",
+  "item.wildways.pillager_outpost_map": "Pillager Outpost Map",
   "container.wildways.enchanting_requirements": "XP: %s  |  Shelves: %s/%s",
   "container.wildways.enchanting_nearby_shelves": "Bookshelves nearby: %s",
   "container.wildways.enchanting_status_1": "Incompatible",

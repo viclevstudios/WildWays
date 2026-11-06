@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "wildways:thick_eye"
+  },
+  "reagent": {
+    "item": "minecraft:ghast_tear"
+  },
+  "output": {
+    "id": "wildways:eye_of_brewing"
+  }
+}

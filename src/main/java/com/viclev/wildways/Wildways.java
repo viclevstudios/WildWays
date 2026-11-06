@@ -37,6 +37,7 @@ public class Wildways implements ModInitializer {
 		UneaseBlockBreakHandler.initialize();
 		PortalEyeManager.initialize();
 		ModLootTables.initialize();
+		StructureMaps.initialize();
 		EnchantedBookDrops.initialize();
 		EyeTransformations.initialize();
 		XpProgression.initialize();

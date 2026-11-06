@@ -2,7 +2,7 @@
 
 ## Project
 
-Wildways is a Fabric mod for Minecraft 26.2.
+Wildways is a Fabric mod for Minecraft 26.3.
 
 The mod should feel like vanilla Minecraft with a different rhythm: slower, warmer, more exploratory, less grindy, and less focused on rushing progression.
 
@@ -10,7 +10,7 @@ The mod should feel like vanilla Minecraft with a different rhythm: slower, warm
 
 - Language: Java
 - Loader: Fabric
-- Minecraft version: 26.2
+- Minecraft version: 26.3
 - Required Java release: 25
 - Mod ID: `wildways`
 - Main package: `com.viclev.wildways`

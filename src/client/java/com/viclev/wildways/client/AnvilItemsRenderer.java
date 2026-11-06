@@ -41,9 +41,9 @@ public class AnvilItemsRenderer implements BlockEntityRenderer<AnvilStorageBlock
 			if (state.items[i].isEmpty()) continue;
 			poseStack.pushPose();
 			poseStack.translate(0.5F, 0, 0.5F);
-			poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.toYRot()));
+			poseStack.rotateDegrees(Axis.YP, -state.facing.toYRot());
 			poseStack.translate(0, 1.03F, i == 0 ? -0.25F : 0.25F);
-			poseStack.mulPose(Axis.XP.rotationDegrees(90));
+			poseStack.rotateDegrees(Axis.XP, 90);
 			poseStack.scale(0.52F, 0.52F, 0.52F);
 			state.items[i].submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 			poseStack.popPose();

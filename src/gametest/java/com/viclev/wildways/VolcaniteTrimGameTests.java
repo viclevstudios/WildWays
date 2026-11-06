@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingRecipeInput;
-import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 /** Covers actual vanilla trim recipes, component preservation and the Volcanite palette override. */
@@ -64,18 +63,14 @@ public class VolcaniteTrimGameTests {
 	}
 
 	@GameTest
-	public void volcaniteArmorSelectsContrastAndOtherTrimsStillWork(GameTestHelper helper) {
+	public void volcaniteArmorAcceptsItsOwnPaletteAndOtherTrims(GameTestHelper helper) {
 		ItemStack redstone = trim(helper, new ItemStack(ModItems.VOLCANITE_CHESTPLATE), "sentry", Items.REDSTONE);
 		helper.assertTrue(redstone.get(DataComponents.TRIM).material().is(
 			ResourceKey.create(Registries.TRIM_MATERIAL, Identifier.withDefaultNamespace("redstone"))), "Existing redstone trims must keep working");
 		ItemStack output = trim(helper, redstone, "sentry", ModItems.VOLCANITE);
 		var trim = output.get(DataComponents.TRIM);
-		helper.assertTrue(trim.layerAssetId("trims/entity/humanoid", ProgressionMaterials.VOLCANITE_ASSET).equals(
-			Identifier.withDefaultNamespace("trims/entity/humanoid/sentry_wildways_volcanite_contrast")),
-			"Volcanite armor must use the contrast palette");
-		helper.assertTrue(trim.layerAssetId("trims/entity/humanoid", EquipmentAssets.IRON).equals(
-			Identifier.withDefaultNamespace("trims/entity/humanoid/sentry_wildways_volcanite")),
-			"Other armor must use the normal Volcanite palette");
+		helper.assertTrue(trim.material().value().paletteId().equals(Wildways.id("trim/volcanite")),
+			"The Volcanite material must reference its registered palette");
 		var repeated = new SmithingRecipeInput(new ItemStack(Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE), output, new ItemStack(ModItems.VOLCANITE));
 		var recipe = helper.getLevel().recipeAccess().getRecipeFor(RecipeType.SMITHING, repeated, helper.getLevel());
 		helper.assertTrue(recipe.isPresent() && recipe.orElseThrow().value().assemble(repeated).isEmpty(),

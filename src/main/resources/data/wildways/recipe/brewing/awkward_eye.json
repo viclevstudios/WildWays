@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "minecraft:ender_eye"
+  },
+  "reagent": {
+    "item": "minecraft:nether_wart"
+  },
+  "output": {
+    "id": "wildways:awkward_eye"
+  }
+}

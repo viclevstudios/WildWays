@@ -4,6 +4,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Prediction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -80,7 +81,7 @@ public final class BiomeCompassMenu extends AbstractContainerMenu {
 		this.compass.shrink(1);
 		player.setItemInHand(this.hand, boundCompass);
 		if (!this.compass.isEmpty() && !player.getInventory().add(this.compass)) {
-			player.drop(this.compass, false);
+			player.drop(this.compass, false, Prediction.SERVER_ONLY);
 		}
 		serverPlayer.closeContainer();
 		return false;
