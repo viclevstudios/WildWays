@@ -533,7 +533,7 @@ public class EnchantingGameTests {
 	}
 
 	@GameTest
-	public void plannedMasterTradesKeepSmithEquipmentAndWandererAddsBookAndCompass(GameTestHelper helper) {
+	public void plannedMasterTradesKeepSmithEquipmentAndWandererAddsBookAndExplorationOffer(GameTestHelper helper) {
 		Player player = this.player(helper, 0);
 		for (var entry : List.of(
 			new Object[]{VillagerProfession.TOOLSMITH, Enchantments.FORTUNE},
@@ -569,16 +569,18 @@ public class EnchantingGameTests {
 		WanderingTrader trader = helper.spawn(EntityTypes.WANDERING_TRADER, new BlockPos(3, 2, 3));
 		int before = trader.getOffers().size();
 		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, trader, null);
-		helper.assertTrue(trader.getOffers().size() == before + 2, "The wanderer must add a book and a compass offer");
+		helper.assertTrue(trader.getOffers().size() == before + 2, "The wanderer must add a book and one exploration offer");
 		helper.assertTrue(trader.getOffers().get(before).getResult().is(Items.ENCHANTED_BOOK), "The book offer must remain available");
-		MerchantOffer compassOffer = trader.getOffers().get(before + 1);
-		helper.assertTrue(compassOffer.getResult().is(ModItems.BIOME_COMPASS) && compassOffer.getBaseCostA().is(Items.EMERALD)
-			&& compassOffer.getBaseCostA().getCount() == 20 && compassOffer.getMaxUses() == 1 && !compassOffer.isOutOfStock(),
-			"A new trader must have one compass for twenty emeralds");
-		compassOffer.increaseUses();
+		MerchantOffer exploration = trader.getOffers().get(before + 1);
+		int price = exploration.getBaseCostA().getCount();
+		boolean validResult = exploration.getResult().is(ModItems.BIOME_COMPASS) ? price == 20
+			: StructureMaps.isTradeMap(exploration.getResult()) && exploration.getResult().has(DataComponents.MAP_ID) && price >= 12 && price <= 20;
+		helper.assertTrue(validResult && exploration.getBaseCostA().is(Items.EMERALD)
+			&& exploration.getMaxUses() == 1 && !exploration.isOutOfStock(), "A new trader must have one valid exploration offer");
+		exploration.increaseUses();
 		UseEntityCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND, trader, null);
 		helper.assertTrue(trader.getOffers().size() == before + 2 && trader.getOffers().get(before + 1).isOutOfStock(),
-			"Reopening the menu after a purchase must keep the compass sold out");
+			"Reopening the menu after a purchase must keep the exploration offer sold out");
 		for (boolean bought : List.of(false, true)) {
 			MerchantOffer legacyOffer = new MerchantOffer(new ItemCost(Items.EMERALD, 20), new ItemStack(ModItems.BIOME_COMPASS), 12, 10, 0.0F);
 			if (bought) {

@@ -18,7 +18,7 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 
-/** Replaces one master trade with the planned book and adds a wanderer's find. */
+/** Adds the planned master books and the wandering trader's Wildways offers. */
 public final class EnchantedBookTrades {
 	private static final String MASTER_MARKER = "wildways:master_book_offer";
 	private static final String TRADER_MARKER = "wildways:wandering_book_offer";
@@ -37,7 +37,7 @@ public final class EnchantedBookTrades {
 					offers.add(offer(EnchantedBookSources.randomBook(level, trader.getRandom()), 20));
 					trader.addTag(TRADER_MARKER);
 				}
-				ensureCompassOffer(offers);
+				ensureExplorationOffer(level, trader, offers);
 			} else if (entity instanceof Villager villager && !villager.isBaby() && !villager.isTrading()) {
 				boolean masterBookAdded = villager.entityTags().contains(MASTER_MARKER);
 				AmethystEquipmentTrades.update(level, villager, masterBookAdded);
@@ -63,21 +63,33 @@ public final class EnchantedBookTrades {
 		villager.addTag(MASTER_MARKER);
 	}
 
-	private static void ensureCompassOffer(MerchantOffers offers) {
+	private static void ensureExplorationOffer(ServerLevel level, WanderingTrader trader, MerchantOffers offers) {
 		for (int index = 0; index < offers.size(); index++) {
 			MerchantOffer existing = offers.get(index);
 			if (existing.getResult().is(ModItems.BIOME_COMPASS)) {
 				if (existing.getMaxUses() != 1) {
-					offers.set(index, compassOffer(Math.min(existing.getUses(), 1)));
+					offers.set(index, explorationOffer(existing.getResult(), 20, Math.min(existing.getUses(), 1)));
 				}
 				return;
 			}
+			if (StructureMaps.isTradeMap(existing.getResult())) {
+				return;
+			}
 		}
-		offers.add(compassOffer(0));
+
+		var random = trader.getRandom();
+		if (random.nextBoolean()) {
+			ItemStack map = StructureMaps.createTradeMap(level, trader.position(), random);
+			if (!map.isEmpty()) {
+				offers.add(explorationOffer(map, 12 + random.nextInt(9), 0));
+				return;
+			}
+		}
+		offers.add(explorationOffer(new ItemStack(ModItems.BIOME_COMPASS), 20, 0));
 	}
 
-	private static MerchantOffer compassOffer(int uses) {
-		return new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.empty(), new ItemStack(ModItems.BIOME_COMPASS), uses, 1, 10, 0.0F);
+	private static MerchantOffer explorationOffer(ItemStack result, int emeralds, int uses) {
+		return new MerchantOffer(new ItemCost(Items.EMERALD, emeralds), Optional.empty(), result, uses, 1, 10, 0.0F);
 	}
 
 	private static ResourceKey<Enchantment> masterBook(Villager villager) {

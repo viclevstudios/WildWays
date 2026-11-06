@@ -1,14 +1,19 @@
 package com.viclev.wildways;
 
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -21,7 +26,7 @@ import java.util.List;
 
 public final class StructureMapGameTests {
 	@GameTest
-	public void campAndMineshaftMapsPointToTheIndexedSpawner(GameTestHelper helper) {
+	public void indexedDungeonSupportsLootAndWanderingTraderMaps(GameTestHelper helper) {
 		var level = helper.getLevel();
 		BlockPos spawnerPos = helper.absolutePos(new BlockPos(2, 2, 2));
 		level.setBlockAndUpdate(spawnerPos.below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState());
@@ -49,6 +54,33 @@ public final class StructureMapGameTests {
 			helper.assertTrue(target != null && target.x() == spawnerPos.getX() && target.z() == spawnerPos.getZ(),
 				"The dungeon map must point to the indexed spawner");
 		}
+
+		var trader = helper.spawn(EntityTypes.WANDERING_TRADER, new BlockPos(3, 2, 3));
+		var offers = trader.getOffers();
+		int before = offers.size();
+		RandomSource seeds = RandomSource.create(42L);
+		long seed;
+		RandomSource probe;
+		do {
+			seed = seeds.nextLong();
+			probe = RandomSource.create(seed);
+			EnchantedBookSources.randomBook(level, probe);
+		} while (!probe.nextBoolean());
+		trader.getRandom().setSeed(seed);
+
+		var player = helper.makeMockPlayer(GameType.SURVIVAL);
+		UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, trader, null);
+		helper.assertTrue(offers.size() == before + 2 && offers.stream().noneMatch(offer -> offer.getResult().is(ModItems.BIOME_COMPASS)),
+			"The map branch must add one exploration offer alongside the book");
+		var mapOffer = offers.getLast();
+		int price = mapOffer.getBaseCostA().getCount();
+		helper.assertTrue(StructureMaps.isTradeMap(mapOffer.getResult()) && mapOffer.getResult().has(DataComponents.MAP_ID)
+			&& mapOffer.getBaseCostA().is(Items.EMERALD) && price >= 12 && price <= 20 && mapOffer.getMaxUses() == 1,
+			"The trader must sell a filled structure map for twelve to twenty emeralds");
+		mapOffer.increaseUses();
+		UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, trader, null);
+		helper.assertTrue(offers.size() == before + 2 && offers.getLast() == mapOffer && mapOffer.isOutOfStock(),
+			"The same map, price and stock must persist when the trade menu reopens");
 		helper.succeed();
 	}
 
