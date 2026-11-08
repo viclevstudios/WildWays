@@ -37,11 +37,13 @@ public final class EnchantedBookDrops {
 		ServerLivingEntityEvents.AFTER_DEATH.register(EnchantedBookDrops::afterDeath);
 	}
 
-	public static void dropPiercingBeforeLeavingRaid(Raider raider, DamageSource source) {
+	public static void dropRaidBooksBeforeLeavingRaid(Raider raider, DamageSource source) {
 		if (raider.level() instanceof ServerLevel level && level.getGameRules().get(GameRules.MOB_DROPS)
 			&& source.getEntity() instanceof Player && raider.hasActiveRaid()
 			&& (raider instanceof Pillager || raider instanceof Vindicator)) {
-			dropWithChance(level, raider, Enchantments.PIERCING, 0.20F);
+			dropWithChance(level, raider, Enchantments.QUICK_CHARGE, 0.05F);
+			dropWithChance(level, raider, Enchantments.MULTISHOT, 0.05F);
+			dropWithChance(level, raider, Enchantments.PIERCING, 0.05F);
 		}
 	}
 
@@ -55,10 +57,6 @@ public final class EnchantedBookDrops {
 		if (entity instanceof Ghast && source.getDirectEntity() instanceof LargeFireball
 			&& source.getEntity() instanceof Player) {
 			dropWithChance(level, entity, Enchantments.BLAST_PROTECTION, 0.5F);
-		}
-		if (entity instanceof Pillager || entity instanceof Vindicator) {
-			dropWithChance(level, entity, Enchantments.QUICK_CHARGE, 0.20F);
-			dropWithChance(level, entity, Enchantments.MULTISHOT, 0.20F);
 		}
 	}
 

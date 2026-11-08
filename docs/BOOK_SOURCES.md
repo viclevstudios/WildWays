@@ -34,7 +34,7 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 | Lunge | 50% drop from a Zombie carrying a spear |
 | Punch / Flame | Crafted from Power; Flame also occurs in Ruined Portal chests |
 | Infinity | Guaranteed master Fletcher trade |
-| Quick Charge / Multishot / Piercing | Pillager Outpost chests (10% each), Woodland Mansion chests (5% each); Pillagers and Vindicators can drop Quick Charge or Multishot, with Piercing drops during active raids |
+| Quick Charge / Multishot / Piercing | Pillager Outpost chests (10% each), Woodland Mansion chests (5% each); player kills of Pillagers and Vindicators during active raids roll each book independently at 5%. Illagers outside raids drop no enchanted books. |
 | Impaling / Loyalty / Riptide / Channeling | Ocean Ruin chests, or a 15% chance for one of the four books when brushing in cold or warm Ocean Ruins. Impaling also drops from Drowned (5%). Riptide can be crafted from Impaling. An ordinary dropped Book struck by lightning becomes Channeling. |
 | Luck of the Sea / Lure | Fishing treasure and a master Fisherman, who sells one of the two |
 

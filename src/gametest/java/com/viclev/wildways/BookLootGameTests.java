@@ -144,13 +144,17 @@ public class BookLootGameTests {
 		var source = level.damageSources().playerAttack(helper.makeMockPlayer(GameType.SURVIVAL));
 		BlockPos position = new BlockPos(2, 2, 2);
 		var raid = new Raid(helper.absolutePos(position), level.getDifficulty());
-		for (int attempt = 0; attempt < 48; attempt++) {
-			var raider = helper.spawn(EntityTypes.PILLAGER, position);
-			raider.setCurrentRaid(raid);
-			raider.setWave(1);
-			raid.addWaveMob(level, 1, raider, true);
-			raider.hurtServer(level, source, 1000);
-			helper.assertFalse(raider.hasActiveRaid(), "A dead Pillager must have left the raid");
+		RandomSource seeds = RandomSource.create(42L);
+		for (var type : java.util.List.of(EntityTypes.PILLAGER, EntityTypes.VINDICATOR)) {
+			for (int attempt = 0; attempt < 128; attempt++) {
+				var raider = helper.spawn(type, position);
+				raider.setCurrentRaid(raid);
+				raider.setWave(1);
+				raid.addWaveMob(level, 1, raider, true);
+				raider.getRandom().setSeed(seeds.nextLong());
+				raider.hurtServer(level, source, 1000);
+				helper.assertFalse(raider.hasActiveRaid(), "A dead raider must have left the raid");
+			}
 		}
 		for (int attempt = 0; attempt < 16; attempt++) {
 			var zombie = helper.spawn(EntityTypes.ZOMBIE, position);
@@ -169,8 +173,31 @@ public class BookLootGameTests {
 			.map(stack -> stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)).toList();
 		helper.assertTrue(books.stream().anyMatch(book -> book.getLevel(piercing) == 1),
 			"Killing active raiders must be able to drop Piercing");
+		for (var key : java.util.List.of(Enchantments.QUICK_CHARGE, Enchantments.MULTISHOT)) {
+			var enchantment = enchantments.getOrThrow(key);
+			helper.assertTrue(books.stream().anyMatch(book -> book.getLevel(enchantment) == 1),
+				"Killing active raiders must be able to drop " + key.identifier());
+		}
 		helper.assertTrue(books.stream().anyMatch(book -> book.getLevel(lunge) == 1),
 			"Zombies that drop their spear must still be able to drop Lunge");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void illagersOutsideRaidsDropNoBooks(GameTestHelper helper) {
+		var level = helper.getLevel();
+		var source = level.damageSources().playerAttack(helper.makeMockPlayer(GameType.SURVIVAL));
+		BlockPos position = new BlockPos(2, 2, 2);
+		RandomSource seeds = RandomSource.create(42L);
+		for (var type : java.util.List.of(EntityTypes.PILLAGER, EntityTypes.VINDICATOR)) {
+			for (int attempt = 0; attempt < 32; attempt++) {
+				var illager = helper.spawn(type, position);
+				illager.getRandom().setSeed(seeds.nextLong());
+				illager.hurtServer(level, source, 1000);
+			}
+		}
+		helper.assertFalse(helper.findEntities(EntityTypes.ITEM, Vec3.atCenterOf(position), 3).stream()
+			.anyMatch(item -> item.getItem().is(Items.ENCHANTED_BOOK)), "Player kills outside raids must never drop enchanted books");
 		helper.succeed();
 	}
 
