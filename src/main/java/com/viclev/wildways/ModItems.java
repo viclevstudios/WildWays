@@ -4,13 +4,11 @@ import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.component.MapDecorations;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -46,9 +44,9 @@ public final class ModItems {
 		BiomeCompassItem::new,
 		new Item.Properties()
 	);
-	public static final Item BEETROOT_DOUGH = fishingBait(ModItemIds.BEETROOT_DOUGH);
-	public static final Item CANDIED_BAIT = fishingBait(ModItemIds.CANDIED_BAIT);
-	public static final Item AMETHYST_BLINKER = fishingBait(ModItemIds.AMETHYST_BLINKER);
+	public static final Item BEETROOT_DOUGH = register(ModItemIds.BEETROOT_DOUGH, Item::new, new Item.Properties());
+	public static final Item CANDIED_BAIT = register(ModItemIds.CANDIED_BAIT, Item::new, new Item.Properties());
+	public static final Item AMETHYST_BLINKER = register(ModItemIds.AMETHYST_BLINKER, Item::new, new Item.Properties());
 	public static final Item DUNGEON_MAP = explorationMap(ModItemIds.DUNGEON_MAP);
 	public static final Item TRAIL_RUINS_MAP = explorationMap(ModItemIds.TRAIL_RUINS_MAP);
 	public static final Item IGLOO_MAP = explorationMap(ModItemIds.IGLOO_MAP);
@@ -116,13 +114,6 @@ public final class ModItems {
 				? new Item.Properties().stacksTo(16).enchantable(10)
 				: new Item.Properties().stacksTo(16)
 		);
-	}
-
-	private static Item fishingBait(ResourceKey<Item> key) {
-		return register(key, Item::new, new Item.Properties().component(DataComponents.LORE, new ItemLore(List.of(
-			Component.translatable(key.identifier().toLanguageKey("item") + ".effect"),
-			Component.translatable("wildways.fishing.bait.load", FishingBait.MAX_CHARGES)
-		))));
 	}
 
 	private static Item explorationMap(ResourceKey<Item> key) {
