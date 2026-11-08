@@ -14,6 +14,8 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.levelgen.PatrolSpawner;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -53,6 +55,8 @@ public final class StructureMapGameTests {
 			var target = found.get(DataComponents.MAP_DECORATIONS).decorations().get("+");
 			helper.assertTrue(target != null && target.x() == spawnerPos.getX() && target.z() == spawnerPos.getZ(),
 				"The dungeon map must point to the indexed spawner");
+			helper.assertTrue(target != null && target.type().value().assetId().equals(Wildways.id("dungeon")),
+				"The dungeon map must use the Wildways dungeon marker");
 		}
 
 		var trader = helper.spawn(EntityTypes.WANDERING_TRADER, new BlockPos(3, 2, 3));
@@ -81,6 +85,28 @@ public final class StructureMapGameTests {
 		UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, trader, null);
 		helper.assertTrue(offers.size() == before + 2 && offers.getLast() == mapOffer && mapOffer.isOutOfStock(),
 			"The same map, price and stock must persist when the trade menu reopens");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void vanillaPatrolSpawnerMarksItsCaptain(GameTestHelper helper) throws ReflectiveOperationException {
+		var level = helper.getLevel();
+		var spawner = new PatrolSpawner();
+		var spawnMember = PatrolSpawner.class.getDeclaredMethod("spawnPatrolMember",
+			ServerLevel.class, BlockPos.class, RandomSource.class, boolean.class);
+		spawnMember.setAccessible(true);
+		for (boolean captain : List.of(true, false)) {
+			BlockPos relativePos = new BlockPos(captain ? 1 : 3, 2, 1);
+			helper.setBlock(relativePos.below(), Blocks.STONE);
+			helper.setBlock(relativePos, Blocks.AIR);
+			helper.setBlock(relativePos.above(), Blocks.AIR);
+			helper.assertTrue((boolean)spawnMember.invoke(spawner, level, helper.absolutePos(relativePos), RandomSource.create(42L), captain),
+				"Vanilla must spawn the patrol member");
+			var pillager = helper.findEntities(EntityTypes.PILLAGER, Vec3.atCenterOf(relativePos), 1).getFirst();
+			helper.assertTrue(pillager.isPatrolLeader() == captain
+				&& pillager.entityTags().contains(StructureMaps.PATROL_CAPTAIN_TAG) == captain,
+				"Vanilla patrol spawning must mark only the captain for the outpost map drop");
+		}
 		helper.succeed();
 	}
 

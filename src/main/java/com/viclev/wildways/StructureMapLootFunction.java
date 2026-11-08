@@ -11,7 +11,6 @@ import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
-import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.Validatable;
@@ -75,7 +74,7 @@ final class StructureMapLootFunction extends LootItemConditionalFunction {
 			if (dungeon != null) {
 				MapItem.applyNewSavedData(level, map, dungeon.getX(), dungeon.getZ(), (byte)1, true, true);
 				MapItem.renderBiomePreviewMap(level, map);
-				MapItemSavedData.addTargetDecoration(map, dungeon, "+", MapDecorationTypes.RED_X);
+				MapItemSavedData.addTargetDecoration(map, dungeon, "+", StructureMaps.DUNGEON_MARKER);
 			}
 		}
 		return map.has(DataComponents.MAP_ID) ? map : this.keepOriginal ? original : ItemStack.EMPTY;

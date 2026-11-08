@@ -51,16 +51,20 @@ import java.util.Set;
 
 public final class StructureMaps {
 	public static final String PATROL_CAPTAIN_TAG = "wildways:patrol_captain";
+	static final Holder<MapDecorationType> DUNGEON_MARKER = registerMarker("dungeon");
+	private static final Holder<MapDecorationType> TRAIL_RUINS_MARKER = registerMarker("trail_ruins");
+	private static final Holder<MapDecorationType> IGLOO_MARKER = registerMarker("igloo");
+	private static final Holder<MapDecorationType> PILLAGER_OUTPOST_MARKER = registerMarker("pillager_outpost");
 	private static final ResourceKey<LootTable> PILLAGER_LOOT = ResourceKey.create(Registries.LOOT_TABLE,
 		Identifier.withDefaultNamespace("entities/pillager"));
 	private static final ResourceKey<LootTable> QUARANTINE_ANCHOR = wildwaysLoot("chests/quarantine_grounds/anchor");
 	private static final Set<ResourceKey<LootTable>> DUNGEON_CHESTS = Set.of(BuiltInLootTables.SIMPLE_DUNGEON,
 		wildwaysLoot("chests/dungeon_zombie"), wildwaysLoot("chests/dungeon_skeleton"), wildwaysLoot("chests/dungeon_spider"));
 	private static final MapTarget MINESHAFT = new MapTarget(Items.BURIED_MINESHAFT_MAP, StructureTags.ON_MINESHAFT_MAPS, MapDecorationTypes.MINESHAFT);
-	private static final MapTarget DUNGEON = new MapTarget(ModItems.DUNGEON_MAP, null, MapDecorationTypes.RED_X);
-	private static final MapTarget TRAIL_RUINS = new MapTarget(ModItems.TRAIL_RUINS_MAP, mapTarget("trail_ruins"), MapDecorationTypes.RED_X);
-	private static final MapTarget IGLOO = new MapTarget(ModItems.IGLOO_MAP, mapTarget("igloo"), MapDecorationTypes.RED_X);
-	private static final MapTarget PILLAGER_OUTPOST = new MapTarget(ModItems.PILLAGER_OUTPOST_MAP, mapTarget("pillager_outpost"), MapDecorationTypes.RED_X);
+	private static final MapTarget DUNGEON = new MapTarget(ModItems.DUNGEON_MAP, null, DUNGEON_MARKER);
+	private static final MapTarget TRAIL_RUINS = new MapTarget(ModItems.TRAIL_RUINS_MAP, mapTarget("trail_ruins"), TRAIL_RUINS_MARKER);
+	private static final MapTarget IGLOO = new MapTarget(ModItems.IGLOO_MAP, mapTarget("igloo"), IGLOO_MARKER);
+	private static final MapTarget PILLAGER_OUTPOST = new MapTarget(ModItems.PILLAGER_OUTPOST_MAP, mapTarget("pillager_outpost"), PILLAGER_OUTPOST_MARKER);
 	private static final MapTarget JUNGLE_PYRAMID = new MapTarget(Items.JUNGLE_PYRAMID_MAP, StructureTags.ON_JUNGLE_PYRAMID_MAPS, MapDecorationTypes.JUNGLE_TEMPLE);
 	private static final MapTarget DESERT_PYRAMID = new MapTarget(Items.DESERT_PYRAMID_MAP, StructureTags.ON_DESERT_PYRAMID_MAPS, MapDecorationTypes.DESERT_PYRAMID);
 	private static final MapTarget SWAMP_HUT = new MapTarget(Items.SWAMP_HUT_MAP, StructureTags.ON_SWAMP_HUT_MAPS, MapDecorationTypes.SWAMP_HUT);
@@ -169,6 +173,12 @@ public final class StructureMaps {
 
 	private static TagKey<Structure> mapTarget(String name) {
 		return TagKey.create(Registries.STRUCTURE, Wildways.id("on_" + name + "_maps"));
+	}
+
+	private static Holder<MapDecorationType> registerMarker(String name) {
+		var id = Wildways.id(name);
+		return Registry.registerForHolder(BuiltInRegistries.MAP_DECORATION_TYPE,
+			ResourceKey.create(Registries.MAP_DECORATION_TYPE, id), new MapDecorationType(id, true, false));
 	}
 
 	private record MapTarget(Item item, @Nullable TagKey<Structure> structure, Holder<MapDecorationType> decoration) {

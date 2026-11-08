@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/abandoned_camp_map"
+    "model": "wildways:item/trail_ruins_map"
   }
 }
