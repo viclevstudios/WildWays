@@ -55,7 +55,7 @@ def shapeless(name, source, ingredients):
 
 
 RECIPES = [
-    shaped("mending", "unbreaking", ["LGL", "VUV", "LEL"], {
+    shaped("mending", "protection", ["LGL", "VUV", "LEL"], {
         "L": L, "G": "minecraft:ghast_tear", "V": "wildways:volcanite", "U": "source", "E": E,
     }),
     shaped("fire_protection", "protection", ["LBL", "BPB", "LBL"], {
@@ -80,13 +80,28 @@ RECIPES = [
     shaped("punch", "power", ["LWL", "WPW", "LEL"], {
         "L": L, "W": W, "P": "source", "E": E,
     }),
-    shaped("flame", "power", ["LBL", "BPB", "LBL"], {
-        "L": L, "B": B, "P": "source",
+    shaped("flame", "power", ["LBL", "BPB", "LEL"], {
+        "L": L, "B": B, "P": "source", "E": E,
     }),
     shaped("riptide", "impaling", ["LWL", "WIW", "LNL"], {
         "L": L, "W": W, "I": "source", "N": "minecraft:nautilus_shell",
     }),
 ]
+
+
+SECONDARY_MATERIALS = {
+    "mending": ["minecraft:ghast_tear"],
+    "fire_protection": [B],
+    "blast_protection": ["minecraft:obsidian"],
+    "projectile_protection": ["minecraft:shield"],
+    "feather_falling": ["minecraft:phantom_membrane", "minecraft:feather"],
+    "knockback": [W],
+    "fire_aspect": [B],
+    "sweeping_edge": ["minecraft:iron_sword"],
+    "punch": [W],
+    "flame": [B],
+    "riptide": ["minecraft:nautilus_shell"],
+}
 
 
 def main():
@@ -97,16 +112,29 @@ def main():
             json.dumps(recipe, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
         )
         ingredients = (recipe["key"].values() if "key" in recipe else recipe["ingredients"])
-        item_ids = sorted({item["base"] if isinstance(item, dict) else item for item in ingredients})
+        book = next(item for item in ingredients if isinstance(item, dict))
+        enchantment = next(iter(book["components"]["minecraft:stored_enchantments"]))
         advancement = {
             "parent": "minecraft:recipes/root",
             "criteria": {
-                "has_ingredients": {
+                "has_source_book": {
                     "trigger": "minecraft:inventory_changed",
-                    "conditions": {"items": [{"items": [item]} for item in item_ids]},
-                }
+                    "conditions": {"items": [{
+                        "items": ["minecraft:enchanted_book"],
+                        "predicates": {
+                            "minecraft:stored_enchantments": [{
+                                "enchantments": enchantment,
+                                "levels": {"min": 1},
+                            }],
+                        },
+                    }]},
+                },
+                "has_secondary_material": {
+                    "trigger": "minecraft:inventory_changed",
+                    "conditions": {"items": [{"items": SECONDARY_MATERIALS[name]}]},
+                },
             },
-            "requirements": [["has_ingredients"]],
+            "requirements": [["has_source_book", "has_secondary_material"]],
             "rewards": {"recipes": [f"wildways:book_{name}"]},
         }
         (ADVANCEMENTS / f"book_{name}.json").write_text(

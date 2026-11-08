@@ -106,7 +106,7 @@ Suggested smoke checks:
 - Craft an Eye of Volcanite by placing four Volcanite Ingots on the sides of a central Eye of Ender. Drop it into fire with two blocks of clearance. Watch for two flame spirals around the eye as it rises, then a flare, smoke, and a firecharge sound as it becomes attuned. Repeat with soul fire for blue flames. Verify that only the attuned form can be inserted.
 - Leave several Eyes of Ender in separate Endermite Nest slots and verify that they transform at different random times, averaging about ten minutes over many trials.
 - Craft the Storm, Darkness, and Eye of Enchanting paths. Brew Eye of Ender + Nether Wart into Awkward Eye, Awkward Eye + Phantom Membrane into Thick Eye, and Thick Eye + Ghast Tear into Eye of Brewing. Enchant the Eye of Enchanting at an Enchanting Table and verify that it receives Attunement and can then be inserted.
-- For each WildWays crafting recipe, place all distinct ingredients in the inventory at the same time and verify that the recipe appears in the recipe book. Check that partial ingredient sets do not unlock it.
+- Follow the [recipe-book discovery checks](RECIPE_BOOK.md): a single main material must discover the corresponding recipe, and each enchanted-book conversion must accept either its specific source book or its secondary material independently. An unrelated enchanted book must not discover it. Also verify the new Flame ingredients and both Volcanite cooking times and XP rewards.
 
 ## Dedicated Server Check
 

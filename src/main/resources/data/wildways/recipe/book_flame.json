@@ -4,7 +4,7 @@
   "pattern": [
     "LBL",
     "BPB",
-    "LBL"
+    "LEL"
   ],
   "key": {
     "L": "minecraft:lapis_lazuli",
@@ -17,7 +17,8 @@
           "minecraft:power": 1
         }
       }
-    }
+    },
+    "E": "minecraft:experience_bottle"
   },
   "result": {
     "id": "minecraft:enchanted_book",

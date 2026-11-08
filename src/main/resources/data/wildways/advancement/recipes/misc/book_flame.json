@@ -1,23 +1,35 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ingredients": {
+    "has_source_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:enchanted_book"
+            ],
+            "predicates": {
+              "minecraft:stored_enchantments": [
+                {
+                  "enchantments": "minecraft:power",
+                  "levels": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "has_secondary_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:blaze_powder"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:enchanted_book"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:lapis_lazuli"
             ]
           }
         ]
@@ -26,7 +38,8 @@
   },
   "requirements": [
     [
-      "has_ingredients"
+      "has_source_book",
+      "has_secondary_material"
     ]
   ],
   "rewards": {

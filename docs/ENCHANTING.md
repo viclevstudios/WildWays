@@ -38,7 +38,7 @@ Brick   Top     Brick
 | Volcanite Rune, second variant | Diamond | Echo Shard | Refined Volcanite |
 | Enchanting Catalyst | Block of Lapis Lazuli | Blaze Powder | Sculk Catalyst |
 
-Both rune-5 recipes replace the copper stair in the images with `wildways:volcanite`, as requested. Raw Volcanite and copper stairs are not accepted. Rune-5 variants share a recipe-book group; each recipe unlocks when all its distinct ingredient types are present in the inventory together.
+Both rune-5 recipes replace the copper stair in the images with `wildways:volcanite`, as requested. Raw Volcanite and copper stairs are not accepted. Rune-5 variants share a recipe-book group. Each rune recipe unlocks with one of its center materials in the inventory; refined Volcanite unlocks both rune-5 variants. One Sculk Catalyst unlocks the Enchanting Catalyst recipe. See [Recipe book](RECIPE_BOOK.md) for the other discovery rules.
 
 Newly generated enchanted books store their enchantments at level one and their tooltips omit levels. Saved or command-created books carrying older levels still select the same recipe: their stored level never controls the result. Equipment tooltips retain actual levels. Books cannot be used or combined at the anvil.
 

@@ -1,25 +1,10 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_all_ingredients": {
+    "has_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          {
-            "items": [
-              "minecraft:chiseled_stone_bricks"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:diamond"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:echo_shard"
-            ]
-          },
           {
             "items": [
               "wildways:volcanite"
@@ -31,7 +16,7 @@
   },
   "requirements": [
     [
-      "has_all_ingredients"
+      "has_material"
     ]
   ],
   "rewards": {

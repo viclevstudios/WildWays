@@ -1,18 +1,27 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_all_ingredients": {
+    "has_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          { "items": ["minecraft:ender_eye"] },
-          { "items": ["minecraft:echo_shard"] }
+          {
+            "items": [
+              "minecraft:echo_shard"
+            ]
+          }
         ]
       }
     }
   },
-  "requirements": [["has_all_ingredients"]],
+  "requirements": [
+    [
+      "has_material"
+    ]
+  ],
   "rewards": {
-    "recipes": ["wildways:eye_of_darkness"]
+    "recipes": [
+      "wildways:eye_of_darkness"
+    ]
   }
 }

@@ -1,28 +1,36 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ingredients": {
+    "has_source_book": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:enchanted_book"
-            ]
-          },
+            ],
+            "predicates": {
+              "minecraft:stored_enchantments": [
+                {
+                  "enchantments": "minecraft:protection",
+                  "levels": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "has_secondary_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
           {
             "items": [
+              "minecraft:phantom_membrane",
               "minecraft:feather"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:lapis_lazuli"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:phantom_membrane"
             ]
           }
         ]
@@ -31,7 +39,8 @@
   },
   "requirements": [
     [
-      "has_ingredients"
+      "has_source_book",
+      "has_secondary_material"
     ]
   ],
   "rewards": {

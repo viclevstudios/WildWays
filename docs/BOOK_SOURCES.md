@@ -14,7 +14,7 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 | Book | Planned source now implemented |
 | --- | --- |
 | Unbreaking | 10% in common Trail Ruins archaeology, or a possible Hero of the Village gift from a Toolsmith or Armorer |
-| Mending | Recipe using Unbreaking, a Ghast Tear, an XP Bottle, two Volcanite Ingots and four Lapis; 10% in End City treasure chests |
+| Mending | Recipe using Protection, a Ghast Tear, an XP Bottle, two Volcanite Ingots and four Lapis; 10% in End City treasure chests |
 | Curse of Binding / Vanishing | Each has a 5% Witch drop chance |
 | Protection | 10% in Desert Pyramid or Desert Well archaeology, or 20% in monster-room chests |
 | Fire Protection | Crafted from Protection, four Blaze Powder and four Lapis; Nether Fortress chests |
@@ -32,13 +32,13 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 | Knockback / Fire Aspect / Sweeping Edge | Crafted from Sharpness; Fire Aspect also occurs in Ruined Portal chests |
 | Looting | Guaranteed master Weaponsmith trade |
 | Lunge | 50% drop from a Zombie carrying a spear |
-| Punch / Flame | Crafted from Power; Flame also occurs in Ruined Portal chests |
+| Punch / Flame | Crafted from Power, four Lapis, an XP Bottle and three Wind Charges / Blaze Powder respectively; Flame also occurs in Ruined Portal chests |
 | Infinity | Guaranteed master Fletcher trade |
 | Quick Charge / Multishot / Piercing | Pillager Outpost chests (10% each), Woodland Mansion chests (5% each); player kills of Pillagers and Vindicators during active raids roll each book independently at 5%. Illagers outside raids drop no enchanted books. |
 | Impaling / Loyalty / Riptide / Channeling | Ocean Ruin chests, or a 15% chance for one of the four books when brushing in cold or warm Ocean Ruins. Impaling also drops from Drowned (5%). Riptide can be crafted from Impaling. An ordinary dropped Book struck by lightning becomes Channeling. |
 | Luck of the Sea / Lure | Fishing treasure and a master Fisherman, who sells one of the two |
 
-All eleven conversion recipes live in `data/wildways/recipe/book_*.json`. Their component ingredients require the named input book, so a generic enchanted book cannot replace it. `scripts/generate_book_loot.py` produces the Minecraft 26.3 table overrides from the original game tables while preserving unrelated vanilla loot. The three monster-room variants and the two new structure chests have separate WildWays tables.
+All eleven conversion recipes live in `data/wildways/recipe/book_*.json` and are maintained by `scripts/generate_book_recipes.py`. Their component ingredients require the named input book, so a generic enchanted book cannot replace it. Each recipe is discovered with its named source book (any positive level, including books with additional enchantments) or one of its themed secondary materials; see [Recipe book](RECIPE_BOOK.md). `scripts/generate_book_loot.py` produces the Minecraft 26.3 table overrides from the original game tables while preserving unrelated vanilla loot. The three monster-room variants and the two new structure chests have separate WildWays tables.
 
 ## In-game checks
 

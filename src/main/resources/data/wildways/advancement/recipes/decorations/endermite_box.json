@@ -1,18 +1,27 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_all_ingredients": {
+    "has_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
-          { "items": ["wildways:endermite_shell"] },
-          { "items": ["minecraft:chest"] }
+          {
+            "items": [
+              "wildways:endermite_bricks"
+            ]
+          }
         ]
       }
     }
   },
-  "requirements": [["has_all_ingredients"]],
+  "requirements": [
+    [
+      "has_material"
+    ]
+  ],
   "rewards": {
-    "recipes": ["wildways:endermite_box"]
+    "recipes": [
+      "wildways:endermite_box"
+    ]
   }
 }

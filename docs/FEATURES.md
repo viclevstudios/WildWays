@@ -81,7 +81,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - The Lost Eye is found through common Trail Ruins suspicious-gravel archaeology with a 2/47 chance. An Eye of Ender in range of an active Conduit transforms into an Eye of Water when it is in water or rain. Dropping an Eye of Ender near an available Evoker transforms it into an Eye of the Illagers after a short casting warm-up.
 - The Eye of Brewing chain is performed in a Brewing Stand: Eye of Ender with Nether Wart, Awkward Eye with Phantom Membrane, then Thick Eye with a Ghast Tear.
 - Drop an Eye of Ender into the first four water source blocks above Potent Sulfur to obtain an Eye of Sulfur. Craft an Eye of Volcanite with an Eye of Ender in the centre and four Volcanite Ingots directly above, below, left, and right. Drop it into fire to create the portal-ready Attuned Eye of Volcanite.
-- WildWays crafting recipes unlock in the recipe book once all of their distinct ingredient types are present in the inventory at the same time.
+- WildWays crafting recipes unlock on finding one matching main material. Enchanted-book conversions unlock with their specific source book or a themed secondary material. See [Recipe book](RECIPE_BOOK.md) for the complete unlock rules and checks.
 
 ## Potions and effects
 

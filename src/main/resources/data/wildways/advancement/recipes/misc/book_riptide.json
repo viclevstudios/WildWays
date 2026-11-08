@@ -1,28 +1,35 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ingredients": {
+    "has_source_book": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:enchanted_book"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:lapis_lazuli"
-            ]
-          },
+            ],
+            "predicates": {
+              "minecraft:stored_enchantments": [
+                {
+                  "enchantments": "minecraft:impaling",
+                  "levels": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "has_secondary_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
           {
             "items": [
               "minecraft:nautilus_shell"
-            ]
-          },
-          {
-            "items": [
-              "minecraft:wind_charge"
             ]
           }
         ]
@@ -31,7 +38,8 @@
   },
   "requirements": [
     [
-      "has_ingredients"
+      "has_source_book",
+      "has_secondary_material"
     ]
   ],
   "rewards": {
