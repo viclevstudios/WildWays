@@ -92,7 +92,7 @@ public final class StructureMaps {
 				|| key.equals(BuiltInLootTables.ABANDONED_CAMP_SECRET_CHEST)) {
 				table.withPool(mapPool(registries, DUNGEON).when(chance(0.25F)));
 			} else if (key.equals(QUARANTINE_ANCHOR)) {
-				table.withPool(mapPool(registries, TRAIL_RUINS).when(chance(0.50F)));
+				table.withPool(mapPool(registries, TRAIL_RUINS).when(chance(1.0F / 3.0F)));
 			} else if (key.equals(BuiltInLootTables.VILLAGE_SNOWY_HOUSE)) {
 				table.withPool(mapPool(registries, IGLOO).when(chance(0.30F)));
 			} else if (key.equals(PILLAGER_LOOT)) {

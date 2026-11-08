@@ -37,7 +37,7 @@ Use a default Overworld with structures enabled. Vanilla abandoned camps generat
 | --- | --- |
 | Mineshaft | Open a spawner-dungeon chest (25% when a target is found) or the secret chest in a vanilla abandoned camp (vanilla loot). |
 | Spawner dungeon | Load chunks around a dungeon, then check unopened abandoned camp chests or mineshaft chest minecarts in the same area. Each has a 25% roll and needs a known dungeon within 1,024 blocks. Check the marker against the spawner's X and Z coordinates. |
-| Trail Ruins | Open an anchor chest in Quarantine Grounds (50% when a target is found). |
+| Trail Ruins | Open an anchor chest in Quarantine Grounds (1 in 3 when a target is found). |
 | Igloo | Open unopened snowy village house chests (30% when a target is found). |
 | Pillager Outpost | Kill the banner captain of a newly spawned patrol with an outpost in the area. Compare it with an ordinary patrol member and a captain spawned at an outpost. |
 | Jungle Pyramid and Swamp Hut | Fish in open water in a jungle biome or a regular swamp and complete the minigame. Approximately one in seven treasure catches in each eligible biome becomes its map when the search succeeds. Check with and without bait. |
