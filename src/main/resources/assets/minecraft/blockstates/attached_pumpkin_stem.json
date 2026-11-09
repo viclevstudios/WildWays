@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=east,wildways_quality=0": {
+      "model": "minecraft:block/attached_pumpkin_stem",
+      "y": 180
+    },
+    "facing=east,wildways_quality=2": {
+      "model": "minecraft:block/attached_pumpkin_stem",
+      "y": 180
+    },
+    "facing=east,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/attached_pumpkin_stem",
+      "y": 180
+    },
+    "facing=north,wildways_quality=0": {
+      "model": "minecraft:block/attached_pumpkin_stem",
+      "y": 90
+    },
+    "facing=north,wildways_quality=2": {
+      "model": "minecraft:block/attached_pumpkin_stem",
+      "y": 90
+    },
+    "facing=north,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/attached_pumpkin_stem",
+      "y": 90
+    },
+    "facing=south,wildways_quality=0": {
+      "model": "minecraft:block/attached_pumpkin_stem",
+      "y": 270
+    },
+    "facing=south,wildways_quality=2": {
+      "model": "minecraft:block/attached_pumpkin_stem",
+      "y": 270
+    },
+    "facing=south,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/attached_pumpkin_stem",
+      "y": 270
+    },
+    "facing=west,wildways_quality=0": {
+      "model": "minecraft:block/attached_pumpkin_stem"
+    },
+    "facing=west,wildways_quality=2": {
+      "model": "minecraft:block/attached_pumpkin_stem"
+    },
+    "facing=west,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/attached_pumpkin_stem"
+    }
+  }
+}

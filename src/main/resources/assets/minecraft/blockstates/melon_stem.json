@@ -1,0 +1,76 @@
+{
+  "variants": {
+    "age=0,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage0"
+    },
+    "age=0,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage0"
+    },
+    "age=0,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage0"
+    },
+    "age=1,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage1"
+    },
+    "age=1,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage1"
+    },
+    "age=1,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage1"
+    },
+    "age=2,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage2"
+    },
+    "age=2,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage2"
+    },
+    "age=2,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage2"
+    },
+    "age=3,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage3"
+    },
+    "age=3,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage3"
+    },
+    "age=3,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage3"
+    },
+    "age=4,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage4"
+    },
+    "age=4,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage4"
+    },
+    "age=4,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage4"
+    },
+    "age=5,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage5"
+    },
+    "age=5,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage5"
+    },
+    "age=5,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage5"
+    },
+    "age=6,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage6"
+    },
+    "age=6,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage6"
+    },
+    "age=6,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage6"
+    },
+    "age=7,wildways_quality=0": {
+      "model": "minecraft:block/melon_stem_stage7"
+    },
+    "age=7,wildways_quality=2": {
+      "model": "minecraft:block/melon_stem_stage7"
+    },
+    "age=7,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/melon_stem_stage7"
+    }
+  }
+}

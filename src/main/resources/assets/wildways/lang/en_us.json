@@ -228,5 +228,11 @@
   "item.wildways.candied_bait": "Candied Bait",
   "item.wildways.amethyst_blinker": "Amethyst Blinker",
   "wildways.fishing.bait.loaded": "%s · %s/%s charges",
-  "wildways.fishing.rich_fish": "Restores more hunger and 30% extra saturation"
+  "wildways.fishing.rich_fish": "Restores more hunger and 30% extra saturation",
+  "block.wildways.compost": "Compost",
+  "block.wildways.compost_farmland": "Compost Farmland",
+  "item.wildways.compost": "Compost",
+  "item.wildways.cycad": "Cycad",
+  "block.wildways.cycad": "Cycad",
+  "wildways.plants.level_two": "Gold-Ripened"
 }

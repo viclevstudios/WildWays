@@ -19,5 +19,11 @@
   "item.wildways.candied_bait": "Zuckerauge",
   "item.wildways.amethyst_blinker": "Amethystblinker",
   "wildways.fishing.bait.loaded": "%s · %s/%s Ladungen",
-  "wildways.fishing.rich_fish": "Stillt mehr Hunger und gibt 30 % mehr Sättigung"
+  "wildways.fishing.rich_fish": "Stillt mehr Hunger und gibt 30 % mehr Sättigung",
+  "block.wildways.compost": "Kompost",
+  "block.wildways.compost_farmland": "Kompostacker",
+  "item.wildways.compost": "Kompost",
+  "item.wildways.cycad": "Palmfarn",
+  "block.wildways.cycad": "Palmfarn",
+  "wildways.plants.level_two": "Goldreif"
 }

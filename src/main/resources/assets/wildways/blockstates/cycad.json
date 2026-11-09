@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "wildways:block/cycad_0"
+    },
+    "age=1": {
+      "model": "wildways:block/cycad_0"
+    },
+    "age=2": {
+      "model": "wildways:block/cycad_0"
+    },
+    "age=3": {
+      "model": "wildways:block/cycad_1"
+    },
+    "age=4": {
+      "model": "wildways:block/cycad_1"
+    },
+    "age=5": {
+      "model": "wildways:block/cycad_1"
+    },
+    "age=6": {
+      "model": "wildways:block/cycad_2"
+    },
+    "age=7": {
+      "model": "wildways:block/cycad_2"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "wildways:block/gold_ripened/template_stem_growth5",
+  "textures": {
+    "stem": "minecraft:block/pumpkin_stem"
+  }
+}

@@ -1,6 +1,7 @@
 package com.viclev.wildways.client;
 
 import com.viclev.wildways.FishingBait;
+import com.viclev.wildways.PlantQuality;
 import com.viclev.wildways.ModMenuTypes;
 import com.viclev.wildways.ModEntityTypes;
 import com.viclev.wildways.ModBlockEntities;
@@ -37,6 +38,9 @@ public class WildwaysClient implements ClientModInitializer {
 			}
 			if (stack.has(FishingBait.RICH_FISH)) {
 				lines.add(Component.translatable("wildways.fishing.rich_fish").withStyle(ChatFormatting.GRAY));
+			}
+			if (stack.has(PlantQuality.LEVEL_TWO)) {
+				lines.add(Component.translatable("wildways.plants.level_two").withStyle(ChatFormatting.GOLD));
 			}
 		});
 	}

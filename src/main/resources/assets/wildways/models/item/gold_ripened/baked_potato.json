@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/baked_potato",
+  "textures": {
+    "layer1": "wildways:item/fishing/rich_fish_glint"
+  }
+}

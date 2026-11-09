@@ -27,7 +27,31 @@ This should compile the mod, process resources, validate mixins through Loom tas
 
 ## Server Integration Tests
 
-Run `.\gradlew.bat runGameTest` for the Fabric test server. This uses a separate test mod and run directory; the test classes are not included in the distributable mod JAR. Tests cover real enchanting/anvil transactions and librarian offers. Compilation alone does not validate gameplay behavior or mixin invocation targets.
+Run `.\gradlew.bat runGameTest` for the Fabric test server. This uses a separate test mod and run directory. The test classes are excluded from the distributable mod JAR. Tests cover enchanting and anvil transactions, librarian offers, compost batches, crop drops and level-two recipes. Compilation alone does not validate gameplay behavior or mixin invocation targets.
+
+### Farming playtest
+
+- Plant a torchflower seed on farmland in an enclosed dark room and let it grow without bone meal. The mature flower should light up the room.
+- Fill one composter with ordinary seeds and another with the three Sniffer plants. Try inserting the other type by hand and with a hopper. The finished batches should yield bone meal and compost respectively.
+- Till dirt and compost with different hoes and compare crops in equally lit, watered rows. Verify that a planted pitcher pod hydrates soil within three horizontal blocks of its plot and that mature and potted torchflowers emit light.
+- Grow several rows of crops directly beside mature torchflowers or pitcher crops. Harvest them until a level-two seed appears, then replant and check that the next harvest keeps the level. Craft bread from three level-two wheat, then replace one with normal wheat. Try the same distinction in an automated Crafter.
+- Let one row next to a mature torchflower ripen naturally and finish another with bone meal. Only the naturally ripened row can yield the first Gold-Ripened seeds. Plant one of those seeds, ripen it with bone meal and check that its harvest is Gold-Ripened.
+- Harvest a ripe pitcher crop on compost with and without Fortune and count two pods in either case. Grow a melon from level-two seeds on compost, harvest the fruit with Silk Touch and check that the placed block, slices and crafted seeds retain level two.
+- Compare ordinary and Gold-Ripened crops at the same age. The Gold-Ripened foliage should be taller. Compare the gold item sparkles with rich fish. The placed melon and pumpkin blocks should retain their vanilla appearance.
+
+Use these commands to give yourself Gold-Ripened planting stock. For crops that double as food, set the food component to the same values as the harvest so the stacks can merge.
+
+```mcfunction
+/give @s minecraft:wheat_seeds[wildways:level_two_crop={}] 16
+/give @s minecraft:beetroot_seeds[wildways:level_two_crop={}] 16
+/give @s minecraft:melon_seeds[wildways:level_two_crop={}] 16
+/give @s minecraft:pumpkin_seeds[wildways:level_two_crop={}] 16
+/give @s minecraft:carrot[wildways:level_two_crop={},minecraft:food={nutrition:4,saturation:5.0}] 16
+/give @s minecraft:potato[wildways:level_two_crop={},minecraft:food={nutrition:2,saturation:1.0}] 16
+/give @s minecraft:sweet_berries[wildways:level_two_crop={},minecraft:food={nutrition:3,saturation:1.0}] 16
+```
+
+Gold-Ripened world models live in `assets/wildways/models/block/gold_ripened/`. Each growth-stage model has its own texture reference. To use a custom sprite, put its PNG in `assets/wildways/textures/block/gold_ripened/` and point that model's `crop`, `cross`, `stem` or `upperstem` texture entry at it. The shared templates set the height.
 
 ## Structure Maps
 

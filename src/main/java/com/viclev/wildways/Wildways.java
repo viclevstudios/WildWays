@@ -43,6 +43,8 @@ public class Wildways implements ModInitializer {
 		XpProgression.initialize();
 		FishingBait.initialize();
 		FishingMinigame.initialize();
+		PlantBlocks.initialize();
+		PlantQuality.initialize();
 	}
 
 	public static Identifier id(String path) {

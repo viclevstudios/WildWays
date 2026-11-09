@@ -1,0 +1,76 @@
+{
+  "variants": {
+    "age=0,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage0"
+    },
+    "age=0,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage0"
+    },
+    "age=0,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage0"
+    },
+    "age=1,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage0"
+    },
+    "age=1,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage0"
+    },
+    "age=1,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage0"
+    },
+    "age=2,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage1"
+    },
+    "age=2,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage1"
+    },
+    "age=2,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage1"
+    },
+    "age=3,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage1"
+    },
+    "age=3,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage1"
+    },
+    "age=3,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage1"
+    },
+    "age=4,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage2"
+    },
+    "age=4,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage2"
+    },
+    "age=4,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage2"
+    },
+    "age=5,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage2"
+    },
+    "age=5,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage2"
+    },
+    "age=5,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage2"
+    },
+    "age=6,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage2"
+    },
+    "age=6,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage2"
+    },
+    "age=6,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage2"
+    },
+    "age=7,wildways_quality=0": {
+      "model": "minecraft:block/carrots_stage3"
+    },
+    "age=7,wildways_quality=2": {
+      "model": "minecraft:block/carrots_stage3"
+    },
+    "age=7,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/carrots_stage3"
+    }
+  }
+}

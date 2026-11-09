@@ -1,0 +1,6 @@
+{
+  "parent": "wildways:block/gold_ripened/template_crop",
+  "textures": {
+    "crop": "minecraft:block/potatoes_stage2"
+  }
+}

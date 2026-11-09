@@ -16,7 +16,8 @@
       "com.viclev.wildways.BookLootGameTests",
       "com.viclev.wildways.BiomeCompassGameTests",
       "com.viclev.wildways.FishingBaitGameTests",
-      "com.viclev.wildways.StructureMapGameTests"
+      "com.viclev.wildways.StructureMapGameTests",
+      "com.viclev.wildways.PlantGameTests"
     ]
   },
   "depends": {

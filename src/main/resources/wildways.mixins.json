@@ -80,7 +80,25 @@
 		"LecternWorkstationXpMixin",
 		"LecternBlockWorkstationXpMixin",
 		"VanillaEnchantingWorkstationXpMixin",
-		"BeaconFirstActivationXpMixin"
+		"BeaconFirstActivationXpMixin",
+		"PlantStateDefinitionMixin",
+		"PlantGrowthMixin",
+		"PlantNaturalRipeningMixin",
+		"PlantBeePollinationMixin",
+		"PlantQualityGrowthMixin",
+		"PlantFruitMixin",
+		"PlantItemPlacementMixin",
+		"PlantCraftingMixin",
+		"PlantCakeMixin",
+		"PlantCandleCakeMixin",
+		"PlantVillagerMixin",
+		"PlantFarmlandMixin",
+		"PlantLightMixin",
+		"TorchflowerLightRequirementsMixin",
+		"PlantHoeMixin",
+		"PlantComposterMixin",
+		"PlantComposterInputMixin",
+		"PlantComposterOutputMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

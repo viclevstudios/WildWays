@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "age=0,wildways_quality=0": {
+      "model": "minecraft:block/sweet_berry_bush_stage0"
+    },
+    "age=0,wildways_quality=2": {
+      "model": "minecraft:block/sweet_berry_bush_stage0"
+    },
+    "age=0,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/sweet_berry_bush_stage0"
+    },
+    "age=1,wildways_quality=0": {
+      "model": "minecraft:block/sweet_berry_bush_stage1"
+    },
+    "age=1,wildways_quality=2": {
+      "model": "minecraft:block/sweet_berry_bush_stage1"
+    },
+    "age=1,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/sweet_berry_bush_stage1"
+    },
+    "age=2,wildways_quality=0": {
+      "model": "minecraft:block/sweet_berry_bush_stage2"
+    },
+    "age=2,wildways_quality=2": {
+      "model": "minecraft:block/sweet_berry_bush_stage2"
+    },
+    "age=2,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/sweet_berry_bush_stage2"
+    },
+    "age=3,wildways_quality=0": {
+      "model": "minecraft:block/sweet_berry_bush_stage3"
+    },
+    "age=3,wildways_quality=2": {
+      "model": "minecraft:block/sweet_berry_bush_stage3"
+    },
+    "age=3,wildways_quality=1": {
+      "model": "wildways:block/gold_ripened/sweet_berry_bush_stage3"
+    }
+  }
+}

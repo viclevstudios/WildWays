@@ -1,0 +1,6 @@
+{
+  "parent": "wildways:block/gold_ripened/template_cross",
+  "textures": {
+    "cross": "minecraft:block/sweet_berry_bush_stage3"
+  }
+}

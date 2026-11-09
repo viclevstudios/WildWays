@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/sweet_berries",
+  "textures": {
+    "layer1": "wildways:item/fishing/rich_fish_glint"
+  }
+}
