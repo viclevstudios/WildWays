@@ -102,7 +102,8 @@ final class FishingScreen extends Screen {
 		byte pointer = FishingMinigame.pointerSample(position);
 		this.recordSamples(elapsed, pointer);
 		int marker = left + Math.round(trackWidth * position);
-		int chance = Math.round(this.rules.catchChance(this.points) * 100);
+		int zonePoints = this.rules.points(pointer, target);
+		int chance = this.samples == 0 ? zonePoints * 50 : Math.round(this.points * 50.0F / this.samples);
 		float timeLeft = Mth.clamp((float) (this.rules.duration() - elapsed)
 			/ (this.rules.duration() - FishingMinigame.READY_MILLIS), 0.0F, 1.0F);
 
@@ -130,7 +131,7 @@ final class FishingScreen extends Screen {
 		graphics.fill(left, top + 16, right, top + 18, 0xFF101922);
 		graphics.fill(left, top + 16, left + Math.round(trackWidth * timeLeft), top + 18, 0xFF7EACBC);
 
-		int chanceColor = switch (this.rules.points(pointer, target)) {
+		int chanceColor = switch (zonePoints) {
 			case 2 -> CENTER_COLOR;
 			case 1 -> EDGE_COLOR;
 			default -> MISS_COLOR;
