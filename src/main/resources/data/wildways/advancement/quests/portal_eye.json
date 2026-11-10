@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "eye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wildways:eye_of_ice",
+              "wildways:eye_of_the_brute",
+              "wildways:eye_of_storm",
+              "wildways:eye_of_water",
+              "wildways:eye_of_illagers",
+              "wildways:eye_of_the_tiger",
+              "wildways:eye_of_darkness",
+              "wildways:eye_of_the_creaking",
+              "wildways:eye_of_brewing",
+              "wildways:eye_of_endermites",
+              "wildways:eye_of_sulfur",
+              "wildways:lost_eye",
+              "wildways:enchanted_eye",
+              "wildways:attuned_eye_of_volcanite"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

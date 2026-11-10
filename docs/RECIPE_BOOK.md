@@ -1,11 +1,12 @@
 # Recipe-book discovery
 
-Crafting and cooking recipes use hidden advancements under `data/wildways/advancement/recipes`. An inventory-change trigger discovers each recipe permanently. One item is enough: discovery does not require the full crafting quantity, other ingredients, a workstation or fuel. Crafting costs still come from the recipe itself. Existing discoveries are retained when updating a world.
+Most crafting and cooking recipes use hidden advancements under `data/wildways/advancement/recipes`. Picking up one of the listed items discovers the recipe permanently. Discovery does not require the full crafting quantity, other ingredients, a workstation or fuel. Existing discoveries are retained when updating a world.
 
 ## Main materials
 
 | Recipe | Inventory item that discovers it |
 | --- | --- |
+| WildWays Quest Book | Discovered on first joining the world, alongside the starter copy |
 | Copper / Iron / Golden / Diamond Rune | Copper Ingot / Iron Ingot / Gold Ingot / Diamond respectively |
 | Both Volcanite Rune variants | Refined Volcanite |
 | Enchanting Catalyst | Sculk Catalyst |

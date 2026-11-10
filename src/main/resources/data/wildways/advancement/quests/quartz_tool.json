@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:quartz_pickaxe"
+          }
+        ]
+      }
+    }
+  }
+}

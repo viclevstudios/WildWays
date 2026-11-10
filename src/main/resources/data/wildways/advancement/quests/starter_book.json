@@ -1,0 +1,15 @@
+{
+  "criteria": {
+    "joined_world": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "loot": [
+      "wildways:advancements/quest_book"
+    ],
+    "recipes": [
+      "wildways:quest_book"
+    ]
+  }
+}

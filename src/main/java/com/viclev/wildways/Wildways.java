@@ -45,6 +45,7 @@ public class Wildways implements ModInitializer {
 		FishingMinigame.initialize();
 		PlantBlocks.initialize();
 		PlantQuality.initialize();
+		QuestBookItem.initialize();
 	}
 
 	public static Identifier id(String path) {

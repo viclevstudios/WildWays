@@ -1,0 +1,23 @@
+{
+  "criteria": {
+    "rune": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wildways:rune_1",
+              "wildways:rune_2",
+              "wildways:rune_3",
+              "wildways:rune_4",
+              "wildways:rune_5"
+            ]
+          }
+        ]
+      }
+    },
+    "enchant": {
+      "trigger": "minecraft:enchanted_item"
+    }
+  }
+}

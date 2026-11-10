@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:endermite_bricks"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -88,6 +88,17 @@ Suggested smoke checks:
 
 ### Current Feature Checks
 
+#### Quest guide
+
+1. Join a new world and check for a WildWays Quest Book in your inventory and its recipe in a crafting table's recipe book. Rejoin, then die and respawn. Each player receives one starter copy on their first join, including when they first join an existing world after installing WildWays.
+2. Drop the book and craft a replacement. Put a book in the center, four iron ingots in the corners and any four leaf blocks on the remaining sides. Mix leaf types to verify that the recipe accepts them.
+3. Open the book with right-click. Choose Endermites and inspect the quest for an Endermite Nest. Close the book, then run `/give @s wildways:endermite_box` before obtaining an Endermite Shell. Reopen the book. The Nest should have a green incoming line and a check mark, and the Shell should remain open. Obtain Shells and Bricks to see the group turn green in the overview.
+4. In Brewing, brew and remove the regular Potion of Unease from the brewing stand. Reopen the book and verify that the quest shows one of two steps. Repeat with Strong Unease and verify completion. Save and reopen the world to check that progress persists. With a second player, verify that the same book opens their own progress.
+
+Quest links only describe the suggested order. Add a quest to `QuestGuide.GROUPS`, use its `parent` for the visual connection and provide its title and description in the language files. Use a displayless advancement in `data/wildways/advancement/quests` for new criteria, or point to an existing advancement. Each requirement group counts as one step.
+
+#### Other checks
+
 - Cast a fishing rod into water and reel in when the bobber dips. Follow the target and watch the chance rise. A round spent in green reaches 100%, yellow reaches 50%, and outside stays at 0%. Try switching zones mid-round and moving to green just before time runs out. Confirm the screen closes after five seconds and that Escape or either Shift key lets the catch go. Compare several casts with vanilla to check the shorter wait and longer reaction window. Check that successful catches still produce loot, XP and rod wear.
 - Craft each bait and combine it with an enchanted, damaged fishing rod. Check the different rod sprites before and after casting. Reel in early and check that the tooltip still reads 16 charges. Wait for a bite and check that it reads 15, including after letting the bite expire or cancelling the round. Confirm that the three-second Candied Bait round uses the wider zones and moves at the same speed as a normal round. Catch fish with Beetroot Dough and compare their sprites and restored hunger with ordinary fish before and after cooking. Check that pufferfish from that bait are ordinary. Compare Amethyst Blinker catches in open water and a confined pond.
 - Restart the client for the new Volcanite trim registry entry and ingot component. At a Smithing Table, place an armor-trim template on the left, armor in the middle and one `wildways:volcanite` ingot on the right. Confirm that the preview, result tooltip and inventory icon show Volcanite Material, and that the worn armor uses the selected pattern. Compare Iron, Diamond, Netherite, Quartz, Amethyst, colored Leather armor and Turtle Shells; compare different patterns including Sentry, Silence, Flow and Bolt.

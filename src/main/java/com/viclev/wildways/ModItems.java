@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 public final class ModItems {
+	public static final Item QUEST_BOOK = register(ModItemIds.QUEST_BOOK, QuestBookItem::new, new Item.Properties().stacksTo(1));
 	public static final Item RAW_VOLCANITE = register(ModItemIds.RAW_VOLCANITE, Item::new, new Item.Properties());
 	public static final Item VOLCANITE = register(ModItemIds.VOLCANITE, Item::new, new Item.Properties().trimMaterial(ModTrimMaterials.VOLCANITE));
 	public static final Item VOLCANITE_SWORD = register(ModItemIds.VOLCANITE_SWORD, Item::new, ProgressionItems.volcaniteProperties().sword(VolcaniteMaterials.TOOL, ProgressionMaterials.SWORD_ATTACK_DAMAGE, ProgressionMaterials.SWORD_ATTACK_SPEED));
@@ -141,6 +142,7 @@ public final class ModItems {
 			});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(output -> {
+				output.accept(QUEST_BOOK);
 				output.accept(BIOME_COMPASS);
 				output.accept(BEETROOT_DOUGH);
 				output.accept(CANDIED_BAIT);

@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 
 public final class ModItemIds {
+	public static final ResourceKey<Item> QUEST_BOOK = create("quest_book");
 	public static final ResourceKey<Item> RAW_VOLCANITE = create("raw_volcanite");
 	public static final ResourceKey<Item> VOLCANITE = create("volcanite");
 	public static final ResourceKey<Item> VOLCANITE_SWORD = create("volcanite_sword");

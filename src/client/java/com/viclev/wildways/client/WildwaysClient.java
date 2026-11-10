@@ -30,6 +30,7 @@ public class WildwaysClient implements ClientModInitializer {
 		EntityRenderers.register(ModEntityTypes.EXPLOSIVE_ARROW, context -> new SpecialArrowRenderer<>(context, Wildways.id("textures/entity/projectiles/explosive_arrow.png")));
 		ClientTickEvents.END_CLIENT_TICK.register(HeldItemInfoHud::updateActionBar);
 		FishingScreen.initialize();
+		QuestGuideScreen.initialize();
 		ItemTooltipCallback.EVENT.register((stack, context, flags, lines) -> {
 			FishingBait bait = stack.get(FishingBait.LOADED_BAIT);
 			if (bait != null) {

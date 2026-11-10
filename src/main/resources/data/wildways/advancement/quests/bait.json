@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "dough": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:beetroot_dough"
+          }
+        ]
+      }
+    }
+  }
+}

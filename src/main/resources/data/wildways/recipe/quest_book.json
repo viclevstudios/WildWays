@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ILI",
+    "LBL",
+    "ILI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "L": "#minecraft:leaves",
+    "B": "minecraft:book"
+  },
+  "result": {
+    "id": "wildways:quest_book"
+  }
+}

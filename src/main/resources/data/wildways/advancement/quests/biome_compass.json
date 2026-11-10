@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "biome_compass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:biome_compass"
+          }
+        ]
+      }
+    }
+  }
+}
