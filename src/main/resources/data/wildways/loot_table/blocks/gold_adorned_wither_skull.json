@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "wildways:gold_adorned_wither_skull",
+          "modifier": {
+            "type": "minecraft:copy_components",
+            "include": [
+              "minecraft:custom_name"
+            ],
+            "source": "block_entity"
+          }
+        }
+      ]
+    }
+  ],
+  "random_sequence": "wildways:blocks/gold_adorned_wither_skull"
+}

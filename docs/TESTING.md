@@ -143,6 +143,12 @@ Quest links only describe the suggested order. Add a quest to `QuestGuide.GROUPS
 - Craft the Storm, Darkness, and Eye of Enchanting paths. Brew Eye of Ender + Nether Wart into Awkward Eye, Awkward Eye + Phantom Membrane into Thick Eye, and Thick Eye + Ghast Tear into Eye of Brewing. Enchant the Eye of Enchanting at an Enchanting Table and verify that it receives Attunement and can then be inserted.
 - Follow the [recipe-book discovery checks](RECIPE_BOOK.md): a single main material must discover the corresponding recipe, and each enchanted-book conversion must accept either its specific source book or its secondary material independently. An unrelated enchanted book must not discover it. Also verify the new Flame ingredients and both Volcanite cooking times and XP rewards.
 
+### Wither skulls
+
+- In a fresh world, visit newly generated Ancient Cities and Bastion Remnants. Check Skeleton Skull decorations in the cities. In a Treasure Bastion, look for a skull among the central treasure room's Gold Blocks. Check that a Bridge Bastion keeps the 16 Gold Blocks on the bridge and that Bridge, Hoglin Stables and Housing bastions contain at most two replacement skulls each.
+- In Survival, break a replacement skull and confirm it drops the matching item. Place it on the floor and on the side of a block, then save and reload the world.
+- Use `/give @s wildways:sculk_covered_wither_skull` and `/give @s wildways:gold_adorned_wither_skull` to test the mixed ritual. On a soul sand or soul soil T, place a regular Wither Skeleton Skull in the middle and a variant on each side. Try both side orders, then summon with three regular skulls as a control.
+
 ## Dedicated Server Check
 
 For common-code or progression changes, run a server check when feasible:

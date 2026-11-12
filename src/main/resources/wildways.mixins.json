@@ -24,6 +24,8 @@
 		"StructureTemplateEntityOffsetMixin",
 		"StructureTemplateEntityInvoker",
 		"StructureTemplatePaletteAccessor",
+		"StructureWitherSkullsMixin",
+		"WitherSummoningMixin",
 		"AbstractArrowAccessor",
 		"PotionItemStackSizeMixin",
 		"SplashPotionItemStackSizeMixin",

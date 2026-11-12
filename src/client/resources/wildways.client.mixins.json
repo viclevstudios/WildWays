@@ -9,7 +9,8 @@
 		"SupremeNightVisionMixin",
 		"SupremeNightVisionLightmapMixin",
 		"SupremeFireResistanceFogMixin",
-		"VolcaniteEyeInterpolationMixin"
+		"VolcaniteEyeInterpolationMixin",
+		"WitherSkullRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

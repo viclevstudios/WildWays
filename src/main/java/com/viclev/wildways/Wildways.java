@@ -19,6 +19,7 @@ public class Wildways implements ModInitializer {
 	public void onInitialize() {
 		ModEntityTypes.initialize();
 		ModBlocks.initialize();
+		WitherSkulls.initialize();
 		ModBlockEntities.initialize();
 		ModMenuTypes.initialize();
 		ModItems.initialize();

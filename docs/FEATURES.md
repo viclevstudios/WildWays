@@ -90,6 +90,13 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - Drop an Eye of Ender into the first four water source blocks above Potent Sulfur to obtain an Eye of Sulfur. Craft an Eye of Volcanite with an Eye of Ender in the centre and four Volcanite Ingots directly above, below, left, and right. Drop it into fire to create the portal-ready Attuned Eye of Volcanite.
 - WildWays crafting recipes unlock on finding one matching main material. Enchanted-book conversions unlock with their specific source book or a themed secondary material. See [Recipe book](RECIPE_BOOK.md) for the complete unlock rules and checks.
 
+## Wither skulls
+
+- A newly generated Ancient City has a one-in-three chance to replace one of its placed Skeleton Skulls with a Sculk-Covered Wither Skull. The city needs to generate a piece containing a Skeleton Skull for the replacement to happen.
+- A Treasure Bastion replaces exactly one Gold Block in the central treasure room with a Gold-Adorned Wither Skull. Bridge, Hoglin Stables and Housing bastions roll a 12.5% chance for each eligible Gold Block and keep at most two replacements per bastion. The 16 Gold Blocks in the bridge piece are excluded.
+- On the usual soul sand or soul soil T, place a regular Wither Skeleton Skull in the middle and one of each variant on the outside, in either order. Three regular Wither Skeleton Skulls also summon the Wither.
+- Both variants use the vanilla Wither Skeleton texture by default. Custom skull textures can be added under `assets/wildways/textures/entity/skull/` as `sculk_covered_wither_skull.png` and `gold_adorned_wither_skull.png`.
+
 ## Potions and effects
 
 - Normal, splash, and lingering potions stack to eight.
