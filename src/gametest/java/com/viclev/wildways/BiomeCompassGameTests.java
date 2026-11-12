@@ -39,8 +39,11 @@ public class BiomeCompassGameTests {
 
 		player.setItemInHand(hand, compasses.copy());
 		helper.assertFalse(menu.clickMenuButton(player, index), "The open menu must reject a swapped compass stack");
+		var locateBiome = Wildways.id("quests/locate_biome");
+		helper.assertFalse(QuestBookItem.readProgress(player).get(locateBiome).done(), "Opening the menu or swapping the compass must not count");
 		player.setItemInHand(hand, compasses);
 		menu.clickMenuButton(player, index);
+		helper.assertTrue(QuestBookItem.readProgress(player).get(locateBiome).done(), "Successfully binding a biome must count");
 		ItemStack bound = player.getItemInHand(hand);
 		helper.assertTrue(biome.equals(bound.get(BiomeCompassItem.TARGET_BIOME)) && bound.getCount() == 1,
 			"Only one compass must be bound to the chosen biome");

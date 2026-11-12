@@ -1,0 +1,18 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:brewed_potion",
+      "conditions": {
+        "potion": {
+          "potions": [
+            "wildways:supreme_swiftness",
+            "wildways:supreme_leaping",
+            "wildways:supreme_strength",
+            "wildways:supreme_healing",
+            "wildways:supreme_regeneration"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
@@ -26,6 +27,11 @@ public final class ModLootTables {
 
 	public static void initialize() {
 		LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
+			// The vanilla trade rebalance pack supplies this table as a datapack.
+			if (key.equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
+				tableBuilder.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
+					.add(LootItem.lootTableItem(ModItems.EYE_OF_THE_TIGER)));
+			}
 			if (!source.isBuiltin()) {
 				return;
 			}

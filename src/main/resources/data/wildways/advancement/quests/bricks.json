@@ -1,13 +1,9 @@
 {
   "criteria": {
     "bricks": {
-      "trigger": "minecraft:inventory_changed",
+      "trigger": "minecraft:recipe_crafted",
       "conditions": {
-        "items": [
-          {
-            "items": "wildways:endermite_bricks"
-          }
-        ]
+        "recipes": "wildways:endermite_bricks"
       }
     }
   }

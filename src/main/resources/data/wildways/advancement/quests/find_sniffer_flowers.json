@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:thrown_item_picked_up_by_player",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:pitcher_pod",
+            "minecraft:torchflower_seeds"
+          ]
+        },
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "minecraft:sniffer"
+          }
+        }
+      }
+    }
+  }
+}

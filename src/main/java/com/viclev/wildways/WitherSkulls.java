@@ -1,5 +1,6 @@
 package com.viclev.wildways;
 
+import java.util.List;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityType;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -30,6 +32,12 @@ import org.jspecify.annotations.Nullable;
 public final class WitherSkulls {
 	public static final Variant SCULK = register("sculk_covered");
 	public static final Variant GOLD = register("gold_adorned");
+	private static final List<Identifier> SKULL_QUESTS = List.of(
+		Wildways.id("quests/find_wither_skull"),
+		Wildways.id("quests/find_sculk_wither_skull"),
+		Wildways.id("quests/find_gold_wither_skull")
+	);
+	private static final Identifier SUMMON_QUEST = Wildways.id("quests/summon_wither");
 
 	private WitherSkulls() {
 	}
@@ -60,6 +68,17 @@ public final class WitherSkulls {
 			output.accept(SCULK.item());
 			output.accept(GOLD.item());
 		});
+	}
+
+	public static void awardMixedSummon(ServerPlayer player) {
+		var advancements = player.level().getServer().getAdvancements();
+		for (Identifier id : SKULL_QUESTS) {
+			var quest = advancements.get(id);
+			if (quest == null || !player.getAdvancements().getOrStartProgress(quest).isDone()) {
+				return;
+			}
+		}
+		QuestBookItem.awardQuest(player, SUMMON_QUEST);
 	}
 
 	public record Variant(Block skull, Block wallSkull, Item item) {

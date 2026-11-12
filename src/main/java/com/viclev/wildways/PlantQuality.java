@@ -1,10 +1,12 @@
 package com.viclev.wildways;
 
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -44,6 +46,15 @@ public final class PlantQuality {
 			BlockState state = context.getOptional(LootContextParams.BLOCK_STATE);
 			if (state != null && state.getValueOrElse(PlantGrowth.QUALITY, PlantGrowth.NORMAL) != PlantGrowth.NORMAL) {
 				markHarvest(state, drops, !context.hasParameter(LootContextParams.EXPLOSION_RADIUS));
+				if (state.getValue(PlantGrowth.QUALITY) == PlantGrowth.LEVEL_TWO_SEEDS
+					&& context.getOptional(LootContextParams.THIS_ENTITY) instanceof ServerPlayer player
+					&& drops.stream().anyMatch(stack -> stack.has(LEVEL_TWO))) {
+					QuestBookItem.awardQuest(player, Wildways.id("quests/gold_ripen"));
+					var origin = context.getOptional(LootContextParams.ORIGIN);
+					if (origin != null && context.getLevel().getBlockState(BlockPos.containing(origin).below()).is(PlantBlocks.COMPOST_FARMLAND)) {
+						QuestBookItem.awardQuest(player, Wildways.id("quests/gold_ripen_compost"));
+					}
+				}
 			}
 		});
 	}

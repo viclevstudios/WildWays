@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EndPortalFrameBlock;
 import net.minecraft.world.phys.Vec3;
@@ -34,7 +33,8 @@ public class PortalEyeGameTests {
 			}
 		}
 
-		Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+		var player = helper.makeMockServerPlayerInLevel();
+		var activationQuest = Wildways.id("quests/activate_end_portal");
 		BlockPos strayFrame = center.above();
 		helper.setBlock(strayFrame, Blocks.END_PORTAL_FRAME);
 		useEye(helper, player, strayFrame, ModItems.EYE_OF_SULFUR);
@@ -46,6 +46,7 @@ public class PortalEyeGameTests {
 			useEye(helper, player, frames.get(i), selected.get(i));
 		}
 		helper.assertBlockNotPresent(Blocks.END_PORTAL, center);
+		helper.assertTrue(!QuestBookItem.readProgress(player).get(activationQuest).done(), "An incomplete ring should not count");
 
 		BlockPos lastFrame = frames.getLast();
 		useEye(helper, player, lastFrame, ModItems.EYE_OF_SULFUR);
@@ -56,6 +57,9 @@ public class PortalEyeGameTests {
 		useEye(helper, player, lastFrame, ModItems.ATTUNED_EYE_OF_VOLCANITE);
 		helper.assertBlockProperty(lastFrame, PortalEyeStates.EYE_TYPE, 14);
 		helper.assertBlockPresent(Blocks.END_PORTAL, center);
+		helper.assertTrue(QuestBookItem.readProgress(player).get(activationQuest).done(), "Opening the portal should count");
+		helper.assertTrue(!QuestBookItem.readProgress(player).get(Wildways.id("quests/collect_portal_eyes")).done(),
+			"Portal activation should count independently of the collection quest");
 
 		AttackBlockCallback.EVENT.invoker().interact(player, helper.getLevel(), InteractionHand.MAIN_HAND,
 			helper.absolutePos(lastFrame), Direction.UP);

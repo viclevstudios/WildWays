@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:gold_adorned_wither_skull"
+          }
+        ]
+      }
+    }
+  }
+}

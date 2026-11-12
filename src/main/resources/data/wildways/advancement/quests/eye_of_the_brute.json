@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "eye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:eye_of_the_brute"
+          }
+        ]
+      }
+    }
+  }
+}

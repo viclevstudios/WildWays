@@ -1,0 +1,58 @@
+{
+  "criteria": {
+    "effect_potions": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:potion",
+              "minecraft:splash_potion",
+              "minecraft:lingering_potion"
+            ],
+            "count": 8,
+            "predicates": {
+              "minecraft:potion_contents": {
+                "effects": {
+                  "size": {
+                    "min": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "brewing_bases": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:potion",
+              "minecraft:splash_potion",
+              "minecraft:lingering_potion"
+            ],
+            "count": 8,
+            "predicates": {
+              "minecraft:potion_contents": {
+                "potions": [
+                  "minecraft:awkward",
+                  "minecraft:mundane",
+                  "minecraft:thick"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "effect_potions",
+      "brewing_bases"
+    ]
+  ]
+}

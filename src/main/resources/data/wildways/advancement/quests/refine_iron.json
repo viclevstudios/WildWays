@@ -1,0 +1,41 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipes": [
+          "minecraft:golden_axe",
+          "minecraft:golden_boots",
+          "minecraft:golden_chestplate",
+          "minecraft:golden_helmet",
+          "minecraft:golden_hoe",
+          "minecraft:golden_leggings",
+          "minecraft:golden_pickaxe",
+          "minecraft:golden_shovel",
+          "minecraft:golden_spear",
+          "minecraft:golden_sword",
+          "wildways:amethyst_axe_upgrade",
+          "wildways:amethyst_boots_upgrade",
+          "wildways:amethyst_chestplate_upgrade",
+          "wildways:amethyst_helmet_upgrade",
+          "wildways:amethyst_hoe_upgrade",
+          "wildways:amethyst_leggings_upgrade",
+          "wildways:amethyst_pickaxe_upgrade",
+          "wildways:amethyst_shovel_upgrade",
+          "wildways:amethyst_spear_upgrade",
+          "wildways:amethyst_sword_upgrade",
+          "wildways:quartz_axe_upgrade",
+          "wildways:quartz_boots_upgrade",
+          "wildways:quartz_chestplate_upgrade",
+          "wildways:quartz_helmet_upgrade",
+          "wildways:quartz_hoe_upgrade",
+          "wildways:quartz_leggings_upgrade",
+          "wildways:quartz_pickaxe_upgrade",
+          "wildways:quartz_shovel_upgrade",
+          "wildways:quartz_spear_upgrade",
+          "wildways:quartz_sword_upgrade"
+        ]
+      }
+    }
+  }
+}

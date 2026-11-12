@@ -106,10 +106,14 @@ public final class PortalEyeManager {
 		level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
 		level.updateNeighbourForOutputSignal(pos, Blocks.END_PORTAL_FRAME);
 		data.put(pos, placedStack);
+		ServerPlayer player = context.getPlayer() instanceof ServerPlayer serverPlayer ? serverPlayer : null;
+		if (player != null) {
+			CollectorQuests.checkInventory(player);
+		}
 		placedStack.shrink(1);
 		level.levelEvent(1503, pos, 0);
 		if (ring != null) {
-			tryOpenPortal(serverLevel, ring, data, context.getPlayer() instanceof ServerPlayer serverPlayer ? serverPlayer : null);
+			tryOpenPortal(serverLevel, ring, data, player);
 		}
 		return InteractionResult.SUCCESS_SERVER;
 	}
@@ -188,6 +192,7 @@ public final class PortalEyeManager {
 		level.globalLevelEvent(1038, ring.center(), 0);
 		if (player != null) {
 			XpProgression.awardOnce(player, "portal:minecraft:the_end", 75);
+			CollectorQuests.portalOpened(player);
 		}
 	}
 

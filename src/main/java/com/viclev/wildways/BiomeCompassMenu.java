@@ -83,6 +83,7 @@ public final class BiomeCompassMenu extends AbstractContainerMenu {
 		if (!this.compass.isEmpty() && !player.getInventory().add(this.compass)) {
 			player.drop(this.compass, false, Prediction.SERVER_ONLY);
 		}
+		QuestBookItem.awardQuest(serverPlayer, Wildways.id("quests/locate_biome"));
 		serverPlayer.closeContainer();
 		return false;
 	}

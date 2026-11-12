@@ -1,6 +1,7 @@
 package com.viclev.wildways;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -95,10 +96,14 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 		return stack.is(Items.POTION) || stack.is(Items.SPLASH_POTION) || stack.is(Items.LINGERING_POTION);
 	}
 
-	private void consumeRecipe() {
+	private void consumeRecipe(Player player) {
 		Recipe recipe = this.findRecipe();
 		if (recipe == null) {
 			return;
+		}
+		if (player instanceof ServerPlayer serverPlayer) {
+			EquipmentQuests.fletched(serverPlayer, recipe.output());
+			BrewingQuests.fletched(serverPlayer, recipe.output(), this.input.getItem(RIGHT));
 		}
 		// Do not recalculate after each individual ingredient. That transiently
 		// clears the result slot and prevents vanilla-style rapid crafting.
@@ -171,7 +176,7 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 		@Override
 		public void onTake(Player player, ItemStack stack) {
 			super.onTake(player, stack);
-			FletchingTableMenu.this.consumeRecipe();
+			FletchingTableMenu.this.consumeRecipe(player);
 		}
 	}
 

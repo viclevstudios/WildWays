@@ -3,6 +3,7 @@ package com.viclev.wildways;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.commands.arguments.item.ItemParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +12,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,6 +36,61 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class PlantGameTests {
+	@GameTest
+	public void foodGuideCreditsPlantingTillingAndSnifferPickups(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var level = helper.getLevel();
+		var soil = new BlockPos(1, 1, 1);
+		var worldSoil = helper.absolutePos(soil);
+		var hit = new BlockHitResult(Vec3.atCenterOf(worldSoil), Direction.UP, worldSoil, false);
+		helper.setBlock(soil, PlantBlocks.COMPOST);
+		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_HOE));
+		player.gameMode.useItemOn(player, level, player.getMainHandItem(), InteractionHand.MAIN_HAND, hit);
+		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.PITCHER_POD));
+		player.gameMode.useItemOn(player, level, player.getMainHandItem(), InteractionHand.MAIN_HAND, hit);
+		var progress = QuestBookItem.readProgress(player);
+		for (String id : List.of("plant_seed", "till_fast_farmland", "till_compost", "pitcher_irrigation")) {
+			helper.assertTrue(progress.get(Wildways.id("quests/" + id)).done(), "Expected quest credit for " + id);
+		}
+
+		var cycadQuest = Wildways.id("quests/find_cycad");
+		var pos = helper.absolutePos(new BlockPos(2, 2, 1));
+		var looseSeed = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(PlantBlocks.CYCAD));
+		looseSeed.playerTouch(player);
+		helper.assertFalse(QuestBookItem.readProgress(player).get(cycadQuest).done(), "A cycad without a Sniffer source must not count");
+		var sniffer = helper.spawn(EntityTypes.SNIFFER, new BlockPos(2, 2, 1));
+		var dugSeed = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(PlantBlocks.CYCAD));
+		dugSeed.setThrower(sniffer);
+		dugSeed.playerTouch(player);
+		helper.assertTrue(QuestBookItem.readProgress(player).get(cycadQuest).done(), "Picking up a cycad from a Sniffer must count");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void foodGuideDistinguishesGoldRipeningFromOrdinaryHarvestAndStew(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var level = helper.getLevel();
+		var crop = new BlockPos(1, 2, 1);
+		var worldCrop = helper.absolutePos(crop);
+		var normal = Blocks.WHEAT.defaultBlockState().setValue(CropBlock.AGE, CropBlock.MAX_AGE);
+		var discovered = normal.setValue(PlantGrowth.QUALITY, PlantGrowth.LEVEL_TWO_SEEDS);
+		var ripen = Wildways.id("quests/gold_ripen");
+		var compost = Wildways.id("quests/gold_ripen_compost");
+		var stew = Wildways.id("quests/eat_gold_ripened_stew");
+		helper.setBlock(crop.below(), PlantBlocks.COMPOST_FARMLAND);
+		Block.getDrops(normal, level, worldCrop, null, player, ItemStack.EMPTY);
+		CriteriaTriggers.CONSUME_ITEM.trigger(player, new ItemStack(Items.RABBIT_STEW));
+		var progress = QuestBookItem.readProgress(player);
+		helper.assertFalse(progress.get(ripen).done() || progress.get(compost).done() || progress.get(stew).done(),
+			"Ordinary harvests and stew must not count");
+		Block.getDrops(discovered, level, worldCrop, null, player, ItemStack.EMPTY);
+		CriteriaTriggers.CONSUME_ITEM.trigger(player, PlantQuality.mark(new ItemStack(Items.RABBIT_STEW)));
+		progress = QuestBookItem.readProgress(player);
+		helper.assertTrue(progress.get(ripen).done() && progress.get(compost).done() && progress.get(stew).done(),
+			"Harvesting naturally ripened stock on compost and eating gold-ripened stew must count");
+		helper.succeed();
+	}
+
 	@GameTest
 	public void torchflowersCanBePlantedAndGrowInDarkness(GameTestHelper helper) {
 		BlockPos soil = new BlockPos(1, 1, 1);

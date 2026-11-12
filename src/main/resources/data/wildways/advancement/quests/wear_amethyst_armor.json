@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:equipment": {
+              "head": {
+                "items": "wildways:amethyst_helmet"
+              },
+              "chest": {
+                "items": "wildways:amethyst_chestplate"
+              },
+              "legs": {
+                "items": "wildways:amethyst_leggings"
+              },
+              "feet": {
+                "items": "wildways:amethyst_boots"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

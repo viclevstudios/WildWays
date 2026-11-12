@@ -1,0 +1,17 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipes": [
+          "wildways:rune_1",
+          "wildways:rune_2",
+          "wildways:rune_3",
+          "wildways:rune_4",
+          "wildways:rune_5_from_shulker_shells",
+          "wildways:rune_5_from_echo_shards"
+        ]
+      }
+    }
+  }
+}

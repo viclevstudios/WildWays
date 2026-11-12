@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:buried_mineshaft_map"
+          }
+        ]
+      }
+    }
+  }
+}

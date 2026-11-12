@@ -101,7 +101,8 @@ public final class WildwaysChestLootProvider extends SimpleFabricLootTableSubPro
 			.setRolls(ContextIntProviders.between(1, 2))
 			.add(LootItem.lootTableItem(Items.BOOK)
 				.apply(EnchantRandomlyFunction.randomEnchantment()
-					.withOneOf(nestBooks)))));
+					.withOneOf(nestBooks))))
+			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).add(LootItem.lootTableItem(ModItems.LOST_EYE))));
 	}
 
 	private static ResourceKey<LootTable> table(String path) {

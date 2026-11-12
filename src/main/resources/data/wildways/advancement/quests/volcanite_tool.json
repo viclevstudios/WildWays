@@ -1,21 +1,18 @@
 {
   "criteria": {
-    "ingot": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "wildways:volcanite"
-          }
-        ]
-      }
-    },
     "pickaxe": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": "wildways:volcanite_pickaxe"
+            "items": [
+              "wildways:volcanite_sword",
+              "wildways:volcanite_spear",
+              "wildways:volcanite_pickaxe",
+              "wildways:volcanite_axe",
+              "wildways:volcanite_shovel",
+              "wildways:volcanite_hoe"
+            ]
           }
         ]
       }

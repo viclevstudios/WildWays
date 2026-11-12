@@ -1,0 +1,40 @@
+{
+  "criteria": {
+    "eyes_1": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_2": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_3": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_4": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_5": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_6": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_7": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_8": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_9": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_10": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_11": {
+      "trigger": "minecraft:impossible"
+    },
+    "eyes_12": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

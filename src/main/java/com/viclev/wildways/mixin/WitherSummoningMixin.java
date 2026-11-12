@@ -2,9 +2,13 @@ package com.viclev.wildways.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viclev.wildways.WitherSkulls;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WitherSkullBlock;
@@ -59,5 +63,22 @@ public abstract class WitherSummoningMixin {
 			}
 		}
 		return match;
+	}
+
+	@WrapOperation(
+		method = "checkSpawn(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/SkullBlockEntity;)V",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z")
+	)
+	private static boolean wildways$creditMixedSummon(Level level, Entity wither, Operation<Boolean> original,
+		@Local BlockPattern.BlockPatternMatch match) {
+		boolean spawned = original.call(level, wither);
+		// The pattern retains the skull state it matched before vanilla clears the blocks.
+		BlockState outerSkull = match.getBlock(0, 0, 0).getState();
+		if (spawned && (WitherSkulls.SCULK.matches(outerSkull) || WitherSkulls.GOLD.matches(outerSkull))) {
+			for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, wither.getBoundingBox().inflate(50.0))) {
+				WitherSkulls.awardMixedSummon(player);
+			}
+		}
+		return spawned;
 	}
 }

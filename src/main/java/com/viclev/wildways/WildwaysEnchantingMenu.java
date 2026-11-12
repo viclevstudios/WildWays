@@ -179,7 +179,7 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 		ItemStack output = target.copyWithCount(1);
 		output.enchant(enchantment, enchantmentLevel);
 		this.status.set(5);
-		return new Recipe(output, xpCost);
+		return new Recipe(output, xpCost, enchantmentLevel, xpCost < EnchantingRules.experienceCost(effectiveTier, false));
 	}
 
 	@Override
@@ -228,6 +228,7 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 		player.awardStat(Stats.ENCHANT_ITEM);
 		if (player instanceof ServerPlayer serverPlayer) {
 			CriteriaTriggers.ENCHANTED_ITEM.trigger(serverPlayer, recipe.output(), recipe.cost());
+			EnchantingQuests.enchanted(serverPlayer, recipe.enchantmentLevel(), recipe.discounted());
 		}
 		this.access.execute((level, pos) -> level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F));
 		this.input.setChanged();
@@ -288,6 +289,6 @@ public class WildwaysEnchantingMenu extends AbstractContainerMenu {
 		super.removed(player);
 	}
 
-	private record Recipe(ItemStack output, int cost) {
+	private record Recipe(ItemStack output, int cost, int enchantmentLevel, boolean discounted) {
 	}
 }

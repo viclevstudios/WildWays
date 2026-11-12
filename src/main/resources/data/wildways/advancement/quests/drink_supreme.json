@@ -1,0 +1,17 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "minecraft:potion",
+          "predicates": {
+            "minecraft:potion_contents": {
+              "potions": "#wildways:supreme_potions"
+            }
+          }
+        }
+      }
+    }
+  }
+}

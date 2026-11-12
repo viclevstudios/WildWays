@@ -1,0 +1,34 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": {
+          "type": "minecraft:all_of",
+          "terms": [
+            {
+              "type": "minecraft:location_check",
+              "predicate": {
+                "block": {
+                  "blocks": "minecraft:pitcher_crop"
+                }
+              }
+            },
+            {
+              "type": "minecraft:location_check",
+              "predicate": {
+                "block": {
+                  "blocks": [
+                    "minecraft:farmland",
+                    "wildways:compost_farmland"
+                  ]
+                }
+              },
+              "offsetY": -1
+            }
+          ]
+        }
+      }
+    }
+  }
+}

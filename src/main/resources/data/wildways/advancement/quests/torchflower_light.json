@@ -1,0 +1,17 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": {
+          "type": "minecraft:location_check",
+          "predicate": {
+            "block": {
+              "blocks": "minecraft:torchflower"
+            }
+          }
+        }
+      }
+    }
+  }
+}

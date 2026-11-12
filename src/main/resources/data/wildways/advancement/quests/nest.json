@@ -1,13 +1,9 @@
 {
   "criteria": {
     "nest": {
-      "trigger": "minecraft:inventory_changed",
+      "trigger": "minecraft:recipe_crafted",
       "conditions": {
-        "items": [
-          {
-            "items": "wildways:endermite_box"
-          }
-        ]
+        "recipes": "wildways:endermite_box"
       }
     }
   }

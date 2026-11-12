@@ -1,0 +1,28 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:item_used_on_block",
+      "conditions": {
+        "location": {
+          "type": "minecraft:all_of",
+          "terms": [
+            {
+              "type": "minecraft:match_tool",
+              "predicate": {
+                "items": "#minecraft:hoes"
+              }
+            },
+            {
+              "type": "minecraft:location_check",
+              "predicate": {
+                "block": {
+                  "blocks": "wildways:compost_farmland"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

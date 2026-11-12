@@ -1,8 +1,10 @@
 package com.viclev.wildways.mixin;
 
 import com.viclev.wildways.EnchantingRules;
+import com.viclev.wildways.EnchantingQuests;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -44,8 +46,7 @@ public abstract class AnvilEnchantingMixin extends ItemCombinerMenu {
 			ci.cancel();
 			return;
 		}
-		if (!input.isEmpty() && input.isDamageableItem() && !addition.isEmpty()
-			&& (input.isValidRepairItem(addition) || wildways$netheriteScrapRepairs(input, addition))) {
+		if (wildways$isMaterialRepair(input, addition)) {
 			if (!input.isDamaged() || !EnchantingRules.hasMending(input)) {
 				this.wildways$clearResult();
 			} else {
@@ -64,6 +65,22 @@ public abstract class AnvilEnchantingMixin extends ItemCombinerMenu {
 			}
 			ci.cancel();
 		}
+	}
+
+	@Inject(method = "onTake", at = @At("HEAD"))
+	private void wildways$creditMaterialRepair(Player player, ItemStack result, CallbackInfo ci) {
+		ItemStack input = this.inputSlots.getItem(0);
+		ItemStack addition = this.inputSlots.getItem(1);
+		if (player instanceof ServerPlayer serverPlayer && input.isDamaged() && EnchantingRules.hasMending(input)
+			&& wildways$isMaterialRepair(input, addition)) {
+			EnchantingQuests.repaired(serverPlayer);
+		}
+	}
+
+	@Unique
+	private static boolean wildways$isMaterialRepair(ItemStack input, ItemStack addition) {
+		return !input.isEmpty() && input.isDamageableItem() && !addition.isEmpty()
+			&& (input.isValidRepairItem(addition) || wildways$netheriteScrapRepairs(input, addition));
 	}
 
 	@Unique

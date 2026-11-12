@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -14,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EntityTypes;
@@ -177,6 +179,72 @@ public class EnchantingGameTests {
 		}
 		helper.assertTrue(player.experienceLevel == 13, "Runes 1, 2, 3 and 5 must cost 1, 1, 2 and 3 levels with the same catalyst");
 		helper.assertFalse(menu.getSlot(4).hasItem(), "Catalyst must break on its fourth use");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void questCreditsAppliedEnchantmentsAndActualCatalystSavings(GameTestHelper helper) {
+		ServerPlayer player = helper.makeMockServerPlayerInLevel();
+		player.setGameMode(GameType.SURVIVAL);
+		GameType.SURVIVAL.updatePlayerAbilities(player.getAbilities());
+		player.experienceLevel = 20;
+		var enchant = Wildways.id("quests/rune_enchanting");
+		var levelFive = Wildways.id("quests/enchant_level_five");
+		var catalyst = Wildways.id("quests/use_enchanting_catalyst");
+		WildwaysEnchantingMenu menu = this.table(helper, player, 20);
+
+		this.inputs(helper, menu, Enchantments.UNBREAKING, 1);
+		ItemStack alreadyEnchanted = new ItemStack(Items.DIAMOND_PICKAXE);
+		alreadyEnchanted.enchant(this.enchantment(helper, Enchantments.EFFICIENCY), 5);
+		menu.getSlot(0).set(alreadyEnchanted);
+		menu.getSlot(4).set(new ItemStack(EnchantingItems.CATALYST));
+		helper.assertTrue(menu.getSlot(5).hasItem(), "The level I enchantment should be available");
+		helper.assertTrue(!QuestBookItem.readProgress(player).get(enchant).done(), "A preview should not count");
+		menu.clicked(5, 0, ContainerInput.PICKUP, player);
+		menu.setCarried(ItemStack.EMPTY);
+		var progress = QuestBookItem.readProgress(player);
+		helper.assertTrue(progress.get(enchant).done(), "Taking an enchanted item should count");
+		helper.assertTrue(!progress.get(levelFive).done(), "An existing level V enchantment should not count");
+		helper.assertTrue(!progress.get(catalyst).done(), "A catalyst cannot save XP on a one-level recipe");
+
+		this.inputs(helper, menu, Enchantments.EFFICIENCY, 5);
+		helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 3, "Efficiency V should cost three levels with a catalyst");
+		menu.quickMoveStack(player, 5);
+		progress = QuestBookItem.readProgress(player);
+		helper.assertTrue(progress.get(levelFive).done() && progress.get(catalyst).done() && player.experienceLevel == 16,
+			"A new level V enchantment and its discount should count on extraction");
+		helper.assertTrue(!progress.get(Wildways.id("quests/craft_rune")).done()
+			&& !progress.get(Wildways.id("quests/craft_enchanting_catalyst")).done(),
+			"Using a rune or catalyst is separate from crafting it");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void questCreditsTakingAMaterialRepairAtTheAnvil(GameTestHelper helper) {
+		ServerPlayer player = helper.makeMockServerPlayerInLevel();
+		var mending = Wildways.id("quests/mending");
+		var repair = Wildways.id("quests/repair_mending_item");
+		ItemStack pickaxe = new ItemStack(Items.NETHERITE_PICKAXE);
+		pickaxe.enchant(this.enchantment(helper, Enchantments.MENDING), 1);
+		pickaxe.setDamageValue(20);
+		player.getInventory().add(pickaxe.copy());
+		CriteriaTriggers.INVENTORY_CHANGED.trigger(player, player.getInventory(), pickaxe);
+		helper.assertTrue(QuestBookItem.readProgress(player).get(mending).done(), "Equipment with Mending should count");
+
+		AnvilMenu menu = new AnvilMenu(1, player.getInventory());
+		menu.getSlot(0).set(pickaxe.copy());
+		menu.setItemName("Named pickaxe");
+		menu.clicked(2, 0, ContainerInput.PICKUP, player);
+		helper.assertTrue(menu.getCarried().isDamaged(), "A rename should not repair the pickaxe");
+		helper.assertTrue(!QuestBookItem.readProgress(player).get(repair).done(), "Renaming should not count as a repair");
+		menu.setCarried(ItemStack.EMPTY);
+
+		menu.getSlot(0).set(pickaxe.copy());
+		menu.getSlot(1).set(new ItemStack(Items.NETHERITE_SCRAP));
+		helper.assertTrue(menu.getSlot(2).hasItem() && !menu.getSlot(2).getItem().isDamaged(), "The matching material should repair the pickaxe");
+		helper.assertTrue(!QuestBookItem.readProgress(player).get(repair).done(), "A repair preview should not count");
+		menu.quickMoveStack(player, 2);
+		helper.assertTrue(QuestBookItem.readProgress(player).get(repair).done(), "Taking the material repair should count");
 		helper.succeed();
 	}
 

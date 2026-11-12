@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:trail_ruins_map"
+          }
+        ]
+      }
+    }
+  }
+}

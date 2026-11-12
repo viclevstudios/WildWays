@@ -7,14 +7,6 @@
           "potions": "wildways:unease"
         }
       }
-    },
-    "strong_unease": {
-      "trigger": "minecraft:brewed_potion",
-      "conditions": {
-        "potion": {
-          "potions": "wildways:strong_unease"
-        }
-      }
     }
   }
 }

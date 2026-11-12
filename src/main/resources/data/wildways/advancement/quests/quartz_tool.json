@@ -5,7 +5,14 @@
       "conditions": {
         "items": [
           {
-            "items": "wildways:quartz_pickaxe"
+            "items": [
+              "wildways:quartz_sword",
+              "wildways:quartz_spear",
+              "wildways:quartz_pickaxe",
+              "wildways:quartz_axe",
+              "wildways:quartz_shovel",
+              "wildways:quartz_hoe"
+            ]
           }
         ]
       }

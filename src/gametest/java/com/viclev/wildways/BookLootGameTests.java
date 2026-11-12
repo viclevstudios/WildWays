@@ -34,6 +34,21 @@ import org.jspecify.annotations.Nullable;
 /** Exercises the loaded loot tables, including existing Bastion rewards. */
 public class BookLootGameTests {
 	@GameTest
+	public void collectorEyesCanBeFoundInTempleAndBunker(GameTestHelper helper) {
+		LootParams params = new LootParams.Builder(helper.getLevel())
+			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(helper.absolutePos(BlockPos.ZERO)))
+			.create(LootContextParamSets.CHEST);
+		var temple = table(helper, "minecraft:chests/jungle_temple");
+		var bunker = table(helper, "wildways:chests/quarantine_grounds/secret");
+		var templeLoot = temple.getRandomItems(params, RandomSource.create(1));
+		helper.assertTrue(templeLoot.stream().anyMatch(stack -> stack.is(ModItems.EYE_OF_THE_TIGER)),
+			"The Jungle Pyramid should contain the Eye of the Tiger, got " + templeLoot);
+		helper.assertTrue(bunker.getRandomItems(params, RandomSource.create(1)).stream()
+			.anyMatch(stack -> stack.is(ModItems.LOST_EYE)), "The secret bunker should contain the Lost Eye");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void quarantineNestContainsOneOrTwoCommonBooks(GameTestHelper helper) {
 		LootParams params = new LootParams.Builder(helper.getLevel())
 			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(helper.absolutePos(BlockPos.ZERO)))

@@ -1,0 +1,15 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "minecraft:rabbit_stew",
+          "components": {
+            "wildways:level_two_crop": {}
+          }
+        }
+      }
+    }
+  }
+}

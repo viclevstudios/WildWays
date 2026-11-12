@@ -1,0 +1,16 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:brewed_potion",
+      "conditions": {
+        "potion": {
+          "potions": [
+            "wildways:fatal_slowness",
+            "wildways:fatal_harming",
+            "wildways:fatal_poison"
+          ]
+        }
+      }
+    }
+  }
+}

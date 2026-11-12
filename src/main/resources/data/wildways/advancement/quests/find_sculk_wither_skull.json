@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:sculk_covered_wither_skull"
+          }
+        ]
+      }
+    }
+  }
+}

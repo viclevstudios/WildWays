@@ -1,0 +1,19 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:villager_trade",
+      "conditions": {
+        "villager": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "minecraft:wandering_trader"
+          }
+        },
+        "item": {
+          "items": "#wildways:structure_maps"
+        }
+      }
+    }
+  }
+}

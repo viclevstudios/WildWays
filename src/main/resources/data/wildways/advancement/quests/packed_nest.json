@@ -1,0 +1,23 @@
+{
+  "criteria": {
+    "packed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:endermite_box",
+            "predicates": {
+              "minecraft:container": {
+                "items": {
+                  "size": {
+                    "min": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

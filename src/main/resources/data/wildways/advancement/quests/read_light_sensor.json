@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:any_of",
+          "terms": [
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:equipment": {
+                  "mainhand": {
+                    "items": "wildways:light_sensor"
+                  }
+                }
+              }
+            },
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "minecraft:equipment": {
+                  "offhand": {
+                    "items": "wildways:light_sensor"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

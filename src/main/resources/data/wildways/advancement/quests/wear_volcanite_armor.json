@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:equipment": {
+              "head": {
+                "items": "wildways:volcanite_helmet"
+              },
+              "chest": {
+                "items": "wildways:volcanite_chestplate"
+              },
+              "legs": {
+                "items": "wildways:volcanite_leggings"
+              },
+              "feet": {
+                "items": "wildways:volcanite_boots"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

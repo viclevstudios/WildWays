@@ -1,0 +1,28 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": {
+          "type": "minecraft:match_tool",
+          "predicate": {
+            "items": [
+              "minecraft:wheat_seeds",
+              "minecraft:beetroot_seeds",
+              "minecraft:carrot",
+              "minecraft:potato",
+              "minecraft:melon_seeds",
+              "minecraft:pumpkin_seeds",
+              "minecraft:torchflower_seeds",
+              "minecraft:pitcher_pod",
+              "minecraft:sweet_berries",
+              "minecraft:cocoa_beans",
+              "minecraft:nether_wart",
+              "wildways:cycad"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

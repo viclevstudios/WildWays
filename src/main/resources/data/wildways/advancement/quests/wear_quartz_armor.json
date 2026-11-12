@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:equipment": {
+              "head": {
+                "items": "wildways:quartz_helmet"
+              },
+              "chest": {
+                "items": "wildways:quartz_chestplate"
+              },
+              "legs": {
+                "items": "wildways:quartz_leggings"
+              },
+              "feet": {
+                "items": "wildways:quartz_boots"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
