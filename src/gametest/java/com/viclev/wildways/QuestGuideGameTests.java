@@ -41,6 +41,26 @@ public class QuestGuideGameTests {
 	private static final ResourceKey<Recipe<?>> NEST_RECIPE = ResourceKey.create(Registries.RECIPE, Wildways.id("endermite_box"));
 
 	@GameTest
+	public void questRewardsArePerCompletionEvenForSharedNodes(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var quest = helper.getLevel().getServer().getAdvancements().get(Wildways.id("quests/endermite_eye"));
+		var progress = player.getAdvancements().getOrStartProgress(quest);
+		int xpBefore = player.totalExperience;
+		var criterion = progress.getRemainingCriteria().iterator().next();
+
+		player.getAdvancements().award(quest, criterion);
+		helper.assertTrue(player.totalExperience == xpBefore + 25, "The eye shared by two groups should award 25 XP once");
+		player.getAdvancements().revoke(quest, criterion);
+		player.getAdvancements().award(quest, criterion);
+		helper.assertTrue(player.totalExperience == xpBefore + 25, "Re-completing an already rewarded quest must not award more XP");
+
+		var overrides = new QuestRewards.Settings(40, java.util.Map.of("endermite_eye", 0, "nest", 75));
+		helper.assertTrue(overrides.xpFor("endermite_eye") == 0 && overrides.xpFor("nest") == 75 && overrides.xpFor("other") == 40,
+			"Configured XP amounts should support overrides, zero and a default");
+		helper.succeed();
+	}
+
+	@GameTest
 	public void witherGuideRequiresAllSkullQuestsAndTheMixedRitual(GameTestHelper helper) {
 		var player = helper.makeMockServerPlayerInLevel();
 		var centerSkull = new BlockPos(1, 3, 1);

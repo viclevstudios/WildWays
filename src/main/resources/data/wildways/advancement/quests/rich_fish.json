@@ -1,15 +1,13 @@
 {
   "criteria": {
-    "rich_fish": {
-      "trigger": "minecraft:inventory_changed",
+    "ate": {
+      "trigger": "minecraft:consume_item",
       "conditions": {
-        "items": [
-          {
-            "components": {
-              "wildways:rich_fish": {}
-            }
+        "item": {
+          "components": {
+            "wildways:rich_fish": {}
           }
-        ]
+        }
       }
     }
   }

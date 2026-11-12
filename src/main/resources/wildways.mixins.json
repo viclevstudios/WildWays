@@ -26,6 +26,7 @@
 		"StructureTemplatePaletteAccessor",
 		"StructureWitherSkullsMixin",
 		"WitherSummoningMixin",
+		"QuestAdvancementRewardMixin",
 		"AbstractArrowAccessor",
 		"PotionItemStackSizeMixin",
 		"SplashPotionItemStackSizeMixin",

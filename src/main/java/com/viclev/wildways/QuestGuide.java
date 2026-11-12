@@ -115,7 +115,23 @@ public final class QuestGuide {
 		))
 	);
 
+	private static final Map<Identifier, Quest> QUESTS_BY_ADVANCEMENT = indexQuests();
+
 	private QuestGuide() {
+	}
+
+	private static Map<Identifier, Quest> indexQuests() {
+		Map<Identifier, Quest> quests = new HashMap<>();
+		for (Group group : GROUPS) {
+			for (Quest quest : group.quests()) {
+				quests.putIfAbsent(quest.advancement(), quest);
+			}
+		}
+		return Map.copyOf(quests);
+	}
+
+	static Quest questForAdvancement(Identifier id) {
+		return QUESTS_BY_ADVANCEMENT.get(id);
 	}
 
 	private static List<Quest> foodQuests() {
@@ -134,7 +150,10 @@ public final class QuestGuide {
 			quest("eat_gold_ripened_stew", Items.RABBIT_STEW, "gold_ripen"),
 			quest("craft_fishing_rod", Items.FISHING_ROD, null),
 			quest("bait", ModItems.BEETROOT_DOUGH, "craft_fishing_rod"),
-			quest("rich_fish", Items.COOKED_SALMON, "bait")
+			quest("rich_fish", Items.COOKED_SALMON, "bait"),
+			quest("craft_candied_bait", ModItems.CANDIED_BAIT, "craft_fishing_rod"),
+			quest("craft_amethyst_blinker", ModItems.AMETHYST_BLINKER, "craft_fishing_rod"),
+			quest("load_fishing_bait", Items.FISHING_ROD, "craft_fishing_rod")
 		));
 		if (AnimalWeightsQuests.isAvailable()) {
 			quests.addAll(List.of(

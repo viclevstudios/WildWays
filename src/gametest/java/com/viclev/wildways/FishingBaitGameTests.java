@@ -3,11 +3,14 @@ package com.viclev.wildways;
 import java.util.List;
 import java.util.Map;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -19,6 +22,32 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class FishingBaitGameTests {
+	@GameTest
+	public void fishingGuideTracksCraftingAndEating(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var richFish = new ItemStack(Items.COOKED_SALMON);
+		FishingBait.enrichFish(richFish);
+		var dough = Wildways.id("quests/bait");
+		var eatFish = Wildways.id("quests/rich_fish");
+		CriteriaTriggers.INVENTORY_CHANGED.trigger(player, player.getInventory(), new ItemStack(ModItems.BEETROOT_DOUGH));
+		CriteriaTriggers.INVENTORY_CHANGED.trigger(player, player.getInventory(), richFish);
+		CriteriaTriggers.CONSUME_ITEM.trigger(player, new ItemStack(Items.COOKED_SALMON));
+		var progress = QuestBookItem.readProgress(player);
+		helper.assertFalse(progress.get(dough).done() || progress.get(eatFish).done(),
+			"Holding the bait and fish or eating plain salmon must not count");
+
+		CriteriaTriggers.RECIPE_CRAFTED.trigger(player, ResourceKey.create(Registries.RECIPE, Identifier.withDefaultNamespace("fishing_rod")), List.of());
+		for (String recipe : List.of("beetroot_dough", "candied_bait", "amethyst_blinker", "load_amethyst_blinker")) {
+			CriteriaTriggers.RECIPE_CRAFTED.trigger(player, ResourceKey.create(Registries.RECIPE, Wildways.id(recipe)), List.of());
+		}
+		CriteriaTriggers.CONSUME_ITEM.trigger(player, richFish);
+		progress = QuestBookItem.readProgress(player);
+		for (String quest : List.of("craft_fishing_rod", "bait", "rich_fish", "craft_candied_bait", "craft_amethyst_blinker", "load_fishing_bait")) {
+			helper.assertTrue(progress.get(Wildways.id("quests/" + quest)).done(), "Expected quest credit for " + quest);
+		}
+		helper.succeed();
+	}
+
 	@GameTest
 	public void baitRecipesPreserveTheOriginalRod(GameTestHelper helper) {
 		checkRecipe(helper, Items.WHEAT, Items.BEETROOT, ModItems.BEETROOT_DOUGH, FishingBait.Type.BEETROOT_DOUGH);

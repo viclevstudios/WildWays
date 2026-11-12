@@ -205,7 +205,7 @@ public final class XpProgression {
 		}
 	}
 
-	private static boolean claim(ServerPlayer player, String key) {
+	static boolean claim(ServerPlayer player, String key) {
 		ServerLevel overworld = player.level().getServer().overworld();
 		return overworld.getDataStorage().computeIfAbsent(XpProgressionData.TYPE).claim(player.getUUID(), key);
 	}

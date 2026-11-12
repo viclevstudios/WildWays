@@ -211,8 +211,18 @@ public class EnchantingGameTests {
 		helper.assertTrue(menu.getSlot(5).hasItem() && menu.experienceCost() == 3, "Efficiency V should cost three levels with a catalyst");
 		menu.quickMoveStack(player, 5);
 		progress = QuestBookItem.readProgress(player);
-		helper.assertTrue(progress.get(levelFive).done() && progress.get(catalyst).done() && player.experienceLevel == 16,
+		helper.assertTrue(progress.get(levelFive).done() && progress.get(catalyst).done(),
 			"A new level V enchantment and its discount should count on extraction");
+		Player expected = this.player(helper, 20);
+		expected.giveExperienceLevels(-1);
+		expected.giveExperiencePoints(25);
+		expected.giveExperiencePoints(15);
+		expected.giveExperienceLevels(-3);
+		expected.giveExperiencePoints(25);
+		expected.giveExperiencePoints(25);
+		helper.assertTrue(player.experienceLevel == expected.experienceLevel
+			&& Math.abs(player.experienceProgress - expected.experienceProgress) < 0.00001F,
+			"Both enchantments should charge their levels before adding quest XP");
 		helper.assertTrue(!progress.get(Wildways.id("quests/craft_rune")).done()
 			&& !progress.get(Wildways.id("quests/craft_enchanting_catalyst")).done(),
 			"Using a rune or catalyst is separate from crafting it");

@@ -33,6 +33,7 @@ final class QuestBookItem extends Item {
 	static void initialize() {
 		EquipmentQuests.initialize();
 		AnimalWeightsQuests.initialize();
+		QuestRewards.initialize();
 		PayloadTypeRegistry.clientboundPlay().register(QuestGuide.Open.TYPE, QuestGuide.Open.CODEC);
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> giveStarterBook(handler.getPlayer()));
 		ServerTickEvents.END_LEVEL_TICK.register(level -> {

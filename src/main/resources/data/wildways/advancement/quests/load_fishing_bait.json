@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipes": [
+          "wildways:load_beetroot_dough",
+          "wildways:load_candied_bait",
+          "wildways:load_amethyst_blinker"
+        ]
+      }
+    }
+  }
+}

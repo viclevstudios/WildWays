@@ -1,13 +1,9 @@
 {
   "criteria": {
-    "dough": {
-      "trigger": "minecraft:inventory_changed",
+    "crafted": {
+      "trigger": "minecraft:recipe_crafted",
       "conditions": {
-        "items": [
-          {
-            "items": "wildways:beetroot_dough"
-          }
-        ]
+        "recipes": "wildways:beetroot_dough"
       }
     }
   }
