@@ -83,8 +83,20 @@ public final class ProgressionItems {
 	}
 
 	public static boolean hasAmethystHeritage(ItemStack stack) {
+		return hasHeritage(stack, "wildways_amethyst_heritage");
+	}
+
+	public static boolean hasQuartzHeritage(ItemStack stack) {
+		return hasHeritage(stack, "wildways_quartz_heritage");
+	}
+
+	public static boolean hasGoldHeritage(ItemStack stack) {
+		return hasHeritage(stack, "wildways_gold_heritage");
+	}
+
+	private static boolean hasHeritage(ItemStack stack, String key) {
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-		return data != null && data.copyTag().getBoolean("wildways_amethyst_heritage").orElse(false);
+		return data != null && data.copyTag().getBoolean(key).orElse(false);
 	}
 
 	public static boolean isAmethystArmor(ItemStack stack) {

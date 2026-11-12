@@ -3,21 +3,81 @@ package com.viclev.wildways;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.inventory.SmithingMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.List;
 import java.util.Map;
 
 public class EquipmentQuestGameTests {
+	@GameTest
+	public void diamondCraftingAndRefinementGiveDifferentBonuses(GameTestHelper helper) {
+		var level = helper.getLevel();
+		ItemStack gem = new ItemStack(Items.DIAMOND);
+		CraftingInput input = CraftingInput.of(3, 3,
+			List.of(gem, ItemStack.EMPTY, gem, gem, gem, gem, gem, gem, gem));
+		var recipe = level.recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, level).orElseThrow();
+		ItemStack crafted = recipe.value().assemble(input);
+		helper.assertTrue(ItemStack.isSameItemSameComponents(crafted, new ItemStack(Items.DIAMOND_CHESTPLATE)),
+			"The original crafting pattern must yield a standard diamond chestplate");
+
+		ItemStack quartz = refineDiamond(helper, ProgressionItems.QUARTZ_CHESTPLATE);
+		ItemStack amethyst = refineDiamond(helper, ProgressionItems.AMETHYST_CHESTPLATE);
+		ItemStack gold = refineDiamond(helper, Items.GOLDEN_CHESTPLATE);
+		helper.assertTrue(quartz.getMaxDamage() == Math.round(crafted.getMaxDamage() * 1.25F),
+			"Quartz refinement must add durability");
+		assertModifierBonus(helper, amethyst, crafted, EquipmentSlot.CHEST, Attributes.MOVEMENT_SPEED, 0.0025);
+		assertModifierBonus(helper, gold, crafted, EquipmentSlot.CHEST, Attributes.ARMOR_TOUGHNESS, 1.0);
+		assertModifierBonus(helper, refineDiamond(helper, Items.GOLDEN_SWORD), new ItemStack(Items.DIAMOND_SWORD),
+			EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE, 0.5);
+
+		SmithingRecipeInput netheriteInput = new SmithingRecipeInput(new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+			quartz, new ItemStack(Items.NETHERITE_INGOT));
+		ItemStack netherite = level.recipeAccess().getRecipeFor(RecipeType.SMITHING, netheriteInput, level)
+			.orElseThrow().value().assemble(netheriteInput);
+		helper.assertTrue(netherite.is(Items.NETHERITE_CHESTPLATE)
+				&& netherite.getMaxDamage() == Math.round(new ItemStack(Items.NETHERITE_CHESTPLATE).getMaxDamage() * 1.25F),
+			"Netherite must apply the Quartz bonus to Netherite durability");
+		helper.succeed();
+	}
+
+	private static ItemStack refineDiamond(GameTestHelper helper, Item base) {
+		var level = helper.getLevel();
+		SmithingRecipeInput input = new SmithingRecipeInput(new ItemStack(ProgressionItems.REFINEMENT_DIAMOND),
+			new ItemStack(base), ItemStack.EMPTY);
+		return level.recipeAccess().getRecipeFor(RecipeType.SMITHING, input, level).orElseThrow().value().assemble(input);
+	}
+
+	private static void assertModifierBonus(GameTestHelper helper, ItemStack refined, ItemStack plain,
+			EquipmentSlot slot, Holder<Attribute> attribute, double expected) {
+		helper.assertTrue(refined.is(plain.getItem())
+				&& Math.abs(modifier(refined, slot, attribute) - modifier(plain, slot, attribute) - expected) < 0.00001,
+			"Refinement must add the expected bonus when equipped");
+	}
+
+	private static double modifier(ItemStack stack, EquipmentSlot slot, Holder<Attribute> attribute) {
+		double[] amount = {0};
+		stack.forEachModifier(slot, (type, modifier) -> {
+			if (type.equals(attribute)) amount[0] += modifier.amount();
+		});
+		return amount[0];
+	}
+
 	@GameTest
 	public void copperBreakCountsEvenWhenTheToolBreaks(GameTestHelper helper) {
 		ServerPlayer player = helper.makeMockServerPlayerInLevel();

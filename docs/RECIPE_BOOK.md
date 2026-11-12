@@ -11,6 +11,7 @@ Most crafting and cooking recipes use hidden advancements under `data/wildways/a
 | Both Volcanite Rune variants | Refined Volcanite |
 | Enchanting Catalyst | Sculk Catalyst |
 | Quartz / Amethyst / Gold / Diamond / Volcanite Refinement | Quartz / Amethyst Shard / Gold Ingot / Diamond / refined Volcanite respectively |
+| Diamond armor, weapons and tools (crafting table) | Diamond |
 | Eye of Enchanting | Amethyst Shard |
 | Eye of Darkness | Echo Shard |
 | Eye of Storm | Breeze Rod **or** Wind Charge |

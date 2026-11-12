@@ -48,6 +48,9 @@ public final class ProgressionMaterials {
 	public static final float AMETHYST_ATTACK_SPEED_BONUS = 0.2F;
 	public static final double AMETHYST_SPEED_PER_PIECE = 0.0025;
 	public static final double AMETHYST_CLIMB_SPEED_MULTIPLIER = 1.25;
+	public static final float QUARTZ_HERITAGE_DURABILITY_MULTIPLIER = 1.25F;
+	public static final double GOLD_HERITAGE_ARMOR_TOUGHNESS = 1.0;
+	public static final double GOLD_HERITAGE_ATTACK_DAMAGE = 0.5;
 	public static final double VOLCANITE_RANGE_PER_PIECE = 0.25;
 
 	public static final TagKey<Item> REPAIRS_QUARTZ = itemTag("repairs_quartz_equipment");

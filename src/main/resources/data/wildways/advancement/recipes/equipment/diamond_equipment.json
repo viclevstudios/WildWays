@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:diamond"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "wildways:diamond_axe",
+      "wildways:diamond_boots",
+      "wildways:diamond_chestplate",
+      "wildways:diamond_helmet",
+      "wildways:diamond_hoe",
+      "wildways:diamond_leggings",
+      "wildways:diamond_pickaxe",
+      "wildways:diamond_shovel",
+      "wildways:diamond_spear",
+      "wildways:diamond_sword"
+    ]
+  }
+}
