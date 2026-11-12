@@ -20,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -40,11 +41,49 @@ public class BookLootGameTests {
 			.create(LootContextParamSets.CHEST);
 		var temple = table(helper, "minecraft:chests/jungle_temple");
 		var bunker = table(helper, "wildways:chests/quarantine_grounds/secret");
-		var templeLoot = temple.getRandomItems(params, RandomSource.create(1));
-		helper.assertTrue(templeLoot.stream().anyMatch(stack -> stack.is(ModItems.EYE_OF_THE_TIGER)),
-			"The Jungle Pyramid should contain the Eye of the Tiger, got " + templeLoot);
+		RandomSource random = RandomSource.create(42);
+		int chestsWithEye = 0;
+		for (int sample = 0; sample < 256; sample++) {
+			int eyes = temple.getRandomItems(params, random).stream()
+				.filter(stack -> stack.is(ModItems.EYE_OF_THE_TIGER)).mapToInt(ItemStack::getCount).sum();
+			helper.assertTrue(eyes <= 1, "Each chest can contain at most one Eye of the Tiger");
+			chestsWithEye += eyes;
+		}
+		helper.assertTrue(chestsWithEye >= 102 && chestsWithEye <= 154,
+			"The Eye of the Tiger should appear in about half of Jungle Pyramid chests, got " + chestsWithEye);
 		helper.assertTrue(bunker.getRandomItems(params, RandomSource.create(1)).stream()
 			.anyMatch(stack -> stack.is(ModItems.LOST_EYE)), "The secret bunker should contain the Lost Eye");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void jungleTempleTrapsLoadOneSpecialArrowType(GameTestHelper helper) {
+		LootParams params = new LootParams.Builder(helper.getLevel())
+			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(helper.absolutePos(BlockPos.ZERO)))
+			.create(LootContextParamSets.CHEST);
+		LootTable trap = table(helper, "minecraft:chests/jungle_temple_dispenser");
+		Set<Item> expected = Set.of(Items.TIPPED_ARROW, ModItems.TURTLE_ARROW, ModItems.EXPLOSIVE_ARROW);
+		Set<Item> seen = new HashSet<>();
+		RandomSource random = RandomSource.create(42);
+		boolean sawExtraArrows = false;
+		for (int sample = 0; sample < 128; sample++) {
+			var loot = trap.getRandomItems(params, random);
+			int count = loot.stream().mapToInt(ItemStack::getCount).sum();
+			helper.assertTrue(count >= 2 && count <= 14, "A trap must keep the vanilla ammunition range");
+			sawExtraArrows |= count > 7;
+			Item arrow = loot.getFirst().getItem();
+			helper.assertTrue(expected.contains(arrow) && loot.stream().allMatch(stack -> stack.is(arrow)),
+				"A trap must contain exactly one of the special arrow types");
+			for (ItemStack stack : loot) {
+				if (stack.is(Items.TIPPED_ARROW)) {
+					helper.assertTrue(stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
+						.potion().filter(Potions.POISON::equals).isPresent(), "Tipped arrows in the trap must apply Poison");
+				}
+			}
+			seen.add(arrow);
+		}
+		helper.assertTrue(seen.equals(expected), "All three arrow types must be reachable");
+		helper.assertTrue(sawExtraArrows, "A trap must be able to generate a second roll of arrows");
 		helper.succeed();
 	}
 

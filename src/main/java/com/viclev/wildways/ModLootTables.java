@@ -29,8 +29,7 @@ public final class ModLootTables {
 		LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
 			// The vanilla trade rebalance pack supplies this table as a datapack.
 			if (key.equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
-				tableBuilder.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-					.add(LootItem.lootTableItem(ModItems.EYE_OF_THE_TIGER)));
+				tableBuilder.withPool(chancePool(ModItems.EYE_OF_THE_TIGER, 1, 1));
 			}
 			if (!source.isBuiltin()) {
 				return;
