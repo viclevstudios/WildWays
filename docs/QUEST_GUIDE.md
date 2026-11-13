@@ -16,7 +16,7 @@ For a new pack on Minecraft 26.3, create a folder under `resourcepacks/` and put
 
 ## Titles and descriptions
 
-In your resource pack, add entries to `assets/wildways/lang/de_de.json` for German or `assets/wildways/lang/en_us.json` for English. You can include only the keys you want to replace. The full list of keys is in the corresponding WildWays language files under `src/main/resources/assets/wildways/lang/`.
+In your resource pack, add entries to `assets/wildways/lang/en_us.json` to customize the English text. You can include only the keys you want to replace. The full list of keys is in `src/main/resources/assets/wildways/lang/en_us.json`. To add a translation, use a separate file for that locale, such as `assets/wildways/lang/de_de.json` for German.
 
 ```json
 {
