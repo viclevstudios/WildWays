@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:adventure/root",
+  "display": {
+    "icon": {
+      "id": "wildways:endermite_box"
+    },
+    "title": {
+      "translate": "advancements.wildways.adventure.shulkerbox_lite.title"
+    },
+    "description": {
+      "translate": "advancements.wildways.adventure.shulkerbox_lite.description"
+    }
+  },
+  "criteria": {
+    "packed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "wildways:endermite_box",
+            "predicates": {
+              "minecraft:container": {
+                "items": {
+                  "size": {
+                    "min": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

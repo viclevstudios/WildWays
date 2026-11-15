@@ -96,9 +96,15 @@ public abstract class FishingMinigameMixin extends Projectile implements Fishing
 	@WrapOperation(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
 	private ObjectArrayList<ItemStack> wildways$rollBaitLoot(LootTable table, LootParams params,
 		Operation<ObjectArrayList<ItemStack>> original) {
+		if (this.wildways$biteBait == null) {
+			return original.call(table, params);
+		}
 		FishingHook hook = (FishingHook) (Object) this;
-		return this.wildways$biteBait == null ? original.call(table, params)
-			: FishingBait.catchLoot(this.wildways$biteBait, table, params, hook.isOpenWaterFishing(), this.random);
+		ObjectArrayList<ItemStack> loot = FishingBait.catchLoot(this.wildways$biteBait, table, params, hook.isOpenWaterFishing(), this.random);
+		if (!loot.isEmpty() && hook.getPlayerOwner() instanceof ServerPlayer player) {
+			FishingBait.awardVillageCatch(player, hook.blockPosition());
+		}
+		return loot;
 	}
 
 	@Override

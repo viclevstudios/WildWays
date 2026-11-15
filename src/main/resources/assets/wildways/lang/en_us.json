@@ -463,5 +463,17 @@
   "wildways.guide.quest.summon_wither": "Summon the Wither",
   "wildways.guide.quest.summon_wither.description": "Summon the Wither using either three regular Wither Skeleton Skulls or one skull of each type.",
   "wildways.guide.quest.defeat_wither": "Defeat the Wither",
-  "wildways.guide.quest.defeat_wither.description": "Defeat a Wither. Be aware of its stronger capabilities."
+  "wildways.guide.quest.defeat_wither.description": "Defeat a Wither. Be aware of its stronger capabilities.",
+  "advancements.wildways.adventure.shulkerbox_lite.title": "Shulkerbox lite",
+  "advancements.wildways.adventure.shulkerbox_lite.description": "Carry an Endermite Nest with something inside.",
+  "advancements.wildways.adventure.solar_powered.title": "Solar Powered",
+  "advancements.wildways.adventure.solar_powered.description": "Get a redstone signal from a Light Sensor with a Comparator.",
+  "advancements.wildways.story.upgrades_people_upgrades.title": "Upgrades people, upgrades!",
+  "advancements.wildways.story.upgrades_people_upgrades.description": "Refine a piece of iron armor with Gold, Amethyst, or Quartz.",
+  "advancements.wildways.nether.supreme_alchemist.title": "Supreme Alchemist",
+  "advancements.wildways.nether.supreme_alchemist.description": "Drink a Potion of Supreme Night Vision to see mobs through walls.",
+  "advancements.wildways.adventure.revenge.title": "Revenge",
+  "advancements.wildways.adventure.revenge.description": "Hit a Creeper with an Explosive Arrow.",
+  "advancements.wildways.husbandry.this_is_private_property.title": "This is Private Property!",
+  "advancements.wildways.husbandry.this_is_private_property.description": "Reel in a catch with bait in a village."
 }

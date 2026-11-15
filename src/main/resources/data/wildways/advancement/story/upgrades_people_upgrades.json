@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:story/obtain_armor",
+  "display": {
+    "icon": {
+      "id": "wildways:amethyst_chestplate"
+    },
+    "title": {
+      "translate": "advancements.wildways.story.upgrades_people_upgrades.title"
+    },
+    "description": {
+      "translate": "advancements.wildways.story.upgrades_people_upgrades.description"
+    }
+  },
+  "criteria": {
+    "refine_armor": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipes": [
+          "minecraft:golden_boots",
+          "minecraft:golden_chestplate",
+          "minecraft:golden_helmet",
+          "minecraft:golden_leggings",
+          "wildways:amethyst_boots_upgrade",
+          "wildways:amethyst_chestplate_upgrade",
+          "wildways:amethyst_helmet_upgrade",
+          "wildways:amethyst_leggings_upgrade",
+          "wildways:quartz_boots_upgrade",
+          "wildways:quartz_chestplate_upgrade",
+          "wildways:quartz_helmet_upgrade",
+          "wildways:quartz_leggings_upgrade"
+        ]
+      }
+    }
+  }
+}

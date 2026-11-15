@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:husbandry/fishy_business",
+  "display": {
+    "icon": {
+      "id": "minecraft:fishing_rod",
+      "components": {
+        "wildways:fishing_bait": {
+          "type": "amethyst_blinker",
+          "charges": 16
+        }
+      }
+    },
+    "title": {
+      "translate": "advancements.wildways.husbandry.this_is_private_property.title"
+    },
+    "description": {
+      "translate": "advancements.wildways.husbandry.this_is_private_property.description"
+    }
+  },
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

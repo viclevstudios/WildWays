@@ -1,0 +1,41 @@
+{
+  "parent": "minecraft:adventure/shoot_arrow",
+  "display": {
+    "icon": {
+      "id": "wildways:explosive_arrow"
+    },
+    "title": {
+      "translate": "advancements.wildways.adventure.revenge.title"
+    },
+    "description": {
+      "translate": "advancements.wildways.adventure.revenge.description"
+    }
+  },
+  "criteria": {
+    "hit_creeper": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "damage": {
+          "type": {
+            "direct_entity": {
+              "minecraft:entity_type": "wildways:explosive_arrow"
+            },
+            "tags": [
+              {
+                "expected": true,
+                "id": "#minecraft:is_projectile"
+              }
+            ]
+          }
+        },
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "minecraft:creeper"
+          }
+        }
+      }
+    }
+  }
+}

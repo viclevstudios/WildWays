@@ -1,0 +1,19 @@
+{
+  "parent": "minecraft:adventure/read_power_of_chiseled_bookshelf",
+  "display": {
+    "icon": {
+      "id": "wildways:light_sensor"
+    },
+    "title": {
+      "translate": "advancements.wildways.adventure.solar_powered.title"
+    },
+    "description": {
+      "translate": "advancements.wildways.adventure.solar_powered.description"
+    }
+  },
+  "criteria": {
+    "complete": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

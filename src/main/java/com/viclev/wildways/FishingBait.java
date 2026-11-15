@@ -3,13 +3,20 @@ package com.viclev.wildways;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.StructureTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -25,6 +32,7 @@ import org.jspecify.annotations.Nullable;
 
 public record FishingBait(Type type, int charges) {
 	public static final int MAX_CHARGES = 16;
+	private static final Identifier VILLAGE_FISHING = Wildways.id("husbandry/this_is_private_property");
 	private static final Codec<FishingBait> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 		Type.CODEC.fieldOf("type").forGetter(FishingBait::type),
 		Codec.intRange(1, MAX_CHARGES).fieldOf("charges").forGetter(FishingBait::charges)
@@ -70,6 +78,18 @@ public record FishingBait(Type type, int charges) {
 			loot.forEach(FishingBait::enrichFish);
 		}
 		return loot;
+	}
+
+	public static void awardVillageCatch(ServerPlayer player, BlockPos hookPos) {
+		ServerLevel level = player.level();
+		AdvancementHolder advancement = level.getServer().getAdvancements().get(VILLAGE_FISHING);
+		if (advancement == null || player.getAdvancements().getOrStartProgress(advancement).isDone()) {
+			return;
+		}
+		var villages = level.registryAccess().lookupOrThrow(Registries.STRUCTURE).get(StructureTags.VILLAGE);
+		if (villages.isPresent() && level.structureManager().getStructureAt(hookPos, villages.get()).isValid()) {
+			player.getAdvancements().award(advancement, "complete");
+		}
 	}
 
 	public static void enrichFish(ItemStack fish) {

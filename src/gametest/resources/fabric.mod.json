@@ -20,7 +20,8 @@
       "com.viclev.wildways.WitherSkullGameTests",
       "com.viclev.wildways.PlantGameTests",
       "com.viclev.wildways.QuestGuideGameTests",
-      "com.viclev.wildways.EquipmentQuestGameTests"
+      "com.viclev.wildways.EquipmentQuestGameTests",
+      "com.viclev.wildways.AdvancementGameTests"
     ]
   },
   "depends": {
