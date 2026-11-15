@@ -7,7 +7,7 @@ The [Notion enchanting plan](https://app.notion.com/p/3ddcef41da72800abdb1ed9f5a
 - Desert and Jungle Temple chests and Stronghold chests retain their vanilla enchanted-book slots, but select one enchantment from the general random-loot tag.
 - A Wandering Trader adds one randomly chosen general book to its offers. Ancient City generic books select from the 23-book list in `data/wildways/tags/enchantment/ancient_city_books.json`.
 - Trial Chamber reward tables retain their random books. Density and Breach have higher weights in rare rewards; Wind Burst has a lower chance there. Bastion chests and Piglin bartering remain sources of Soul Speed at slightly lower weights; Ancient Cities remain the source of Swift Sneak at a lower weight.
-- The Endermite Nest in Quarantine Grounds uses its existing structure loot-table reference to provide one or two level-one books from Unbreaking, Protection, Efficiency, Fortune, Silk Touch, Sharpness and Power. Each roll selects independently, so two identical books are possible.
+- The Endermite Nest in Quarantine Grounds provides exactly one level-one book chosen from Unbreaking, Protection, Efficiency, Fortune, Silk Touch, Sharpness and Power.
 
 ## Specific sources
 
@@ -42,6 +42,6 @@ All eleven conversion recipes live in `data/wildways/recipe/book_*.json` and are
 
 ## In-game checks
 
-Use a **new world or new chunks** for structure changes. Open chests in Zombie, Spider and Skeleton spawner dungeons and check for ordinary loot and separate 20% rolls for Protection and the spawner's matching book. An Ocean Monument's entry room has two supply chests, with Depth Strider frequently present. Find the Endermite Nest in Quarantine Grounds and check that it starts with one or two of the seven listed common books. Try a master Toolsmith, Mason, Weaponsmith, Fletcher, Fisherman and Armorer, then a Wandering Trader. Reopen their trade screens to check for duplicate offers. For drops, kill spear Zombies, Pillagers during an active raid and Parched. Check the Parched for Weakness arrows and an occasional Power book. Test a reflected Ghast fireball and a book dropped into a lightning strike.
+Use a **new world or new chunks** for structure changes. Open chests in Zombie, Spider and Skeleton spawner dungeons and check for ordinary loot and separate 20% rolls for Protection and the spawner's matching book. An Ocean Monument's entry room has two supply chests, with Depth Strider frequently present. Find the Endermite Nest in Quarantine Grounds and check that it starts with exactly one of the seven listed common books. Try a master Toolsmith, Mason, Weaponsmith, Fletcher, Fisherman and Armorer, then a Wandering Trader. Reopen their trade screens to check for duplicate offers. For drops, kill spear Zombies, Pillagers during an active raid and Parched. Check the Parched for Weakness arrows and an occasional Power book. Test a reflected Ghast fireball and a book dropped into a lightning strike.
 
 Run `.\gradlew.bat build runGameTest` with Java 25 for server-side checks. The automated tests cover actual recipe matching, the three custom chest tables, preservation of Volcanite Bastion loot, master-trade replacement, the wandering book offer and lightning conversion. Structure layout and rare drop rates still benefit from an in-game playtest.

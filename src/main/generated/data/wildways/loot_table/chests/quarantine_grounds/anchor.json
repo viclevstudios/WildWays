@@ -5,18 +5,55 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron_ingot",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
           "name": "minecraft:iron_nugget",
           "weight": 10
         },
         {
           "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
           "name": "minecraft:bread",
           "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:baked_potato",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:golden_carrot",
+          "weight": 4
         },
         {
           "type": "minecraft:item",
@@ -25,7 +62,55 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:ender_pearl",
+          "name": "minecraft:lantern",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bundle",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bucket",
+          "weight": 2
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 8,
+        "min": 4
+      }
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ender_pearl"
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:emerald"
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:iron_ingot",
           "weight": 2
         }
       ],

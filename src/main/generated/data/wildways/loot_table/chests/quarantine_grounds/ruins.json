@@ -5,34 +5,194 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:cobblestone",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:stone_bricks",
-          "weight": 8
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:iron_nugget",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 3,
+              "min": 1
+            }
+          },
+          "name": "minecraft:bread",
           "weight": 6
         },
         {
           "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:baked_potato",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:golden_carrot",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:honey_bottle",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:glass_bottle",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
           "name": "wildways:endermite_shell",
           "weight": 4
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron_ingot",
-          "weight": 2
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:cobweb",
+          "weight": 4
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 5,
-        "min": 3
+        "max": 10,
+        "min": 4
+      }
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "wildways:endermite_shell",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:iron_ingot",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ender_pearl",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:gold_ingot",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            }
+          },
+          "name": "minecraft:emerald",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "#minecraft:on_random_loot"
+          },
+          "name": "minecraft:iron_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "#minecraft:on_random_loot"
+          },
+          "name": "minecraft:iron_axe"
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": "#minecraft:on_random_loot"
+          },
+          "name": "minecraft:iron_pickaxe"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 4,
+        "min": 2
       }
     }
   ]

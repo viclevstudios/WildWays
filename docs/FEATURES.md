@@ -46,7 +46,7 @@ This page describes gameplay features currently present in WildWays. Planned wor
 ## Enchanting prototype
 
 - Enchanted books come from exploration, mobs, trading, fishing, archaeology and crafting. See [Book sources](BOOK_SOURCES.md). General random books remain in temples, Strongholds and Trial Chambers. Specific books come from themed locations and actions, including spawner-dependent dungeon chests and Ocean Monument supply chests.
-- Quarantine Grounds' Endermite Nest contains one or two common enchanted books.
+- Quarantine Grounds' Endermite Nest contains one common enchanted book and a guaranteed Lost Eye.
 
 - Enchanting Tables use a reusable enchanted recipe book, one lapis and a rune that selects the enchantment level. A higher rune can substitute for the matching one without raising the level, bookshelf requirement or XP price above the enchantment's maximum. Mending, Silk Touch, Channeling and Multishot require at least a Golden Rune and cost three levels.
 - One universal catalyst halves XP costs, rounded up, for every rune tier and lasts four uses. Books have no displayed levels and cannot be used in an anvil.
