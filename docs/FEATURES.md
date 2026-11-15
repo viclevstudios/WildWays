@@ -98,6 +98,11 @@ This page describes gameplay features currently present in WildWays. Planned wor
 - On the usual soul sand or soul soil T, place a regular Wither Skeleton Skull in the middle and one of each variant on the outside, in either order. Three regular Wither Skeleton Skulls also summon the Wither.
 - Both variants use the vanilla Wither Skeleton texture by default. Custom skull textures can be added under `assets/wildways/textures/entity/skull/` as `sculk_covered_wither_skull.png` and `gold_adorned_wither_skull.png`.
 
+## Wither combat
+
+- The Wither's spawn explosion can break Obsidian and Crying Obsidian when mob griefing is enabled. Wither-immune and unbreakable blocks such as Bedrock, Reinforced Deepslate and End Portal blocks are protected.
+- Above half health, the Wither occasionally dives at a grounded player's position. A low sound and blue flames mark the attack before it commits. Leave the marked area to avoid the impact, then approach while the Wither stays near the ground.
+
 ## Potions and effects
 
 - Normal, splash, and lingering potions stack to eight.

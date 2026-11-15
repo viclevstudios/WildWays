@@ -18,6 +18,7 @@
       "com.viclev.wildways.FishingBaitGameTests",
       "com.viclev.wildways.StructureMapGameTests",
       "com.viclev.wildways.WitherSkullGameTests",
+      "com.viclev.wildways.WitherCombatGameTests",
       "com.viclev.wildways.PlantGameTests",
       "com.viclev.wildways.QuestGuideGameTests",
       "com.viclev.wildways.EquipmentQuestGameTests",

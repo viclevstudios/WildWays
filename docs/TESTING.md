@@ -161,6 +161,11 @@ In Legends of the Lost Arts, craft a rune and use it with lapis and an enchanted
 - In Survival, break a replacement skull and confirm it drops the matching item. Place it on the floor and on the side of a block, then save and reload the world.
 - Use `/give @s wildways:sculk_covered_wither_skull` and `/give @s wildways:gold_adorned_wither_skull` to test the mixed ritual. On a soul sand or soul soil T, place a regular Wither Skeleton Skull in the middle and a variant on each side. Try both side orders, then summon with three regular skulls as a control.
 
+### Wither combat
+
+- With mob griefing enabled, summon a Wither beside Obsidian, Crying Obsidian, Bedrock and Reinforced Deepslate. Nearby obsidian should break when the spawn charge finishes. Check that the Bedrock and Reinforced Deepslate survive. Repeat with mob griefing disabled and verify the blast leaves the blocks intact.
+- In an open arena on Normal difficulty, keep a Wither above half health and let it gain height. When you hear the warning and see blue flames, step sideways. The Wither should land at the marked spot and stay within melee reach briefly. Try standing in the impact area on a separate dive to check damage, then bring the Wither below half health and check that it starts no further dives.
+
 ## Dedicated Server Check
 
 For common-code or progression changes, run a server check when feasible:
