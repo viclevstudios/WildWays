@@ -8,9 +8,10 @@ import java.nio.file.Files;
 import java.util.Map;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.gamerules.GameRules;
 public final class QuestRewards {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Settings DEFAULTS = new Settings(25, Map.of());
+	private static final int QUEST_LINK_COLOR = 0xFF55FF;
 	private static Settings settings = DEFAULTS;
 
 	private QuestRewards() {
@@ -42,7 +44,11 @@ public final class QuestRewards {
 		}
 		player.connection.send(new ClientboundSoundPacket(Holder.direct(SoundEvents.PLAYER_LEVELUP),
 			SoundSource.PLAYERS, player.getX(), player.getY(), player.getZ(), 0.65F, 1.0F, player.getRandom().nextLong()));
-		Component title = Component.translatable("chat.square_brackets", quest.title()).withStyle(ChatFormatting.GREEN);
+		Component title = Component.translatable("chat.square_brackets", quest.title()).withStyle(style -> style
+			.withColor(QUEST_LINK_COLOR)
+			.withUnderlined(true)
+			.withClickEvent(new ClickEvent.RunCommand("/" + QuestGuide.OPEN_QUEST_COMMAND + " " + quest.advancement()))
+			.withHoverEvent(new HoverEvent.ShowText(Component.translatable("wildways.guide.open_quest"))));
 		Component announcement = Component.translatable("wildways.guide.quest_completed", player.getDisplayName(), title);
 		if (player.level().getGameRules().get(GameRules.SHOW_ADVANCEMENT_MESSAGES)) {
 			player.level().getServer().getPlayerList().broadcastSystemMessage(announcement, false);

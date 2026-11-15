@@ -1,14 +1,20 @@
 package com.viclev.wildways;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import java.util.HashMap;
 import java.util.Map;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +29,8 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 final class QuestBookItem extends Item {
 	private static final Identifier STARTER_BOOK = Wildways.id("quests/starter_book");
 	private static final Identifier VISIT_QUARANTINE = Wildways.id("quests/quarantine_grounds");
+	private static final SimpleCommandExceptionType BOOK_REQUIRED = new SimpleCommandExceptionType(
+		Component.translatable("wildways.guide.book_required"));
 	private static final ResourceKey<Structure> QUARANTINE_GROUNDS = ResourceKey.create(Registries.STRUCTURE,
 		Wildways.id("quarantine_grounds"));
 
@@ -35,6 +43,11 @@ final class QuestBookItem extends Item {
 		AnimalWeightsQuests.initialize();
 		QuestRewards.initialize();
 		PayloadTypeRegistry.clientboundPlay().register(QuestGuide.Open.TYPE, QuestGuide.Open.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(QuestGuide.OpenQuest.TYPE, QuestGuide.OpenQuest.CODEC);
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
+			dispatcher.register(Commands.literal(QuestGuide.OPEN_QUEST_COMMAND)
+				.then(Commands.argument("quest", IdentifierArgument.id()).executes(context ->
+					openQuest(context.getSource().getPlayerOrException(), IdentifierArgument.getId(context, "quest"))))));
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> giveStarterBook(handler.getPlayer()));
 		ServerTickEvents.END_LEVEL_TICK.register(level -> {
 			if (level.getGameTime() % 20 == 0 && !level.players().isEmpty()) {
@@ -85,6 +98,20 @@ final class QuestBookItem extends Item {
 			return InteractionResult.SUCCESS_SERVER;
 		}
 		return InteractionResult.PASS;
+	}
+
+	private static int openQuest(ServerPlayer player, Identifier advancement) throws CommandSyntaxException {
+		if (QuestGuide.questForAdvancement(advancement) == null) {
+			return 0;
+		}
+		if (!player.getInventory().contains(stack -> stack.is(ModItems.QUEST_BOOK))) {
+			throw BOOK_REQUIRED.create();
+		}
+		if (!ServerPlayNetworking.canSend(player, QuestGuide.OpenQuest.TYPE)) {
+			return 0;
+		}
+		ServerPlayNetworking.send(player, new QuestGuide.OpenQuest(advancement, readProgress(player)));
+		return 1;
 	}
 
 	static Map<Identifier, QuestGuide.Progress> readProgress(ServerPlayer player) {

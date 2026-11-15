@@ -1,5 +1,6 @@
 package com.viclev.wildways;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.List;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
@@ -11,6 +12,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,6 +41,30 @@ import net.minecraft.world.phys.EntityHitResult;
 public class QuestGuideGameTests {
 	private static final ResourceKey<Recipe<?>> BOOK_RECIPE = ResourceKey.create(Registries.RECIPE, Wildways.id("quest_book"));
 	private static final ResourceKey<Recipe<?>> NEST_RECIPE = ResourceKey.create(Registries.RECIPE, Wildways.id("endermite_box"));
+
+	@GameTest
+	public void questChatLinksRequireACarriedBook(GameTestHelper helper) throws CommandSyntaxException {
+		var player = helper.makeMockServerPlayerInLevel();
+		player.getInventory().clearContent();
+		var dispatcher = helper.getLevel().getServer().getCommands().getDispatcher();
+		String command = QuestGuide.OPEN_QUEST_COMMAND + " wildways:quests/refine_iron";
+		var source = player.createCommandSourceStack();
+		try {
+			dispatcher.execute(command, source);
+			helper.fail("The chat link must reject a player without a quest book");
+		} catch (CommandSyntaxException error) {
+			helper.assertTrue(Component.translatable("wildways.guide.book_required").equals(error.getRawMessage()),
+				"The chat link should tell the player that a book is required");
+		}
+
+		// A mock player has no guide receiver. A carried book should pass the inventory check without throwing.
+		player.getInventory().add(new ItemStack(ModItems.QUEST_BOOK));
+		dispatcher.execute(command, source);
+		player.getInventory().clearContent();
+		player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(ModItems.QUEST_BOOK));
+		dispatcher.execute(command, source);
+		helper.succeed();
+	}
 
 	@GameTest
 	public void questRewardsArePerCompletionEvenForSharedNodes(GameTestHelper helper) {

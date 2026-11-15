@@ -17,13 +17,18 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.FormattedCharSequence;
 
 final class QuestGuideScreen extends Screen {
 	private static final Component TITLE = message("title");
@@ -36,9 +41,17 @@ final class QuestGuideScreen extends Screen {
 	private static final int FOOTER = 25;
 	private static final int NODE_RADIUS = 14;
 	private static final int ROOT_RADIUS = 21;
-	private static final int LABEL_WIDTH = 94;
-	private static final int GROUP_LABEL_WIDTH = 132;
-	private static final int CENTER_GROUP_LABEL_WIDTH = 180;
+	private static final int LABEL_WIDTH = 96;
+	private static final int GROUP_LABEL_WIDTH = 146;
+	private static final int CENTER_GROUP_LABEL_WIDTH = 174;
+	private static final int LABEL_LINE_HEIGHT = 10;
+	private static final int PREVIEW_MARGIN = 8;
+	private static final int PREVIEW_DESCRIPTION_WIDTH = 126;
+	private static final int PREVIEW_MAX_WIDTH = 176;
+	private static final int PREVIEW_HEADER_MIN_HEIGHT = 26;
+	private static final Identifier PREVIEW_BODY = Identifier.withDefaultNamespace("advancements/title_box");
+	private static final Identifier PREVIEW_HEADER = Identifier.withDefaultNamespace("advancements/box_unobtained");
+	private static final Identifier PREVIEW_HEADER_COMPLETE = Identifier.withDefaultNamespace("advancements/box_obtained");
 	private static final int RESET_WIDTH = 74;
 	private static final double DRAG_THRESHOLD = 3;
 	private static final double MIN_ZOOM = 0.25;
@@ -81,6 +94,22 @@ final class QuestGuideScreen extends Screen {
 			var client = context.client();
 			if (client.gui.screen() == null && client.gui.overlay() == null) {
 				client.gui.setScreen(new QuestGuideScreen(open.progress(), null, null, null));
+			}
+		});
+		ClientPlayNetworking.registerGlobalReceiver(QuestGuide.OpenQuest.TYPE, (open, context) -> {
+			var gui = context.client().gui;
+			if (gui.overlay() != null || (gui.screen() != null && !(gui.screen() instanceof ChatScreen))) {
+				return;
+			}
+			for (Group group : QuestGuide.GROUPS) {
+				for (Quest quest : group.quests()) {
+					if (quest.advancement().equals(open.advancement())) {
+						var overview = new QuestGuideScreen(open.progress(), null, null, null);
+						var chapter = new QuestGuideScreen(open.progress(), group, null, overview);
+						gui.setScreen(new QuestGuideScreen(open.progress(), group, quest, chapter));
+						return;
+					}
+				}
 			}
 		});
 	}
@@ -142,14 +171,10 @@ final class QuestGuideScreen extends Screen {
 			int completed = this.completedQuests(entry);
 			boolean done = completed == entry.quests().size();
 			this.links.add(new Link(List.of(QuestGuideLayout.ROOT, point), done));
-			var info = entry.title().copy();
 			var description = Component.translatableWithFallback("wildways.guide.group." + entry.id() + ".description", "");
-			if (!description.getString().isBlank()) {
-				info.append("\n").append(description);
-			}
-			info.append("\n").append(message("group_progress", completed, entry.quests().size()));
-			this.addNode(new NodeButton(point, QuestGuideIcons.icon("group." + entry.id(), entry.icon()), entry.title(), info,
-				done, () -> this.minecraft.gui.setScreen(new QuestGuideScreen(this.progress, entry, null, this))));
+			this.addNode(new NodeButton(point, QuestGuideIcons.icon("group." + entry.id(), entry.icon()), entry.title(),
+				description, new Progress(completed, entry.quests().size()),
+				() -> this.minecraft.gui.setScreen(new QuestGuideScreen(this.progress, entry, null, this))));
 		}
 	}
 
@@ -163,7 +188,7 @@ final class QuestGuideScreen extends Screen {
 			Progress state = this.progress(entry);
 			this.addNode(new NodeButton(Objects.requireNonNull(layout.positions().get(entry.id())),
 				QuestGuideIcons.icon("quest." + entry.id(), entry.icon()), entry.title(),
-				entry.title().copy().append("\n").append(status(state)), state.done(),
+				entry.description(), state,
 				() -> this.minecraft.gui.setScreen(new QuestGuideScreen(this.progress, this.group, entry, this))));
 		}
 	}
@@ -174,12 +199,12 @@ final class QuestGuideScreen extends Screen {
 
 	private void resetView() {
 		double availableWidth = this.width - 20;
-		double availableHeight = this.height - HEADER - FOOTER - 16;
+		double availableHeight = this.height - HEADER - FOOTER - 28;
 		int horizontalPadding = (this.group == null ? GROUP_LABEL_WIDTH : LABEL_WIDTH) + 16;
 		this.zoom = Math.max(MIN_ZOOM, Math.min(1, Math.min(availableWidth / (this.maxX - this.minX + horizontalPadding),
-			availableHeight / (this.maxY - this.minY + 57))));
+			availableHeight / (this.maxY - this.minY + 2 * NODE_RADIUS))));
 		this.panX = -(this.minX + this.maxX) * this.zoom / 2;
-		this.panY = -(this.minY + this.maxY + 11) * this.zoom / 2;
+		this.panY = -(this.minY + this.maxY) * this.zoom / 2 - 7;
 		this.updateView();
 	}
 
@@ -281,9 +306,12 @@ final class QuestGuideScreen extends Screen {
 
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-		Component heading = this.group == null ? TITLE : this.group.title();
-		graphics.centeredText(this.font, fit(heading, Math.max(24, this.width - 156)).copy().withStyle(ChatFormatting.BOLD),
-			this.width / 2, 14, TEXT);
+		Component heading = (this.group == null ? TITLE : this.group.title()).copy().withStyle(ChatFormatting.BOLD);
+		var headingLines = this.wrapText(heading, Math.max(24, this.width - 156), 2);
+		for (int row = 0; row < headingLines.size(); row++) {
+			graphics.centeredText(this.font, headingLines.get(row), this.width / 2,
+				(HEADER - headingLines.size() * LABEL_LINE_HEIGHT) / 2 + row * LABEL_LINE_HEIGHT, TEXT);
+		}
 		if (this.quest == null) {
 			this.drawCanvas(graphics, mouseX, mouseY, delta);
 		} else {
@@ -291,6 +319,9 @@ final class QuestGuideScreen extends Screen {
 		}
 		this.drawFooter(graphics);
 		super.extractRenderState(graphics, mouseX, mouseY, delta);
+		if (this.quest == null && !this.panning) {
+			this.drawHoveredPreview(graphics, mouseX, mouseY);
+		}
 	}
 
 	private void drawCanvas(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
@@ -319,7 +350,77 @@ final class QuestGuideScreen extends Screen {
 			node.extractRenderState(graphics, this.panning ? -1 : mouseX, mouseY, delta);
 		}
 		pose.popMatrix();
+		for (NodeButton node : this.nodes) {
+			node.drawLabel(graphics);
+		}
 		graphics.disableScissor();
+	}
+
+	private void drawHoveredPreview(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		for (NodeButton node : this.nodes) {
+			if (node.isMouseOver(mouseX, mouseY)) {
+				this.drawPreview(graphics, node);
+				return;
+			}
+		}
+		if (this.minecraft.getLastInputType().isKeyboard() && this.getFocused() instanceof NodeButton node && node.visible) {
+			this.drawPreview(graphics, node);
+		}
+	}
+
+	private void drawPreview(GuiGraphicsExtractor graphics, NodeButton node) {
+		int maxWidth = Math.min(PREVIEW_MAX_WIDTH, this.width - 2 * PREVIEW_MARGIN);
+		if (maxWidth < 72) {
+			return;
+		}
+		Component count = node.state.total() > 1
+			? Component.literal(node.state.completed() + "/" + node.state.total()) : Component.empty();
+		int countWidth = node.state.total() > 1 ? this.font.width(count) + 10 : 0;
+		int titleWidth = this.font.width(node.getMessage()) + 38 + countWidth;
+		int descriptionWidth = Math.min(PREVIEW_DESCRIPTION_WIDTH, this.font.width(node.description)) + 18;
+		int width = Math.min(maxWidth, Math.max(88, Math.max(titleWidth, descriptionWidth)));
+		var title = this.wrapText(node.getMessage(), Math.max(24, width - 38 - countWidth), 3);
+		int titleHeight = title.size() * LABEL_LINE_HEIGHT;
+		int headerHeight = PREVIEW_HEADER_MIN_HEIGHT + Math.max(0, titleHeight - LABEL_LINE_HEIGHT);
+		int descriptionLimit = (this.height - 2 * PREVIEW_MARGIN - headerHeight - 12) / LABEL_LINE_HEIGHT;
+		var description = node.description.getString().isBlank() || descriptionLimit < 1 ? List.<FormattedCharSequence>of()
+			: this.wrapText(node.description, width - 18, descriptionLimit);
+		// Leave room for the sprite's borders beyond the description text.
+		int bodyHeight = description.isEmpty() ? 0 : Math.max(20, 12 + description.size() * LABEL_LINE_HEIGHT);
+		int height = headerHeight + bodyHeight;
+		if (height > this.height - 2 * PREVIEW_MARGIN) {
+			return;
+		}
+		int right = node.getX() + node.getWidth() + 4;
+		int left = node.getX() - width - 4;
+		int x = right + width <= this.width - PREVIEW_MARGIN || left < PREVIEW_MARGIN && node.screenX < this.width / 2
+			? right : left;
+		x = Math.clamp(x, PREVIEW_MARGIN, this.width - width - PREVIEW_MARGIN);
+		int y = Math.clamp(node.screenY - headerHeight / 2, PREVIEW_MARGIN, this.height - height - PREVIEW_MARGIN);
+
+		graphics.nextStratum();
+		if (bodyHeight > 0) {
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PREVIEW_BODY, x, y + headerHeight - 7, width, bodyHeight + 7);
+		}
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, node.state.done() ? PREVIEW_HEADER_COMPLETE : PREVIEW_HEADER,
+			x, y, width, headerHeight);
+		if (!node.state.done() && node.state.completed() > 0 && node.state.total() > 0) {
+			int filledWidth = width * node.state.completed() / node.state.total();
+			graphics.enableScissor(x, y, x + filledWidth, y + headerHeight);
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PREVIEW_HEADER_COMPLETE, x, y, width, headerHeight);
+			graphics.disableScissor();
+		}
+		node.icon.draw(graphics, x + 8, y + (headerHeight - 16) / 2);
+		int titleY = y + (headerHeight - titleHeight) / 2;
+		for (int row = 0; row < title.size(); row++) {
+			graphics.text(this.font, title.get(row), x + 30, titleY + row * LABEL_LINE_HEIGHT, TEXT);
+		}
+		if (countWidth > 0) {
+			graphics.text(this.font, count, x + width - countWidth + 2, y + (headerHeight - LABEL_LINE_HEIGHT) / 2, TEXT);
+		}
+		for (int row = 0; row < description.size(); row++) {
+			graphics.text(this.font, description.get(row), x + 9, y + headerHeight + 5 + row * LABEL_LINE_HEIGHT, SECONDARY);
+		}
 	}
 
 	private void drawFooter(GuiGraphicsExtractor graphics) {
@@ -376,12 +477,14 @@ final class QuestGuideScreen extends Screen {
 		graphics.text(this.font, status(state), left + 16, bodyBottom + 12, state.done() ? COMPLETE : TEXT);
 	}
 
-	private Component fit(Component text, int maxWidth) {
-		if (this.font.width(text) <= maxWidth) {
-			return text;
+	private List<FormattedCharSequence> wrapText(Component text, int maxWidth, int maxLines) {
+		var lines = this.font.splitIgnoringLanguage(text, maxWidth);
+		if (lines.size() > maxLines) {
+			lines = new ArrayList<>(lines.subList(0, maxLines));
+			var lastLine = this.font.substrByWidth(lines.getLast(), Math.max(0, maxWidth - this.font.width("…")));
+			lines.set(maxLines - 1, FormattedText.composite(lastLine, FormattedText.of("…")));
 		}
-		String ellipsis = "…";
-		return Component.literal(this.font.plainSubstrByWidth(text.getString(), Math.max(0, maxWidth - this.font.width(ellipsis))).stripTrailing() + ellipsis);
+		return Language.getInstance().getVisualOrder(lines);
 	}
 
 	private static void drawNode(GuiGraphicsExtractor graphics, Point point, int radius, Icon icon, boolean done, boolean highlighted) {
@@ -400,13 +503,16 @@ final class QuestGuideScreen extends Screen {
 
 	private static void octagon(GuiGraphicsExtractor graphics, Point point, int radius, int color) {
 		int corner = radius / 3;
-		for (int row = -corner; row < 0; row++) {
-			graphics.fill(point.x() - radius - row, point.y() - radius + row + corner,
-				point.x() + radius + row, point.y() - radius + row + corner + 1, color);
-			graphics.fill(point.x() - radius - row, point.y() + radius - row - corner - 1,
-				point.x() + radius + row, point.y() + radius - row - corner, color);
-		}
 		graphics.fill(point.x() - radius, point.y() - radius + corner, point.x() + radius, point.y() + radius - corner, color);
+		// Overlap the corner rows so fractional zoom cannot leave seams through the fill.
+		for (int inset = 1; inset <= corner; inset++) {
+			int left = point.x() - radius + inset;
+			int right = point.x() + radius - inset;
+			int top = point.y() - radius + corner - inset;
+			int bottom = point.y() + radius - corner + inset;
+			graphics.fill(left, top, right, top + 2, color);
+			graphics.fill(left, bottom - 2, right, bottom, color);
+		}
 	}
 
 	private static void line(GuiGraphicsExtractor graphics, Point from, Point to, int thickness, int color) {
@@ -466,18 +572,23 @@ final class QuestGuideScreen extends Screen {
 	private final class NodeButton extends AbstractButton {
 		private final Point point;
 		private final Icon icon;
-		private final boolean done;
+		private final Component description;
+		private final Progress state;
 		private final Runnable open;
 		private int screenX;
 		private int screenY;
+		private int labelX;
+		private int labelY;
+		private float labelScale;
+		private List<FormattedCharSequence> labelLines = List.of();
 
-		NodeButton(Point point, Icon icon, Component title, Component tooltip, boolean done, Runnable open) {
+		NodeButton(Point point, Icon icon, Component title, Component description, Progress state, Runnable open) {
 			super(0, 0, 0, 0, title);
 			this.point = point;
 			this.icon = icon;
-			this.done = done;
+			this.description = description;
+			this.state = state;
 			this.open = open;
-			this.setTooltip(Tooltip.create(tooltip));
 		}
 
 		void updatePosition() {
@@ -490,6 +601,42 @@ final class QuestGuideScreen extends Screen {
 			if (!this.visible && QuestGuideScreen.this.getFocused() == this) {
 				QuestGuideScreen.this.setFocused(null);
 			}
+			if (this.visible) {
+				this.updateLabel(radius);
+			}
+		}
+
+		private void updateLabel(int radius) {
+			int screenWidth = QuestGuideScreen.this.width;
+			int preferredWidth = group != null ? LABEL_WIDTH : this.point.x() == 0 ? CENTER_GROUP_LABEL_WIDTH : GROUP_LABEL_WIDTH;
+			int maxWidth = Math.max(12, Math.min(screenWidth - 12, (int)(preferredWidth * Math.min(1.25, zoom))));
+			this.labelScale = Math.clamp((float)zoom * 0.82F, 0.55F, 0.86F);
+			int gap = zoom < 0.5 ? 1 : 3;
+			double spaceBelowNode = (QuestGuideLayout.ROW - 2 * NODE_RADIUS) * zoom - gap;
+			int maxLines = Math.clamp((int)(spaceBelowNode / (LABEL_LINE_HEIGHT * this.labelScale)), 1, 2);
+			this.labelLines = wrapText(this.getMessage(), (int)(maxWidth / this.labelScale), maxLines);
+			int halfWidth = Math.min(screenWidth / 2, maxWidth / 2 + 6);
+			this.labelX = Math.clamp(this.screenX, halfWidth, screenWidth - halfWidth);
+			this.labelY = this.screenY + radius + gap;
+			int labelHeight = (int)Math.ceil(this.labelLines.size() * LABEL_LINE_HEIGHT * this.labelScale);
+			if (this.labelY + labelHeight > QuestGuideScreen.this.height - FOOTER) {
+				this.labelY = this.screenY - radius - gap - labelHeight;
+			}
+		}
+
+		void drawLabel(GuiGraphicsExtractor graphics) {
+			if (!this.visible) {
+				return;
+			}
+			var pose = graphics.pose();
+			pose.pushMatrix();
+			pose.translate(this.labelX, this.labelY);
+			pose.scale(this.labelScale);
+			for (int row = 0; row < this.labelLines.size(); row++) {
+				graphics.centeredText(QuestGuideScreen.this.font, this.labelLines.get(row), 0, row * LABEL_LINE_HEIGHT,
+					this.state.done() ? COMPLETE : TEXT);
+			}
+			pose.popMatrix();
 		}
 
 		@Override
@@ -504,24 +651,15 @@ final class QuestGuideScreen extends Screen {
 
 		@Override
 		protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-			drawNode(graphics, this.point, NODE_RADIUS, this.icon, this.done, this.isHoveredOrFocused());
-			if (zoom >= (group == null ? 0.62 : 0.50)) {
-				float labelScale = group == null ? 1.0F : 0.78F;
-				int labelWidth = group == null && this.point.x() == 0 ? CENTER_GROUP_LABEL_WIDTH
-					: (int)((group == null ? GROUP_LABEL_WIDTH : LABEL_WIDTH) * zoom / labelScale);
-				var pose = graphics.pose();
-				pose.pushMatrix();
-				pose.translate(this.point.x(), this.point.y() + NODE_RADIUS + (float)(4 / zoom));
-				pose.scale(labelScale / (float)zoom);
-				graphics.centeredText(QuestGuideScreen.this.font, fit(this.getMessage(), labelWidth), 0, 0,
-					this.done ? COMPLETE : TEXT);
-				pose.popMatrix();
-			}
+			drawNode(graphics, this.point, NODE_RADIUS, this.icon, this.state.done(), this.isHoveredOrFocused());
 		}
 
 		@Override
 		protected void updateWidgetNarration(NarrationElementOutput output) {
 			this.defaultButtonNarrationText(output);
+			if (!this.description.getString().isBlank()) {
+				output.add(NarratedElementType.HINT, this.description);
+			}
 		}
 	}
 }

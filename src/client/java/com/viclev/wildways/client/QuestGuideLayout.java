@@ -9,8 +9,8 @@ import java.util.Map;
 
 final class QuestGuideLayout {
 	static final Point ROOT = new Point(0, 0);
+	static final int ROW = 56;
 	private static final int COLUMN = 116;
-	private static final int ROW = 56;
 
 	private QuestGuideLayout() {
 	}

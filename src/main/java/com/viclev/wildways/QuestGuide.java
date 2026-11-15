@@ -16,6 +16,8 @@ import net.minecraft.world.level.ItemLike;
 
 /** Guide layout and text keys. The visual parent has no effect on advancement criteria. */
 public final class QuestGuide {
+	static final String OPEN_QUEST_COMMAND = "wildways:quest";
+
 	public static final List<Group> GROUPS = List.of(
 		new Group("endermites", ModBlocks.ENDERMITE_BOX.asItem(), List.of(
 			quest("quarantine_grounds", Items.MOSSY_STONE_BRICKS, null),
@@ -199,10 +201,13 @@ public final class QuestGuide {
 		}
 	}
 
+	private static final StreamCodec<RegistryFriendlyByteBuf, Map<Identifier, Progress>> PROGRESS_CODEC =
+		ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, Progress.CODEC, 256);
+
 	public record Open(Map<Identifier, Progress> progress) implements CustomPacketPayload {
 		public static final Type<Open> TYPE = new Type<>(Wildways.id("open_quest_guide"));
 		static final StreamCodec<RegistryFriendlyByteBuf, Open> CODEC = StreamCodec.composite(
-			ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, Progress.CODEC, 256), Open::progress,
+			PROGRESS_CODEC, Open::progress,
 			Open::new
 		);
 
@@ -212,6 +217,24 @@ public final class QuestGuide {
 
 		@Override
 		public Type<Open> type() {
+			return TYPE;
+		}
+	}
+
+	public record OpenQuest(Identifier advancement, Map<Identifier, Progress> progress) implements CustomPacketPayload {
+		public static final Type<OpenQuest> TYPE = new Type<>(Wildways.id("open_quest"));
+		static final StreamCodec<RegistryFriendlyByteBuf, OpenQuest> CODEC = StreamCodec.composite(
+			Identifier.STREAM_CODEC, OpenQuest::advancement,
+			PROGRESS_CODEC, OpenQuest::progress,
+			OpenQuest::new
+		);
+
+		public OpenQuest {
+			progress = Map.copyOf(progress);
+		}
+
+		@Override
+		public Type<OpenQuest> type() {
 			return TYPE;
 		}
 	}
