@@ -150,18 +150,31 @@ public class PlantGameTests {
 		var ordinary = helper.getBlockState(pos);
 		helper.assertTrue(ordinary.getValue(ComposterBlock.LEVEL) == 1, "The first vanilla input should fill one layer");
 		ItemStack flower = new ItemStack(Items.TORCHFLOWER);
-		ComposterBlock.insertItem(player, ordinary, level, flower, worldPos);
-		helper.assertTrue(flower.getCount() == 1 && helper.getBlockState(pos) == ordinary, "An ordinary batch must reject Sniffer plants");
+		var seeds = List.of(Items.TORCHFLOWER_SEEDS, Items.PITCHER_POD);
+		for (Item item : List.of(Items.TORCHFLOWER, Items.TORCHFLOWER_SEEDS, Items.PITCHER_POD)) {
+			ItemStack input = new ItemStack(item);
+			ComposterBlock.insertItem(player, ordinary, level, input, worldPos);
+			helper.assertTrue(input.getCount() == 1 && helper.getBlockState(pos) == ordinary,
+				"An ordinary batch must reject Sniffer inputs");
+		}
 
-		helper.setBlock(pos, composter);
-		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.PITCHER_PLANT));
-		helper.useBlock(pos, player);
+		for (Item seed : seeds) {
+			helper.setBlock(pos, composter);
+			player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(seed));
+			helper.useBlock(pos, player);
+			var started = helper.getBlockState(pos);
+			helper.assertTrue(started.getValue(ComposterBlock.LEVEL) == 1 && PlantComposting.isSnifferBatch(started),
+				seed + " should start a compost batch");
+		}
 		var special = helper.getBlockState(pos);
-		helper.assertTrue(PlantComposting.isSnifferBatch(special), "A Sniffer flower should start a compost batch");
 		var input = composter.getContainer(special, level, worldPos);
 		helper.assertFalse(input.canPlaceItemThroughFace(0, new ItemStack(Items.WHEAT_SEEDS), Direction.UP),
 			"Hoppers must reject ordinary plants in a compost batch");
 		helper.assertTrue(input.canPlaceItemThroughFace(0, flower, Direction.UP), "Sniffer plants should mix with each other");
+		for (Item seed : seeds) {
+			helper.assertTrue(input.canPlaceItemThroughFace(0, new ItemStack(seed), Direction.UP),
+				"Hoppers should accept Sniffer seeds in a compost batch");
+		}
 
 		var ready = special.setValue(ComposterBlock.LEVEL, 8);
 		helper.setBlock(pos, ready);
@@ -171,6 +184,35 @@ public class PlantGameTests {
 		ComposterBlock.extractProduce(player, ready, level, worldPos);
 		helper.assertFalse(PlantComposting.isSnifferBatch(helper.getBlockState(pos)), "Harvesting must reset the batch");
 		helper.assertItemEntityPresent(PlantBlocks.COMPOST_ITEM, pos, 2);
+		helper.succeed();
+	}
+
+	@GameTest
+	public void placedPitcherPlantsHydrateFarmland(GameTestHelper helper) {
+		var plant = new BlockPos(2, 2, 2);
+		var support = plant.below();
+		var farmland = support.east();
+		var compost = support.west();
+		helper.setBlock(support, Blocks.DIRT);
+		helper.setBlock(farmland, Blocks.FARMLAND);
+		helper.setBlock(compost, PlantBlocks.COMPOST_FARMLAND);
+
+		var player = helper.makeMockPlayer(GameType.SURVIVAL);
+		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.PITCHER_PLANT));
+		var worldSupport = helper.absolutePos(support);
+		var hit = new BlockHitResult(Vec3.atCenterOf(worldSupport).add(0, 0.5, 0), Direction.UP, worldSupport, false);
+		helper.useBlock(support, player, hit);
+		helper.assertBlockPresent(Blocks.PITCHER_PLANT, plant);
+		helper.assertBlockPresent(Blocks.PITCHER_PLANT, plant.above());
+		for (BlockPos soil : List.of(farmland, compost)) {
+			helper.randomTick(soil);
+			helper.assertTrue(helper.getBlockState(soil).getValue(FarmlandBlock.MOISTURE) == 7,
+				"A placed pitcher plant should hydrate nearby farmland and compost farmland");
+		}
+		helper.setBlock(plant, Blocks.AIR);
+		helper.randomTick(farmland);
+		helper.assertTrue(helper.getBlockState(farmland).getValue(FarmlandBlock.MOISTURE) == 6,
+			"The soil should start drying when the plant is removed");
 		helper.succeed();
 	}
 

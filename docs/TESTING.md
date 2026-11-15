@@ -32,8 +32,8 @@ Run `.\gradlew.bat runGameTest` for the Fabric test server. This uses a separate
 ### Farming playtest
 
 - Plant a torchflower seed on farmland in an enclosed dark room and let it grow without bone meal. The mature flower should light up the room.
-- Fill one composter with ordinary seeds and another with the three Sniffer plants. Try inserting the other type by hand and with a hopper. The finished batches should yield bone meal and compost respectively.
-- Till dirt and compost with different hoes and compare crops in equally lit, watered rows. Verify that a planted pitcher pod hydrates soil within three horizontal blocks of its plot and that mature and potted torchflowers emit light.
+- Fill one composter with ordinary seeds and another with torchflower seeds, pitcher pods and other Sniffer plants. Try inserting the other type by hand and with a hopper. The finished batches should yield bone meal and compost respectively.
+- Till dirt and compost with different hoes and compare crops in equally lit, watered rows. Verify that a planted pitcher pod and a pitcher plant placed on dirt both hydrate nearby farmland up to three horizontal blocks away when their supports are level with the farmland. Check that mature and potted torchflowers emit light.
 - Grow several rows of crops directly beside mature torchflowers or pitcher crops. Harvest them until a level-two seed appears, then replant and check that the next harvest keeps the level. Craft bread from three level-two wheat, then replace one with normal wheat. Try the same distinction in an automated Crafter.
 - Let one row next to a mature torchflower ripen naturally and finish another with bone meal. Only the naturally ripened row can yield the first Gold-Ripened seeds. Plant one of those seeds, ripen it with bone meal and check that its harvest is Gold-Ripened.
 - Harvest a ripe pitcher crop on compost with and without Fortune and count two pods in either case. Grow a melon from level-two seeds on compost, harvest the fruit with Silk Touch and check that the placed block, slices and crafted seeds retain level two.

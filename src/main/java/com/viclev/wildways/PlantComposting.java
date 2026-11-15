@@ -11,7 +11,8 @@ public final class PlantComposting {
 	}
 
 	public static boolean isSnifferPlant(ItemStack stack) {
-		return stack.is(Items.TORCHFLOWER) || stack.is(Items.PITCHER_PLANT) || stack.is(PlantBlocks.CYCAD);
+		return stack.is(Items.TORCHFLOWER) || stack.is(Items.TORCHFLOWER_SEEDS)
+			|| stack.is(Items.PITCHER_PLANT) || stack.is(Items.PITCHER_POD) || stack.is(PlantBlocks.CYCAD);
 	}
 
 	public static boolean accepts(BlockState state, ItemStack stack) {

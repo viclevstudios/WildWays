@@ -4,7 +4,11 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.viclev.wildways.PlantGrowth;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmlandBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -17,7 +21,11 @@ abstract class PlantFarmlandMixin {
 		for (int x = -3; x <= 3; x++) {
 			for (int z = -3; z <= 3; z++) {
 				nearby.setWithOffset(pos, x, 1, z);
-				if (PlantGrowth.isPitcher(level.getBlockState(nearby))) return true;
+				BlockState plant = level.getBlockState(nearby);
+				if (PlantGrowth.isPitcher(plant)
+					|| (plant.is(Blocks.PITCHER_PLANT) && plant.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.LOWER)) {
+					return true;
+				}
 			}
 		}
 		return false;
