@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viclev.wildways.WitherSkulls;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -23,9 +24,11 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(WitherSkullBlock.class)
 public abstract class WitherSummoningMixin {
 	@Unique
-	private static final BlockPattern WILDWAYS_SCULK_FIRST = wildways$mixedWitherPattern("sng");
-	@Unique
-	private static final BlockPattern WILDWAYS_GOLD_FIRST = wildways$mixedWitherPattern("gns");
+	private static final List<BlockPattern> WILDWAYS_MIXED_PATTERNS = List.of(
+		wildways$mixedWitherPattern("nsg"), wildways$mixedWitherPattern("ngs"),
+		wildways$mixedWitherPattern("sng"), wildways$mixedWitherPattern("gns"),
+		wildways$mixedWitherPattern("sgn"), wildways$mixedWitherPattern("gsn")
+	);
 
 	@Unique
 	private static BlockPattern wildways$mixedWitherPattern(String skullRow) {
@@ -55,14 +58,17 @@ public abstract class WitherSummoningMixin {
 		BlockPattern pattern, LevelReader level, BlockPos pos, Operation<BlockPattern.BlockPatternMatch> original
 	) {
 		BlockPattern.BlockPatternMatch match = original.call(pattern, level, pos);
-		if (match == null) {
-			// The vanilla search only considers pattern origins in positive directions from the placed skull.
-			match = WILDWAYS_SCULK_FIRST.find(level, pos);
-			if (match == null) {
-				match = WILDWAYS_GOLD_FIRST.find(level, pos);
+		if (match != null) {
+			return match;
+		}
+		// Vanilla searches only positive offsets from the placed skull, so try both directions of each row.
+		for (BlockPattern mixedPattern : WILDWAYS_MIXED_PATTERNS) {
+			match = mixedPattern.find(level, pos);
+			if (match != null) {
+				return match;
 			}
 		}
-		return match;
+		return null;
 	}
 
 	@WrapOperation(
@@ -73,12 +79,16 @@ public abstract class WitherSummoningMixin {
 		@Local BlockPattern.BlockPatternMatch match) {
 		boolean spawned = original.call(level, wither);
 		// The pattern retains the skull state it matched before vanilla clears the blocks.
-		BlockState outerSkull = match.getBlock(0, 0, 0).getState();
-		if (spawned && (WitherSkulls.SCULK.matches(outerSkull) || WitherSkulls.GOLD.matches(outerSkull))) {
+		if (spawned && (wildways$isVariant(match.getBlock(0, 0, 0).getState()) || wildways$isVariant(match.getBlock(2, 0, 0).getState()))) {
 			for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, wither.getBoundingBox().inflate(50.0))) {
 				WitherSkulls.awardMixedSummon(player);
 			}
 		}
 		return spawned;
+	}
+
+	@Unique
+	private static boolean wildways$isVariant(BlockState state) {
+		return WitherSkulls.SCULK.matches(state) || WitherSkulls.GOLD.matches(state);
 	}
 }

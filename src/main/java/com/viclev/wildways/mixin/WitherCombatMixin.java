@@ -25,10 +25,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WitherBoss.class)
 public abstract class WitherCombatMixin extends Monster {
-	@Unique private static final int WILDWAYS_WINDUP_TICKS = 24;
-	@Unique private static final int WILDWAYS_RECOVERY_TICKS = 36;
+	@Unique private static final int WILDWAYS_WINDUP_TICKS = 15;
+	@Unique private static final int WILDWAYS_RECOVERY_TICKS = 20;
 	@Unique private static final double WILDWAYS_DASH_SPEED = 1.45;
-	@Unique private static final double WILDWAYS_IMPACT_RADIUS = 2.0;
+	@Unique private static final float WILDWAYS_IMPACT_POWER = 4.0F;
 	@Unique private Vec3 wildways$landingPosition = Vec3.ZERO;
 	@Unique private int wildways$dashCooldown = 80;
 	@Unique private int wildways$windupTicks;
@@ -49,7 +49,7 @@ public abstract class WitherCombatMixin extends Monster {
 	) {
 		WitherBoss wither = (WitherBoss) source;
 		level.explode(wither, Explosion.getDefaultDamageSource(level, wither), new WitherSpawnExplosion(wither),
-			x, y, z, radius, fire, interaction);
+			x, WitherSpawnExplosion.centerY(wither, x, y, z), z, radius, fire, interaction);
 	}
 
 	@Inject(method = "customServerAiStep", at = @At("HEAD"))
@@ -102,14 +102,16 @@ public abstract class WitherCombatMixin extends Monster {
 		this.getNavigation().stop();
 		this.setDeltaMovement(Vec3.ZERO);
 		if (this.wildways$recoveryTicks > 0) {
-			this.wildways$recoveryTicks--;
+			if (--this.wildways$recoveryTicks == WILDWAYS_RECOVERY_TICKS / 2) {
+				this.playSound(SoundEvents.WITHER_HURT, 1.5F, 0.65F);
+			}
 			// Stay at ground level and fall normally if the floor disappears.
 			this.move(MoverType.SELF, new Vec3(0.0, -0.12, 0.0));
 			return;
 		}
 		if (this.wildways$windupTicks > 0) {
 			Vec3 landing = this.wildways$landingPosition;
-			if (this.wildways$windupTicks % 4 == 0) {
+			if (this.wildways$windupTicks % 5 == 0) {
 				level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, landing.x, landing.y + 0.15, landing.z, 12, 0.7, 0.1, 0.7, 0.01);
 			}
 			this.wildways$diving = --this.wildways$windupTicks == 0;
@@ -124,7 +126,8 @@ public abstract class WitherCombatMixin extends Monster {
 		if (this.verticalCollisionBelow) {
 			this.wildways$diving = false;
 			this.wildways$recoveryTicks = WILDWAYS_RECOVERY_TICKS;
-			this.wildways$dashImpact(level);
+			level.explode(this, this.getX(), this.getY() + 0.3, this.getZ(),
+				WILDWAYS_IMPACT_POWER, false, Level.ExplosionInteraction.MOB);
 		} else if (this.horizontalCollision || this.getY() <= this.wildways$landingPosition.y) {
 			this.wildways$diving = false;
 		}
@@ -133,16 +136,5 @@ public abstract class WitherCombatMixin extends Monster {
 	@Unique
 	private boolean wildways$isDashActive() {
 		return this.wildways$windupTicks > 0 || this.wildways$diving || this.wildways$recoveryTicks > 0;
-	}
-
-	@Unique
-	private void wildways$dashImpact(ServerLevel level) {
-		level.sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY() + 0.2, this.getZ(), 20, 0.8, 0.1, 0.8, 0.06);
-		this.playSound(SoundEvents.WITHER_HURT, 1.5F, 0.65F);
-		for (Player player : level.getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(WILDWAYS_IMPACT_RADIUS, 0.5, WILDWAYS_IMPACT_RADIUS))) {
-			if (this.canAttack(player) && this.distanceToSqr(player) <= WILDWAYS_IMPACT_RADIUS * WILDWAYS_IMPACT_RADIUS && this.hasLineOfSight(player)) {
-				player.hurtServer(level, this.damageSources().mobAttack(this), 8.0F);
-			}
-		}
 	}
 }

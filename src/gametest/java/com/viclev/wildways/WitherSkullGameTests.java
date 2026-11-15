@@ -24,25 +24,27 @@ import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 public class WitherSkullGameTests {
 	@GameTest
-	public void mixedSkullsSummonWithGoldPlacedLast(GameTestHelper helper) {
-		placeSkulls(helper, WitherSkulls.SCULK.skull(), Blocks.WITHER_SKELETON_SKULL, WitherSkulls.GOLD.skull(), 2);
-		helper.assertEntityPresent(EntityTypes.WITHER);
-		helper.assertBlockPresent(Blocks.AIR, 2, 2, 2);
+	public void mixedSkullsSummonInAnyOrder(GameTestHelper helper) {
+		Block normal = Blocks.WITHER_SKELETON_SKULL;
+		Block sculk = WitherSkulls.SCULK.skull();
+		Block gold = WitherSkulls.GOLD.skull();
+		for (List<Block> row : List.of(List.of(normal, sculk, gold), List.of(normal, gold, sculk),
+			List.of(sculk, normal, gold), List.of(gold, normal, sculk), List.of(sculk, gold, normal), List.of(gold, sculk, normal))) {
+			for (int last = 0; last < row.size(); last++) {
+				placeSkulls(helper, row.get(0), row.get(1), row.get(2), last);
+				helper.assertEntityPresent(EntityTypes.WITHER);
+				helper.assertBlockPresent(Blocks.AIR, 2, 2, 2);
+				helper.getEntities(EntityTypes.WITHER).forEach(wither -> wither.discard());
+			}
+		}
 		helper.succeed();
 	}
 
 	@GameTest
-	public void reversedMixedSkullsSummonWithVanillaPlacedLast(GameTestHelper helper) {
-		placeSkulls(helper, WitherSkulls.GOLD.skull(), Blocks.WITHER_SKELETON_SKULL, WitherSkulls.SCULK.skull(), 1);
-		helper.assertEntityPresent(EntityTypes.WITHER);
-		helper.succeed();
-	}
-
-	@GameTest
-	public void mixedSkullsRequireBothVariantsAndVanillaInTheMiddle(GameTestHelper helper) {
+	public void mixedSkullsRequireOneOfEachVariantAndOneVanillaSkull(GameTestHelper helper) {
 		placeSkulls(helper, WitherSkulls.SCULK.skull(), Blocks.WITHER_SKELETON_SKULL, WitherSkulls.SCULK.skull(), 2);
 		helper.assertEntityNotPresent(EntityTypes.WITHER);
-		placeSkulls(helper, Blocks.WITHER_SKELETON_SKULL, WitherSkulls.SCULK.skull(), WitherSkulls.GOLD.skull(), 2);
+		placeSkulls(helper, WitherSkulls.SCULK.skull(), WitherSkulls.SCULK.skull(), WitherSkulls.GOLD.skull(), 2);
 		helper.assertEntityNotPresent(EntityTypes.WITHER);
 		helper.succeed();
 	}

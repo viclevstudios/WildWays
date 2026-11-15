@@ -95,13 +95,13 @@ This page describes gameplay features currently present in WildWays. Planned wor
 
 - A newly generated Ancient City has a one-in-three chance to replace one of its placed Skeleton Skulls with a Sculk-Covered Wither Skull. The city needs to generate a piece containing a Skeleton Skull for the replacement to happen.
 - A Treasure Bastion replaces exactly one Gold Block in the central treasure room with a Gold-Adorned Wither Skull. Bridge, Hoglin Stables and Housing bastions roll a 12.5% chance for each eligible Gold Block and keep at most two replacements per bastion. The 16 Gold Blocks in the bridge piece are excluded.
-- On the usual soul sand or soul soil T, place a regular Wither Skeleton Skull in the middle and one of each variant on the outside, in either order. Three regular Wither Skeleton Skulls also summon the Wither.
+- On the usual soul sand or soul soil T, place one regular Wither Skeleton Skull and one of each variant in any order. Three regular Wither Skeleton Skulls also summon the Wither.
 - Both variants use the vanilla Wither Skeleton texture by default. Custom skull textures can be added under `assets/wildways/textures/entity/skull/` as `sculk_covered_wither_skull.png` and `gold_adorned_wither_skull.png`.
 
 ## Wither combat
 
-- The Wither's spawn explosion can break Obsidian and Crying Obsidian when mob griefing is enabled. Wither-immune and unbreakable blocks such as Bedrock, Reinforced Deepslate and End Portal blocks are protected.
-- Above half health, the Wither occasionally dives at a grounded player's position. A low sound and blue flames mark the attack before it commits. Leave the marked area to avoid the impact, then approach while the Wither stays near the ground.
+- The Wither's spawn explosion can break Obsidian and Crying Obsidian when mob griefing is enabled. If its head is inside a Wither-immune or unbreakable block, the blast can originate lower in its body to reach the blocks underneath. Bedrock, Reinforced Deepslate and End Portal blocks are protected.
+- Above half health, the Wither announces its dive with a low sound and blue flames for 0.75 seconds. It creates a TNT-strength explosion on impact, then stays low for one second with a distinctive groan. The impact explosion follows the mob griefing rule for block damage.
 
 ## Potions and effects
 
