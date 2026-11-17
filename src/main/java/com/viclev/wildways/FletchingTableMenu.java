@@ -2,6 +2,7 @@ package com.viclev.wildways;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -141,12 +142,15 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 			slot.setChanged();
 		}
 		slot.onTake(player, copied);
+		if (slotIndex == RESULT && !stack.isEmpty()) {
+			player.drop(stack, false, Prediction.PREDICTED);
+		}
 		return copied;
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		return this.access.evaluate((level, pos) -> level.getBlockState(pos).is(Blocks.FLETCHING_TABLE), true);
+		return stillValid(this.access, player, Blocks.FLETCHING_TABLE);
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package com.viclev.wildways;
 
 import java.util.Optional;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;

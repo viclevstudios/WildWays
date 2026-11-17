@@ -57,6 +57,7 @@
 		"AdvancementRewardsXpMixin",
 		"ThrownExperienceBottleXpMixin",
 		"AnimalBreedXpMixin",
+		"BeehiveHarvestXpMixin",
 		"TamableAnimalXpMixin",
 		"TurtleEggHatchXpMixin",
 		"SnifferEggHatchXpMixin",

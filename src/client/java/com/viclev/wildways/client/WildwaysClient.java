@@ -28,7 +28,7 @@ public class WildwaysClient implements ClientModInitializer {
 		EntityRenderers.register(ModEntityTypes.TURTLE_ARROW, context -> new SpecialArrowRenderer<>(context, Wildways.id("textures/entity/projectiles/turtle_arrow.png")));
 		EntityRenderers.register(ModEntityTypes.RANGE_ARROW, context -> new SpecialArrowRenderer<>(context, Wildways.id("textures/entity/projectiles/range_arrow.png")));
 		EntityRenderers.register(ModEntityTypes.EXPLOSIVE_ARROW, context -> new SpecialArrowRenderer<>(context, Wildways.id("textures/entity/projectiles/explosive_arrow.png")));
-		ClientTickEvents.END_CLIENT_TICK.register(HeldItemInfoHud::updateActionBar);
+		ClientTickEvents.END_CLIENT_TICK.register(HeldItemInfoHud::update);
 		FishingScreen.initialize();
 		QuestGuideScreen.initialize();
 		ItemTooltipCallback.EVENT.register((stack, context, flags, lines) -> {

@@ -7,35 +7,29 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jspecify.annotations.Nullable;
 
 public final class HeldItemInfoHud {
-	private static boolean showingInformation;
+	private static final String[] DIRECTIONS = { "South", "South-West", "West", "North-West", "North", "North-East", "East", "South-East" };
+	private static @Nullable Component information;
 
 	private HeldItemInfoHud() {
 	}
 
-	public static void updateActionBar(Minecraft minecraft) {
+	public static void update(Minecraft minecraft) {
 		LocalPlayer player = minecraft.player;
-		if (player == null) {
-			showingInformation = false;
-			return;
-		}
-
-		Component information = getInformation(player);
-		if (information != null) {
-			minecraft.gui.hud.setOverlayMessage(information, false);
-		} else if (showingInformation) {
-			minecraft.gui.hud.setOverlayMessage(Component.empty(), false);
-		}
-		showingInformation = information != null;
+		information = player == null ? null : getInformation(player);
 	}
 
-	private static Component getInformation(LocalPlayer player) {
+	public static @Nullable Component information() {
+		return information;
+	}
+
+	private static @Nullable Component getInformation(LocalPlayer player) {
 		ItemStack stack = getInformationStack(player);
 		Item item = stack.getItem();
 		BlockPos pos = player.blockPosition();
@@ -60,24 +54,8 @@ public final class HeldItemInfoHud {
 	}
 
 	private static String getDirection(float yaw) {
-		String[] directions = { "South", "South-West", "West", "North-West", "North", "North-East", "East", "South-East" };
-		int index = Math.floorMod((int) Math.floor((yaw + 22.5F) / 45.0F), directions.length);
-		return directions[index];
-	}
-
-	public static boolean isInformationMessage(Component message) {
-		if (message == null) {
-			return false;
-		}
-		if (message.getContents() instanceof TranslatableContents translated) {
-			return translated.getKey().equals("wildways.biome_compass.current")
-				|| translated.getKey().equals("wildways.biome_compass.current_and_target");
-		}
-
-		String text = message.getString();
-		return text.startsWith("X: ")
-			|| text.startsWith("Day: ")
-			|| text.startsWith("Light: ");
+		int index = Math.floorMod((int) Math.floor((yaw + 22.5F) / 45.0F), DIRECTIONS.length);
+		return DIRECTIONS[index];
 	}
 
 	private static ItemStack getInformationStack(LocalPlayer player) {

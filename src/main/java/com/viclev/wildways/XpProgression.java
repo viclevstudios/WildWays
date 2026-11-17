@@ -3,14 +3,12 @@ package com.viclev.wildways;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -24,8 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BeehiveBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Set;
 
@@ -62,27 +58,18 @@ public final class XpProgression {
 			}
 		});
 
-		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
-			if (!(player instanceof ServerPlayer serverPlayer) || level.isClientSide()) {
-				return InteractionResult.PASS;
-			}
-			BlockState state = level.getBlockState(hit.getBlockPos());
-			Block block = state.getBlock();
-			if (block instanceof BeehiveBlock && state.getValue(BeehiveBlock.HONEY_LEVEL) >= 5
-				&& (serverPlayer.getItemInHand(hand).is(Items.GLASS_BOTTLE) || serverPlayer.getItemInHand(hand).is(Items.SHEARS))) {
-				String harvest = serverPlayer.getItemInHand(hand).is(Items.SHEARS) ? "honeycomb" : "honey";
-				serverPlayer.giveExperiencePoints(2);
-				awardOnce(serverPlayer, "first_honey:" + harvest, harvest.equals("honeycomb") ? 10 : 5);
-			}
-			return InteractionResult.PASS;
-		});
-
 		ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
 			String dimension = destination.dimension().identifier().toString();
 			if (dimension.equals("minecraft:the_nether") || dimension.equals("minecraft:the_end")) {
 				awardOnce(player, "portal:" + dimension, 75);
 			}
 		});
+	}
+
+	public static void awardHoneyHarvest(ServerPlayer player, boolean honeycomb) {
+		String harvest = honeycomb ? "honeycomb" : "honey";
+		player.giveExperiencePoints(2);
+		awardOnce(player, "first_honey:" + harvest, honeycomb ? 10 : 5);
 	}
 
 	public static void awardFirstMobKill(ServerPlayer player, Entity victim) {

@@ -4,14 +4,40 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class AdvancementGameTests {
+	@GameTest
+	public void honeyExperienceRequiresHarvesting(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		var level = helper.getLevel();
+		var hive = new BlockPos(2, 2, 2);
+		var pos = helper.absolutePos(hive);
+		player.setPos(Vec3.atBottomCenterOf(pos.south()));
+		helper.setBlock(hive, Blocks.BEEHIVE.defaultBlockState().setValue(BeehiveBlock.HONEY_LEVEL, 5));
+		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.GLASS_BOTTLE));
+		var hit = new BlockHitResult(Vec3.atCenterOf(pos), Direction.SOUTH, pos, false);
+		int before = player.totalExperience;
+		player.setShiftKeyDown(true);
+		player.gameMode.useItemOn(player, level, player.getMainHandItem(), InteractionHand.MAIN_HAND, hit);
+		helper.assertTrue(player.totalExperience == before && level.getBlockState(pos).getValue(BeehiveBlock.HONEY_LEVEL) == 5,
+			"An interaction that leaves the hive full awards no experience");
+		player.setShiftKeyDown(false);
+		player.gameMode.useItemOn(player, level, player.getMainHandItem(), InteractionHand.MAIN_HAND, hit);
+		helper.assertTrue(player.totalExperience == before + 7 && player.getMainHandItem().is(Items.HONEY_BOTTLE),
+			"The first completed honey harvest awards both XP rewards");
+		helper.succeed();
+	}
+
 	@GameTest(maxTicks = 60)
 	public void solarPoweredRequiresAnActualComparatorOutput(GameTestHelper helper) {
 		var player = helper.makeMockServerPlayerInLevel();

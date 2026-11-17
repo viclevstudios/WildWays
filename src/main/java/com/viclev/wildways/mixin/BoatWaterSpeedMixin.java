@@ -3,7 +3,6 @@ package com.viclev.wildways.mixin;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(AbstractBoat.class)

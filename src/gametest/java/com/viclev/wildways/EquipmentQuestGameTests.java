@@ -11,6 +11,8 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SmithingMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Map;
@@ -133,6 +136,32 @@ public class EquipmentQuestGameTests {
 		}
 		helper.assertTrue(QuestBookItem.readProgress(player).get(Wildways.id("quests/fletch_arrows")).done(),
 			"A special arrow should also count as any arrow");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void fletchingShiftClickKeepsTheEntireResult(GameTestHelper helper) {
+		var player = helper.makeMockServerPlayerInLevel();
+		BlockPos table = new BlockPos(2, 2, 2);
+		BlockPos pos = helper.absolutePos(table);
+		helper.setBlock(table, Blocks.FLETCHING_TABLE);
+		player.setPos(Vec3.atBottomCenterOf(pos.south()));
+		var menu = new FletchingTableMenu(1, player.getInventory(), ContainerLevelAccess.create(helper.getLevel(), pos));
+		helper.assertTrue(menu.stillValid(player), "The menu is usable beside the fletching table");
+		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
+			player.getInventory().setItem(slot, new ItemStack(Items.COBBLESTONE, 64));
+		}
+		player.getInventory().setItem(0, new ItemStack(Items.ARROW, 63));
+		menu.getSlot(0).set(new ItemStack(Items.FEATHER));
+		menu.getSlot(1).set(new ItemStack(Items.STICK));
+		menu.getSlot(2).set(new ItemStack(Items.FLINT));
+		menu.quickMoveStack(player, 3);
+		helper.assertTrue(player.getInventory().getItem(0).getCount() == 64, "One arrow fills the stack in the inventory");
+		helper.assertItemEntityCountIs(Items.ARROW, table.south(), 2, 4);
+		helper.assertTrue(!menu.getSlot(0).hasItem() && !menu.getSlot(1).hasItem() && !menu.getSlot(2).hasItem(),
+			"The recipe consumes its ingredients once");
+		player.setPos(Vec3.atBottomCenterOf(pos.offset(32, 0, 0)));
+		helper.assertFalse(menu.stillValid(player), "The fletching table cannot be used from a distance");
 		helper.succeed();
 	}
 

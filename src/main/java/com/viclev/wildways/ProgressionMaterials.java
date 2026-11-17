@@ -20,7 +20,6 @@ public final class ProgressionMaterials {
 	public static final int GOLD_TOOL_DURABILITY = 400;
 	public static final int QUARTZ_ARMOR_DURABILITY = 25;
 	public static final int AMETHYST_ARMOR_DURABILITY = 19;
-	public static final int GOLD_ARMOR_DURABILITY = 19;
 	public static final int VOLCANITE_TOOL_DURABILITY = 1400;
 	public static final int VOLCANITE_ARMOR_DURABILITY = 28;
 	public static final float QUARTZ_TOOL_SPEED = 6.0F;
@@ -69,12 +68,10 @@ public final class ProgressionMaterials {
 
 	public static final ResourceKey<EquipmentAsset> QUARTZ_ASSET = asset("quartz");
 	public static final ResourceKey<EquipmentAsset> AMETHYST_ASSET = asset("amethyst");
-	public static final ResourceKey<EquipmentAsset> GOLD_ASSET = asset("refined_gold");
 	public static final ResourceKey<EquipmentAsset> VOLCANITE_ASSET = asset("volcanite");
 
 	public static final ArmorMaterial QUARTZ_ARMOR = armor(QUARTZ_ARMOR_DURABILITY, 10, REPAIRS_QUARTZ, QUARTZ_ASSET, 2, 5, 6, 2);
 	public static final ArmorMaterial AMETHYST_ARMOR = armor(AMETHYST_ARMOR_DURABILITY, 14, REPAIRS_AMETHYST, AMETHYST_ASSET, 2, 5, 6, 2);
-	public static final ArmorMaterial GOLD_ARMOR = armor(GOLD_ARMOR_DURABILITY, 20, REPAIRS_GOLD, GOLD_ASSET, 2, 5, 7, 2);
 	public static final ArmorMaterial VOLCANITE_ARMOR = armor(VOLCANITE_ARMOR_DURABILITY, 12, REPAIRS_VOLCANITE, VOLCANITE_ASSET, 2, 5, 7, 2);
 
 	private ProgressionMaterials() {
