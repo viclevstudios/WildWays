@@ -17,6 +17,7 @@
 		"OceanMonumentBookChestsMixin",
 		"RecipeBookTooltipMixin",
 		"EndermiteMixin",
+		"ItemEyeTransformationMixin",
 		"ServerExplosionMixin",
 		"JigsawPlacementLocalTerrainMixin",
 		"PoolElementStructurePieceGroundAlignmentMixin",

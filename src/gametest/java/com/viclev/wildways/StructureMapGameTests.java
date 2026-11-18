@@ -14,7 +14,9 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.PatrolSpawner;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
@@ -39,6 +41,10 @@ public final class StructureMapGameTests {
 		((SpawnerBlockEntity)level.getBlockEntity(spawnerPos)).setEntityId(EntityTypes.SKELETON, level.getRandom());
 		DungeonLocations.indexChunk(level, level.getChunkAt(spawnerPos));
 		helper.assertTrue(spawnerPos.equals(DungeonLocations.findNearest(level, spawnerPos)), "The monster room must be indexed");
+		helper.assertTrue(spawnerPos.equals(DungeonLocations.findNearest(level, spawnerPos.offset(-1_023, 0, 0))),
+			"The nearest search must include rooms in chunks near the edge of its radius");
+		helper.assertFalse(spawnerPos.equals(DungeonLocations.findNearest(level, spawnerPos.offset(-1_024, 0, 0))),
+			"The nearest search must keep its original exclusive radius");
 
 		var params = new LootParams.Builder(level)
 			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(spawnerPos))
@@ -85,6 +91,23 @@ public final class StructureMapGameTests {
 		UseEntityCallback.EVENT.invoker().interact(player, level, InteractionHand.MAIN_HAND, trader, null);
 		helper.assertTrue(offers.size() == before + 2 && offers.getLast() == mapOffer && mapOffer.isOutOfStock(),
 			"The same map, price and stock must persist when the trade menu reopens");
+		helper.succeed();
+	}
+
+	@GameTest
+	public void partialQuarantinePieceKeepsTerrainAcrossSerialization(GameTestHelper helper) {
+		var first = new ChunkPos(-1, 0);
+		var second = new ChunkPos(0, 0);
+		var placement = new QuarantinePiecePlacementContext(new BoundingBox(-1, 15, 1, 1, 18, 3));
+		long column = BlockPos.asLong(0, 0, 2);
+		placement.place(() -> QuarantinePiecePlacementContext.groundHeights().put(column, -42));
+		helper.assertFalse(placement.finishChunk(first), "The profile must remain until both chunks are placed");
+		var restored = QuarantinePiecePlacementContext.load(placement.save());
+		helper.assertTrue(restored != null, "A partly placed piece must restore its profile");
+		restored.place(() -> helper.assertTrue(QuarantinePiecePlacementContext.groundHeights().get(column) == -42,
+			"The original ground height must survive a reload"));
+		helper.assertTrue(restored.finishChunk(second), "The last chunk must retire the profile");
+		helper.assertFalse(QuarantinePiecePlacementContext.isActive(), "The placement context must be cleared after use");
 		helper.succeed();
 	}
 

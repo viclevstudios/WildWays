@@ -3,6 +3,7 @@ package com.viclev.wildways;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ArrayDeque;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 /** Positions quarantine grounds templates against natural ground and optionally fills exposed supports with earth. */
 public final class QuarantineFoundationProcessor implements StructureProcessor {
 	private static final Map<StructurePlaceSettings, Integer> ENTITY_OFFSETS = Collections.synchronizedMap(new WeakHashMap<>());
-	private static final Map<Object, Map<PlacementKey, GroundProfile>> GROUND_PROFILES = Collections.synchronizedMap(new WeakHashMap<>());
 	public static final MapCodec<QuarantineFoundationProcessor> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.BOOL.optionalFieldOf("terrain_following", false).forGetter(processor -> processor.terrainFollowing),
 		Codec.BOOL.optionalFieldOf("align_to_ground", false).forGetter(processor -> processor.alignToGround),
@@ -72,7 +72,7 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		if (bounds == null) {
 			return processedBlocks;
 		}
-		GroundProfile groundProfile = groundProfile(level, templateOrigin, processedBlocks, bounds);
+		GroundProfile groundProfile = GroundProfile.capture(level, processedBlocks);
 
 		List<StructureTemplate.StructureBlockInfo> positionedBlocks;
 		if (terrainFollowing) {
@@ -265,24 +265,6 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		return (int) Math.floorDiv(totalHeight, footprint.size());
 	}
 
-	/**
-	 * Structure templates are placed once per intersecting chunk. Capturing the natural ground profile on
-	 * the first pass prevents blocks placed in an earlier chunk from changing the height of later passes.
-	 */
-	private static GroundProfile groundProfile(
-		ServerLevelAccessor level,
-		BlockPos templateOrigin,
-		List<StructureTemplate.StructureBlockInfo> blocks,
-		Bounds bounds
-	) {
-		Object worldKey = level instanceof net.minecraft.server.level.WorldGenRegion region ? region.getLevel() : level;
-		PlacementKey key = new PlacementKey(templateOrigin.immutable(), bounds);
-		synchronized (GROUND_PROFILES) {
-			Map<PlacementKey, GroundProfile> profiles = GROUND_PROFILES.computeIfAbsent(worldKey, ignored -> new java.util.HashMap<>());
-			return profiles.computeIfAbsent(key, ignored -> GroundProfile.capture(level, blocks));
-		}
-	}
-
 	private static boolean isTreeBlock(BlockState state) {
 		return state.is(BlockTags.LEAVES) || state.is(BlockTags.LOGS) || state.getBlock() instanceof HugeMushroomBlock;
 	}
@@ -310,31 +292,20 @@ public final class QuarantineFoundationProcessor implements StructureProcessor {
 		}
 	}
 
-	/**
-	 * The template origin and its bounds identify a jigsaw piece. The reference position deliberately does
-	 * not belong here: Minecraft changes it for every chunk passed to PoolElementStructurePiece#postProcess.
-	 */
-	private record PlacementKey(BlockPos templateOrigin, Bounds bounds) {
-	}
-
-	private record GroundProfile(Map<Long, Integer> heights) {
+	private record GroundProfile(ServerLevelAccessor level, Long2IntMap heights) {
 		private static GroundProfile capture(ServerLevelAccessor level, List<StructureTemplate.StructureBlockInfo> blocks) {
-			Map<Long, Integer> heights = new java.util.HashMap<>();
+			// Capture every column before placement clips the template to the current chunk.
+			var profile = new GroundProfile(level, QuarantinePiecePlacementContext.groundHeights());
 			for (StructureTemplate.StructureBlockInfo blockInfo : blocks) {
 				if (!blockInfo.state().isAir()) {
-					long column = BlockPos.asLong(blockInfo.pos().getX(), 0, blockInfo.pos().getZ());
-					heights.computeIfAbsent(column, ignored -> findNaturalGroundY(level, blockInfo.pos().getX(), blockInfo.pos().getZ()));
+					profile.heightAt(blockInfo.pos().getX(), blockInfo.pos().getZ());
 				}
 			}
-			return new GroundProfile(Map.copyOf(heights));
+			return profile;
 		}
 
 		private int heightAt(int x, int z) {
-			Integer height = heights.get(BlockPos.asLong(x, 0, z));
-			if (height == null) {
-				throw new IllegalStateException("Missing cached terrain height for structure column " + x + "," + z);
-			}
-			return height;
+			return this.heights.computeIfAbsent(BlockPos.asLong(x, 0, z), (java.util.function.LongToIntFunction) ignored -> findNaturalGroundY(this.level, x, z));
 		}
 	}
 }

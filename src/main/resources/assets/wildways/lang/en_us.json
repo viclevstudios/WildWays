@@ -42,6 +42,7 @@
   "wildways.biome_compass.instruction": "This compass can be bound once.",
   "wildways.biome_compass.bind": "Bind Compass",
   "wildways.biome_compass.missing_biome": "Biome not found within range.",
+  "wildways.biome_compass.searching": "Searching for the selected biome…",
   "wildways.biome_compass.current": "Biome: %s",
   "wildways.biome_compass.current_and_target": "Biome: %s | Target: %s",
   "wildways.biome_compass.unknown": "Unknown",

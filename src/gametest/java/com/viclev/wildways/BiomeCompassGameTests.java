@@ -42,7 +42,19 @@ public class BiomeCompassGameTests {
 		var locateBiome = Wildways.id("quests/locate_biome");
 		helper.assertFalse(QuestBookItem.readProgress(player).get(locateBiome).done(), "Opening the menu or swapping the compass must not count");
 		player.setItemInHand(hand, compasses);
-		menu.clickMenuButton(player, index);
+		helper.assertTrue(menu.clickMenuButton(player, index) && menu.searching(), "The click must queue the search");
+		helper.assertFalse(menu.clickMenuButton(player, index), "A pending search must reject a second click");
+		player.closeContainer();
+		helper.assertFalse(menu.searching(), "Closing the menu must cancel the search");
+		compasses.use(level, player, hand);
+		var reopened = (BiomeCompassMenu) player.containerMenu;
+		helper.assertTrue(reopened.clickMenuButton(player, index), "The reopened menu can start a new search");
+		helper.runAfterDelay(2, () -> assertBoundCompass(helper, player, hand, biome));
+	}
+
+	private static void assertBoundCompass(GameTestHelper helper, ServerPlayer player, InteractionHand hand, Identifier biome) {
+		var level = helper.getLevel();
+		var locateBiome = Wildways.id("quests/locate_biome");
 		helper.assertTrue(QuestBookItem.readProgress(player).get(locateBiome).done(), "Successfully binding a biome must count");
 		ItemStack bound = player.getItemInHand(hand);
 		helper.assertTrue(biome.equals(bound.get(BiomeCompassItem.TARGET_BIOME)) && bound.getCount() == 1,

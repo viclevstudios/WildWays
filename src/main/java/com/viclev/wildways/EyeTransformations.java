@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.WeakHashMap;
 
 public final class EyeTransformations {
@@ -41,7 +40,6 @@ public final class EyeTransformations {
 	private static final int VOLCANITE_RISE_DELAY_TICKS = 10;
 	private static final int VOLCANITE_RISE_TICKS = 40;
 	private static final double VOLCANITE_RISE_HEIGHT = 2.0;
-	private static final Map<ServerLevel, Map<UUID, Integer>> EVOKER_WARMUPS = new WeakHashMap<>();
 	private static final Map<ServerLevel, LevelEffects> ACTIVE_EFFECTS = new WeakHashMap<>();
 	private static final AttachmentType<VolcaniteRise> VOLCANITE_RISE = AttachmentRegistry.create(
 		Wildways.id("volcanite_rise"),
@@ -68,7 +66,7 @@ public final class EyeTransformations {
 	}
 
 	public static void initialize() {
-		ServerTickEvents.END_LEVEL_TICK.register(EyeTransformations::tickConversions);
+		ServerTickEvents.END_LEVEL_TICK.register(EyeTransformations::tickEffects);
 	}
 
 	public static boolean isVolcaniteRising(ItemEntity eye) {
@@ -95,64 +93,57 @@ public final class EyeTransformations {
 		playSound(level, eye, SoundEvents.CONDUIT_ACTIVATE, SoundSource.BLOCKS, 0.75F, 1.35F);
 	}
 
-	private static void tickConversions(ServerLevel level) {
-		LevelEffects effects = ACTIVE_EFFECTS.computeIfAbsent(level, ignored -> new LevelEffects());
+	private static void tickEffects(ServerLevel level) {
+		LevelEffects effects = ACTIVE_EFFECTS.get(level);
+		if (effects == null) {
+			return;
+		}
 		tickWaterBubbles(level, effects.waterBubbles);
 		tickSulfurEruptions(level, effects.sulfurEruptions);
-		Map<UUID, Integer> warmups = EVOKER_WARMUPS.computeIfAbsent(level, ignored -> new HashMap<>());
-		for (var entity : level.getAllEntities()) {
-			if (!(entity instanceof ItemEntity itemEntity) || !itemEntity.isAlive()) {
-				continue;
-			}
-
-			var stack = itemEntity.getItem();
-			if (stack.is(ModItems.EYE_OF_VOLCANITE)) {
-				tickVolcaniteRise(level, itemEntity);
-				continue;
-			}
-			if (itemEntity.hasAttached(VOLCANITE_RISE)) {
-				itemEntity.removeAttached(VOLCANITE_RISE);
-			}
-			if (!stack.is(Items.ENDER_EYE)) {
-				continue;
-			}
-			BlockPos sulfur = findSulfurBelow(level, itemEntity.blockPosition());
-			if (sulfur != null) {
-				itemEntity.setItem(stack.transmuteCopy(ModItems.EYE_OF_SULFUR));
-				effects.sulfurEruptions.putIfAbsent(sulfur, level.getGameTime() + SULFUR_ERUPTION_DELAY);
-				continue;
-			}
-
-			Evoker evoker = level.getEntitiesOfClass(
-				Evoker.class,
-				itemEntity.getBoundingBox().inflate(EVOKER_RANGE),
-				candidate -> candidate.isAlive() && !candidate.isCastingSpell()
-			).stream().findFirst().orElse(null);
-			if (evoker == null) {
-				warmups.remove(itemEntity.getUUID());
-				continue;
-			}
-
-			int remaining = warmups.getOrDefault(itemEntity.getUUID(), EVOKER_WARMUP_TICKS);
-			if (remaining == EVOKER_WARMUP_TICKS) {
-				level.playSound(null, evoker.blockPosition(), SoundEvents.EVOKER_PREPARE_WOLOLO, SoundSource.HOSTILE, 1.0F, 1.0F);
-			}
-			evoker.getLookControl().setLookAt(itemEntity, evoker.getMaxHeadYRot(), evoker.getMaxHeadXRot());
-			if (remaining <= 1) {
-				itemEntity.setItem(itemEntity.getItem().transmuteCopy(ModItems.EYE_OF_ILLAGERS));
-				playIllagerEffect(level, itemEntity, evoker);
-				warmups.remove(itemEntity.getUUID());
-			} else {
-				if (remaining % 10 == 0) {
-					burst(level, itemEntity, ParticleTypes.WITCH, 3, 0.1, 0.05, 0.02);
-				}
-				warmups.put(itemEntity.getUUID(), remaining - 1);
-			}
+		if (effects.waterBubbles.isEmpty() && effects.sulfurEruptions.isEmpty()) {
+			ACTIVE_EFFECTS.remove(level);
 		}
-		warmups.keySet().removeIf(uuid -> {
-			var entity = level.getEntity(uuid);
-			return !(entity instanceof ItemEntity itemEntity) || !itemEntity.getItem().is(Items.ENDER_EYE);
-		});
+	}
+
+	public static int tickItem(ServerLevel level, ItemEntity eye, int warmup) {
+		var stack = eye.getItem();
+		if (stack.is(ModItems.EYE_OF_VOLCANITE)) {
+			tickVolcaniteRise(level, eye);
+			return 0;
+		}
+		if (eye.hasAttached(VOLCANITE_RISE)) {
+			eye.removeAttached(VOLCANITE_RISE);
+		}
+		if (!stack.is(Items.ENDER_EYE)) {
+			return 0;
+		}
+		BlockPos sulfur = findSulfurBelow(level, eye.blockPosition());
+		if (sulfur != null) {
+			eye.setItem(stack.transmuteCopy(ModItems.EYE_OF_SULFUR));
+			ACTIVE_EFFECTS.computeIfAbsent(level, ignored -> new LevelEffects()).sulfurEruptions
+				.putIfAbsent(sulfur, level.getGameTime() + SULFUR_ERUPTION_DELAY);
+			return 0;
+		}
+
+		var evokers = level.getEntitiesOfClass(Evoker.class, eye.getBoundingBox().inflate(EVOKER_RANGE),
+			candidate -> candidate.isAlive() && !candidate.isCastingSpell());
+		if (evokers.isEmpty()) {
+			return 0;
+		}
+		Evoker evoker = evokers.getFirst();
+		if (warmup == 0) {
+			level.playSound(null, evoker.blockPosition(), SoundEvents.EVOKER_PREPARE_WOLOLO, SoundSource.HOSTILE, 1.0F, 1.0F);
+		}
+		evoker.getLookControl().setLookAt(eye, evoker.getMaxHeadYRot(), evoker.getMaxHeadXRot());
+		if (warmup + 1 >= EVOKER_WARMUP_TICKS) {
+			eye.setItem(stack.transmuteCopy(ModItems.EYE_OF_ILLAGERS));
+			playIllagerEffect(level, eye, evoker);
+			return 0;
+		}
+		if (warmup % 10 == 0) {
+			burst(level, eye, ParticleTypes.WITCH, 3, 0.1, 0.05, 0.02);
+		}
+		return warmup + 1;
 	}
 
 	private static void tickWaterBubbles(ServerLevel level, List<WaterBubbles> bubbles) {

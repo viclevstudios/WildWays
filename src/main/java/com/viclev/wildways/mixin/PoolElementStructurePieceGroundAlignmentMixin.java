@@ -1,5 +1,7 @@
 package com.viclev.wildways.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.viclev.wildways.QuarantineFoundationProcessor;
 import com.viclev.wildways.QuarantinePiecePlacementContext;
 import java.util.HashSet;
@@ -7,12 +9,15 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -20,6 +25,7 @@ import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -48,45 +54,56 @@ public abstract class PoolElementStructurePieceGroundAlignmentMixin {
 	@Unique
 	private boolean wildways$groundAligned;
 
-	@Inject(method = "postProcess", at = @At("HEAD"))
-	private void wildways$alignToLocalTerrain(
+	@Unique
+	private @Nullable QuarantinePiecePlacementContext wildways$terrain;
+
+	@WrapMethod(method = "postProcess")
+	private void wildways$placeWithTerrain(
 		WorldGenLevel level,
 		StructureManager structureManager,
 		ChunkGenerator generator,
 		RandomSource random,
 		BoundingBox chunkBounds,
-		net.minecraft.world.level.ChunkPos chunkPos,
+		ChunkPos chunkPos,
 		BlockPos referencePos,
-		CallbackInfo ci
+		Operation<Void> original
 	) {
-		if (!wildways$usesQuarantineAlignment()) {
+		var foundation = this.wildways$foundation();
+		if (foundation == null) {
+			original.call(level, structureManager, generator, random, chunkBounds, chunkPos, referencePos);
 			return;
 		}
-		if (!wildways$groundAligned) {
-			synchronized (this) {
-				if (!wildways$groundAligned) {
-					int offset = wildways$localGroundOffset(level);
-					((PoolElementStructurePiece) (Object) this).move(0, offset, 0);
-					wildways$groundAligned = true;
-				}
+		var piece = (PoolElementStructurePiece) (Object) this;
+		synchronized (this) {
+			boolean align = foundation.alignsToGround() && !this.wildways$groundAligned;
+			boolean wasPending = this.wildways$terrain != null;
+			if (align) {
+				piece.move(0, this.wildways$localGroundOffset(level), 0);
+				this.wildways$groundAligned = true;
+			}
+			if (this.wildways$terrain == null) {
+				this.wildways$terrain = new QuarantinePiecePlacementContext(piece.getBoundingBox());
+			}
+			this.wildways$terrain.place(() -> original.call(level, structureManager, generator, random, chunkBounds, chunkPos, referencePos));
+			if (this.wildways$terrain.finishChunk(chunkPos)) {
+				this.wildways$terrain = null;
+			}
+			if (align || wasPending || this.wildways$terrain != null) {
+				this.wildways$markOwnerUnsaved(level, structureManager, chunkPos, piece);
 			}
 		}
-		QuarantinePiecePlacementContext.enter();
 	}
 
-	@Inject(method = "postProcess", at = @At("RETURN"))
-	private void wildways$finishLocalTerrainAlignment(
-		WorldGenLevel level,
-		StructureManager structureManager,
-		ChunkGenerator generator,
-		RandomSource random,
-		BoundingBox chunkBounds,
-		net.minecraft.world.level.ChunkPos chunkPos,
-		BlockPos referencePos,
-		CallbackInfo ci
-	) {
-		if (wildways$usesQuarantineAlignment()) {
-			QuarantinePiecePlacementContext.exit();
+	@Unique
+	private void wildways$markOwnerUnsaved(WorldGenLevel level, StructureManager structures, ChunkPos chunk, PoolElementStructurePiece piece) {
+		if (level instanceof WorldGenRegion region) {
+			for (var start : structures.startsForStructure(chunk.x(), chunk.z(), structure -> true)) {
+				if (start.getPieces().contains(piece)) {
+					ChunkPos owner = start.getChunkPos();
+					region.getChunk(owner.x(), owner.z(), ChunkStatus.STRUCTURE_STARTS).markUnsaved();
+					return;
+				}
+			}
 		}
 	}
 
@@ -100,6 +117,7 @@ public abstract class PoolElementStructurePieceGroundAlignmentMixin {
 		CallbackInfo ci
 	) {
 		wildways$groundAligned = tag.getBooleanOr("wildways_quarantine_ground_aligned", false);
+		wildways$terrain = tag.getCompound("wildways_quarantine_terrain").map(QuarantinePiecePlacementContext::load).orElse(null);
 	}
 
 	@Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
@@ -108,22 +126,27 @@ public abstract class PoolElementStructurePieceGroundAlignmentMixin {
 		CompoundTag tag,
 		CallbackInfo ci
 	) {
-		if (wildways$groundAligned) {
-			tag.putBoolean("wildways_quarantine_ground_aligned", true);
+		synchronized (this) {
+			if (this.wildways$groundAligned) {
+				tag.putBoolean("wildways_quarantine_ground_aligned", true);
+			}
+			if (this.wildways$terrain != null) {
+				tag.put("wildways_quarantine_terrain", this.wildways$terrain.save());
+			}
 		}
 	}
 
 	@Unique
-	private boolean wildways$usesQuarantineAlignment() {
+	private @Nullable QuarantineFoundationProcessor wildways$foundation() {
 		if (!(((PoolElementStructurePiece) (Object) this).getElement() instanceof SinglePoolElement single)) {
-			return false;
+			return null;
 		}
 		for (StructureProcessor processor : ((SinglePoolElementProcessorAccessor) single).wildways$getProcessors().value().list()) {
-			if (processor instanceof QuarantineFoundationProcessor foundationProcessor && foundationProcessor.alignsToGround()) {
-				return true;
+			if (processor instanceof QuarantineFoundationProcessor foundationProcessor) {
+				return foundationProcessor;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	@Unique

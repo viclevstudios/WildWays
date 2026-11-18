@@ -41,6 +41,7 @@ public class Wildways implements ModInitializer {
 		StructureMaps.initialize();
 		EnchantedBookDrops.initialize();
 		EyeTransformations.initialize();
+		BiomeCompassSearch.initialize();
 		XpProgression.initialize();
 		FishingBait.initialize();
 		FishingMinigame.initialize();

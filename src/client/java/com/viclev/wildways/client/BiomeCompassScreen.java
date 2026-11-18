@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 public final class BiomeCompassScreen extends AbstractContainerScreen<BiomeCompassMenu> {
 	private static final Component INSTRUCTION = Component.translatable("wildways.biome_compass.instruction");
 	private static final Component MISSING_BIOME = Component.translatable("wildways.biome_compass.missing_biome");
+	private static final Component SEARCHING = Component.translatable("wildways.biome_compass.searching");
 	private BiomeList list;
 	private Button confirm;
 
@@ -43,11 +44,12 @@ public final class BiomeCompassScreen extends AbstractContainerScreen<BiomeCompa
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		BiomeEntry selected = this.list.getSelected();
-		this.confirm.active = selected != null;
+		this.confirm.active = selected != null && !this.menu.searching();
 		super.extractRenderState(graphics, mouseX, mouseY, delta);
 		graphics.centeredText(this.font, this.title, this.width / 2, 10, 0xFFFFFFFF);
 		boolean failed = selected != null && selected.index == this.menu.missingBiome();
-		graphics.centeredText(this.font, failed ? MISSING_BIOME : INSTRUCTION, this.width / 2, 24, failed ? 0xFFFFAAAA : 0xFFE0E0E0);
+		Component status = this.menu.searching() ? SEARCHING : failed ? MISSING_BIOME : INSTRUCTION;
+		graphics.centeredText(this.font, status, this.width / 2, 24, failed ? 0xFFFFAAAA : 0xFFE0E0E0);
 	}
 
 	@Override
