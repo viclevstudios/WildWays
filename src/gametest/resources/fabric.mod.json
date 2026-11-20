@@ -12,6 +12,7 @@
       "com.viclev.wildways.VolcaniteGameTests",
       "com.viclev.wildways.VolcaniteTrimGameTests",
       "com.viclev.wildways.SpearGameTests",
+      "com.viclev.wildways.ArmorProgressionGameTests",
       "com.viclev.wildways.GoldToolGameTests",
       "com.viclev.wildways.BookLootGameTests",
       "com.viclev.wildways.BiomeCompassGameTests",

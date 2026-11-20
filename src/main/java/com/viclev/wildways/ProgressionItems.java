@@ -94,6 +94,32 @@ public final class ProgressionItems {
 		return hasHeritage(stack, "wildways_gold_heritage");
 	}
 
+	public static boolean hasVolcaniteHeritage(ItemStack stack) {
+		return hasHeritage(stack, "wildways_volcanite_heritage");
+	}
+
+	public static boolean isVolcaniteEquipment(Item item) {
+		Identifier id = BuiltInRegistries.ITEM.getKey(item);
+		return id.getNamespace().equals(Wildways.MOD_ID) && id.getPath().startsWith("volcanite_")
+			&& (isArmorEquipment(item) || isToolEquipment(item));
+	}
+
+	public static int strengthPenalties(ItemStack stack) {
+		Item item = stack.getItem();
+		if (isVolcaniteEquipment(item)) {
+			return hasGoldHeritage(stack) ? 0 : 1;
+		}
+
+		Identifier id = BuiltInRegistries.ITEM.getKey(item);
+		if (!id.getNamespace().equals("minecraft") || !(id.getPath().startsWith("diamond_") || id.getPath().startsWith("netherite_"))
+			|| !(isArmorEquipment(item) || isToolEquipment(item))) {
+			return 0;
+		}
+
+		int penalties = hasVolcaniteHeritage(stack) ? 1 : 0;
+		return hasGoldHeritage(stack) ? penalties : penalties + 1;
+	}
+
 	private static boolean hasHeritage(ItemStack stack, String key) {
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
 		return data != null && data.copyTag().getBoolean(key).orElse(false);

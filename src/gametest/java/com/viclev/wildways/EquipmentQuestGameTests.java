@@ -37,7 +37,10 @@ public class EquipmentQuestGameTests {
 		var recipe = level.recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, level).orElseThrow();
 		ItemStack crafted = recipe.value().assemble(input);
 		helper.assertTrue(ItemStack.isSameItemSameComponents(crafted, new ItemStack(Items.DIAMOND_CHESTPLATE)),
-			"The original crafting pattern must yield a standard diamond chestplate");
+			"The original crafting pattern must yield a diamond chestplate without heritage");
+		helper.assertTrue(crafted.getMaxDamage() == 528 && modifier(crafted, EquipmentSlot.CHEST, Attributes.ARMOR_TOUGHNESS) == 1.5
+			&& modifier(crafted, EquipmentSlot.CHEST, Attributes.MOVEMENT_SPEED) == 0,
+			"Crafted Diamond must have lower toughness with standard durability and movement speed");
 
 		ItemStack quartz = refineDiamond(helper, ProgressionItems.QUARTZ_CHESTPLATE);
 		ItemStack amethyst = refineDiamond(helper, ProgressionItems.AMETHYST_CHESTPLATE);
@@ -45,9 +48,7 @@ public class EquipmentQuestGameTests {
 		helper.assertTrue(quartz.getMaxDamage() == Math.round(crafted.getMaxDamage() * 1.25F),
 			"Quartz refinement must add durability");
 		assertModifierBonus(helper, amethyst, crafted, EquipmentSlot.CHEST, Attributes.MOVEMENT_SPEED, 0.0025);
-		assertModifierBonus(helper, gold, crafted, EquipmentSlot.CHEST, Attributes.ARMOR_TOUGHNESS, 1.0);
-		assertModifierBonus(helper, refineDiamond(helper, Items.GOLDEN_SWORD), new ItemStack(Items.DIAMOND_SWORD),
-			EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE, 0.5);
+		assertModifierBonus(helper, gold, crafted, EquipmentSlot.CHEST, Attributes.ARMOR_TOUGHNESS, 0.5);
 
 		SmithingRecipeInput netheriteInput = new SmithingRecipeInput(new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
 			quartz, new ItemStack(Items.NETHERITE_INGOT));
@@ -56,6 +57,13 @@ public class EquipmentQuestGameTests {
 		helper.assertTrue(netherite.is(Items.NETHERITE_CHESTPLATE)
 				&& netherite.getMaxDamage() == Math.round(new ItemStack(Items.NETHERITE_CHESTPLATE).getMaxDamage() * 1.25F),
 			"Netherite must apply the Quartz bonus to Netherite durability");
+		SmithingRecipeInput plainInput = new SmithingRecipeInput(netheriteInput.template(), crafted, netheriteInput.addition());
+		ItemStack plainNetherite = level.recipeAccess().getRecipeFor(RecipeType.SMITHING, plainInput, level)
+			.orElseThrow().value().assemble(plainInput);
+		helper.assertTrue(plainNetherite.is(Items.NETHERITE_CHESTPLATE) && plainNetherite.getMaxDamage() == 592
+			&& modifier(plainNetherite, EquipmentSlot.CHEST, Attributes.ARMOR_TOUGHNESS) == 2.5
+			&& modifier(plainNetherite, EquipmentSlot.CHEST, Attributes.BLOCK_INTERACTION_RANGE) == 0,
+			"Crafted Diamond must upgrade to Netherite with the Diamond route's toughness and no heritage");
 		helper.succeed();
 	}
 

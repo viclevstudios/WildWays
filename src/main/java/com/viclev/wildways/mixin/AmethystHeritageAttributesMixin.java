@@ -1,5 +1,6 @@
 package com.viclev.wildways.mixin;
 
+import com.viclev.wildways.ModItems;
 import com.viclev.wildways.ProgressionItems;
 import com.viclev.wildways.ProgressionMaterials;
 import com.viclev.wildways.Wildways;
@@ -40,23 +41,29 @@ public abstract class AmethystHeritageAttributesMixin {
 	@Unique
 	private void wildways$addMaterialAttributes(EquipmentSlotGroup slot, BiConsumer<Holder<Attribute>, AttributeModifier> consumer) {
 		ItemStack stack = (ItemStack) (Object) this;
-		boolean amethyst = ProgressionItems.hasAmethystHeritage(stack);
-		boolean gold = ProgressionItems.hasGoldHeritage(stack);
-		if (!amethyst && !gold) return;
-
 		if (slot == EquipmentSlotGroup.MAINHAND && ProgressionItems.isToolEquipment(stack.getItem())) {
-			if (amethyst) consumer.accept(Attributes.ATTACK_SPEED, new AttributeModifier(Wildways.id("amethyst_heritage_attack_speed"),
+			int penalties = ProgressionItems.strengthPenalties(stack);
+			if (ProgressionItems.hasAmethystHeritage(stack)) consumer.accept(Attributes.ATTACK_SPEED, new AttributeModifier(Wildways.id("amethyst_heritage_attack_speed"),
 				ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS, AttributeModifier.Operation.ADD_VALUE));
-			if (gold) consumer.accept(Attributes.ATTACK_DAMAGE, new AttributeModifier(Wildways.id("gold_heritage_attack_damage"),
-				ProgressionMaterials.GOLD_HERITAGE_ATTACK_DAMAGE, AttributeModifier.Operation.ADD_VALUE));
+			if (penalties > 0) consumer.accept(Attributes.ATTACK_DAMAGE, new AttributeModifier(Wildways.id("equipment_attack_damage_penalty"),
+				-penalties * ProgressionMaterials.ATTACK_DAMAGE_PENALTY, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+			if (ProgressionItems.hasVolcaniteHeritage(stack)
+				|| ModItems.VOLCANITE_TOOLS.contains(stack.getItem())) {
+				consumer.accept(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(Wildways.id("volcanite_tool_block_range"),
+					ProgressionMaterials.VOLCANITE_RANGE_PER_PIECE, AttributeModifier.Operation.ADD_VALUE));
+			}
 		}
 		Equippable equipment = stack.get(DataComponents.EQUIPPABLE);
 		if (equipment != null && slot == EquipmentSlotGroup.bySlot(equipment.slot()) && ProgressionItems.isArmorEquipment(stack.getItem())) {
+			int penalties = ProgressionItems.strengthPenalties(stack);
 			String suffix = equipment.slot().getName();
-			if (amethyst) consumer.accept(Attributes.MOVEMENT_SPEED, new AttributeModifier(Wildways.id("amethyst_heritage_movement_speed_" + suffix),
+			if (ProgressionItems.hasAmethystHeritage(stack)) consumer.accept(Attributes.MOVEMENT_SPEED, new AttributeModifier(Wildways.id("amethyst_heritage_movement_speed_" + suffix),
 				ProgressionMaterials.AMETHYST_SPEED_PER_PIECE, AttributeModifier.Operation.ADD_VALUE));
-			if (gold) consumer.accept(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(Wildways.id("gold_heritage_toughness_" + suffix),
-				ProgressionMaterials.GOLD_HERITAGE_ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_VALUE));
+			if (penalties > 0) consumer.accept(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(Wildways.id("equipment_toughness_penalty_" + suffix),
+				-penalties * ProgressionMaterials.ARMOR_TOUGHNESS_PENALTY, AttributeModifier.Operation.ADD_VALUE));
+			if (ProgressionItems.hasVolcaniteHeritage(stack)) consumer.accept(Attributes.BLOCK_INTERACTION_RANGE,
+				new AttributeModifier(Wildways.id("volcanite_block_range_" + suffix),
+					ProgressionMaterials.VOLCANITE_RANGE_PER_PIECE, AttributeModifier.Operation.ADD_VALUE));
 		}
 	}
 }

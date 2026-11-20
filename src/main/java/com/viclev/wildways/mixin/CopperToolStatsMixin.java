@@ -1,17 +1,25 @@
 package com.viclev.wildways.mixin;
 
+import com.viclev.wildways.Wildways;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.function.TriConsumer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.function.BiConsumer;
 
 @Mixin(ItemStack.class)
 public abstract class CopperToolStatsMixin {
@@ -37,16 +45,29 @@ public abstract class CopperToolStatsMixin {
 	}
 
 	@Inject(method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Lorg/apache/commons/lang3/function/TriConsumer;)V", at = @At("TAIL"))
-	private void wildways$improveVanillaGoldArmor(EquipmentSlotGroup slot, TriConsumer consumer, org.spongepowered.asm.mixin.injection.callback.CallbackInfo ci) {
+	private void wildways$showGoldArmorBonus(EquipmentSlotGroup slot,
+			TriConsumer<Holder<Attribute>, AttributeModifier, ItemAttributeModifiers.Display> consumer, CallbackInfo ci) {
+		this.wildways$addGoldArmorBonus(slot, (attribute, modifier) ->
+			consumer.accept(attribute, modifier, ItemAttributeModifiers.Display.attributeModifiers()));
+	}
+
+	@Inject(method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlot;Ljava/util/function/BiConsumer;)V", at = @At("TAIL"))
+	private void wildways$equipGoldArmorBonus(EquipmentSlot slot, BiConsumer<Holder<Attribute>, AttributeModifier> consumer, CallbackInfo ci) {
+		this.wildways$addGoldArmorBonus(EquipmentSlotGroup.bySlot(slot), consumer);
+	}
+
+	@Unique
+	private void wildways$addGoldArmorBonus(EquipmentSlotGroup slot, BiConsumer<Holder<Attribute>, AttributeModifier> consumer) {
 		String id = itemPath();
 		int bonus = switch (id) {
-			case "golden_chestplate" -> slot == EquipmentSlotGroup.CHEST ? 2 : 0;
-			case "golden_leggings" -> slot == EquipmentSlotGroup.LEGS ? 2 : 0;
+			case "golden_chestplate" -> slot == EquipmentSlotGroup.CHEST ? 3 : 0;
+			case "golden_leggings" -> slot == EquipmentSlotGroup.LEGS ? 3 : 0;
 			case "golden_boots" -> slot == EquipmentSlotGroup.FEET ? 1 : 0;
 			default -> 0;
 		};
 		if (bonus > 0) {
-			consumer.accept(Attributes.ARMOR, new AttributeModifier(net.minecraft.resources.Identifier.fromNamespaceAndPath("wildways", "gold_armor_progression"), bonus, AttributeModifier.Operation.ADD_VALUE), ItemAttributeModifiers.Display.attributeModifiers());
+			consumer.accept(Attributes.ARMOR, new AttributeModifier(Wildways.id("gold_armor_progression_" + id), bonus,
+				AttributeModifier.Operation.ADD_VALUE));
 		}
 	}
 

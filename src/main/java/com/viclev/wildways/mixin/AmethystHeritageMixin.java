@@ -6,6 +6,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.minecraft.world.item.crafting.SmithingTransformRecipe;
@@ -26,11 +27,22 @@ public abstract class AmethystHeritageMixin {
 		if (ProgressionItems.isAmethystGear(base)) {
 			CustomData.update(DataComponents.CUSTOM_DATA, output, tag -> tag.putBoolean("wildways_amethyst_heritage", true));
 		}
-		if (input.template().is(ProgressionItems.REFINEMENT_DIAMOND)) {
+		if (input.template().is(ProgressionItems.REFINEMENT_DIAMOND) || input.template().is(ProgressionItems.REFINEMENT_VOLCANITE)) {
 			if (ProgressionItems.QUARTZ_SET.contains(base) || ProgressionItems.QUARTZ_TOOLS.contains(base)) {
 				CustomData.update(DataComponents.CUSTOM_DATA, output, tag -> tag.putBoolean("wildways_quartz_heritage", true));
 			} else if (ProgressionItems.GOLD_SET.contains(base) || ProgressionItems.GOLD_TOOLS.contains(base) || base == Items.GOLDEN_SPEAR) {
 				CustomData.update(DataComponents.CUSTOM_DATA, output, tag -> tag.putBoolean("wildways_gold_heritage", true));
+			}
+		}
+		if (input.template().is(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE) && ProgressionItems.isVolcaniteEquipment(base)) {
+			CustomData.update(DataComponents.CUSTOM_DATA, output, tag -> tag.putBoolean("wildways_volcanite_heritage", true));
+			if (output.is(Items.NETHERITE_SPEAR)) {
+				AttackRange range = output.get(DataComponents.ATTACK_RANGE);
+				if (range != null) {
+					float bonus = (float) ProgressionMaterials.VOLCANITE_RANGE_PER_PIECE;
+					output.set(DataComponents.ATTACK_RANGE, new AttackRange(range.minReach(), range.maxReach() + bonus,
+						range.minCreativeReach(), range.maxCreativeReach() + bonus, range.hitboxMargin(), range.mobFactor()));
+				}
 			}
 		}
 		if (ProgressionItems.hasQuartzHeritage(output)) {

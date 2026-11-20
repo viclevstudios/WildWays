@@ -9,6 +9,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -21,6 +24,47 @@ import net.minecraft.world.level.block.Blocks;
 
 /** Guards against reintroducing separate gold items instead of updating vanilla equipment. */
 public class GoldToolGameTests {
+	@GameTest
+	public void goldHeritageAndUpgradeRouteDetermineMiningSpeedAndDamage(GameTestHelper helper) {
+		ItemStack gold = new ItemStack(Items.GOLDEN_PICKAXE);
+		ItemStack amethyst = new ItemStack(ProgressionItems.AMETHYST_PICKAXE);
+		ItemStack goldDiamond = this.upgrade(helper, gold, ProgressionItems.REFINEMENT_DIAMOND, Items.DIAMOND_PICKAXE);
+		ItemStack goldVolcanite = this.upgrade(helper, gold, ProgressionItems.REFINEMENT_VOLCANITE, ModItems.VOLCANITE_PICKAXE);
+		ItemStack amethystVolcanite = this.upgrade(helper, amethyst, ProgressionItems.REFINEMENT_VOLCANITE, ModItems.VOLCANITE_PICKAXE);
+		ItemStack plainDiamond = new ItemStack(Items.DIAMOND_PICKAXE);
+		this.assertToolStats(helper, goldDiamond, 8, 5, false);
+		this.assertToolStats(helper, plainDiamond, 7.5F, 4.5, false);
+		this.assertToolStats(helper, goldVolcanite, 7.5F, 4.7, true);
+		this.assertToolStats(helper, amethystVolcanite, 7, 4.23, true);
+
+		Item upgrade = Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE;
+		ItemStack ingot = new ItemStack(Items.NETHERITE_INGOT);
+		Item netherite = Items.NETHERITE_PICKAXE;
+		this.assertToolStats(helper, this.upgrade(helper, goldDiamond, upgrade, ingot, netherite), 9, 6, false);
+		this.assertToolStats(helper, this.upgrade(helper, plainDiamond, upgrade, ingot, netherite), 8.5F, 5.4, false);
+		this.assertToolStats(helper, this.upgrade(helper, goldVolcanite, upgrade, ingot, netherite), 8.5F, 5.4, true);
+		ItemStack upgraded = this.upgrade(helper, amethystVolcanite, upgrade, ingot, netherite);
+		this.assertToolStats(helper, upgraded, 8, 4.8, true);
+		helper.assertTrue(upgraded.getDestroySpeed(Blocks.DIRT.defaultBlockState()) == 1.5F,
+			"The mining penalty must leave Amethyst's ineffective-block bonus intact");
+		helper.succeed();
+	}
+
+	private void assertToolStats(GameTestHelper helper, ItemStack stack, float speed, double attack, boolean volcaniteReach) {
+		var damage = new AttributeInstance(Attributes.ATTACK_DAMAGE, instance -> {});
+		damage.setBaseValue(1);
+		var reach = new AttributeInstance(Attributes.BLOCK_INTERACTION_RANGE, instance -> {});
+		reach.setBaseValue(4.5);
+		stack.forEachModifier(EquipmentSlot.MAINHAND, (attribute, modifier) -> {
+			if (attribute.equals(Attributes.ATTACK_DAMAGE)) damage.addTransientModifier(modifier);
+			if (attribute.equals(Attributes.BLOCK_INTERACTION_RANGE)) reach.addTransientModifier(modifier);
+		});
+		helper.assertTrue(stack.getDestroySpeed(Blocks.STONE.defaultBlockState()) == speed,
+			"Effective mining speed must reflect the upgrade route");
+		helper.assertTrue(Math.abs(damage.getValue() - attack) < 0.00001, "Attack damage must reflect the upgrade route");
+		helper.assertTrue(reach.getValue() == (volcaniteReach ? 4.75 : 4.5), "Main-hand reach must reflect the upgrade route");
+	}
+
 	@GameTest
 	public void vanillaGoldToolsUseTheRebalancedStats(GameTestHelper helper) {
 		for (Item item : List.of(Items.GOLDEN_SWORD, Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_HOE)) {
@@ -105,7 +149,11 @@ public class GoldToolGameTests {
 	}
 
 	private ItemStack upgrade(GameTestHelper helper, ItemStack base, Item template, Item expected) {
-		var input = new SmithingRecipeInput(new ItemStack(template), base.copy(), ItemStack.EMPTY);
+		return this.upgrade(helper, base, template, ItemStack.EMPTY, expected);
+	}
+
+	private ItemStack upgrade(GameTestHelper helper, ItemStack base, Item template, ItemStack addition, Item expected) {
+		var input = new SmithingRecipeInput(new ItemStack(template), base.copy(), addition);
 		var recipe = helper.getLevel().recipeAccess().getRecipeFor(RecipeType.SMITHING, input, helper.getLevel());
 		helper.assertTrue(recipe.isPresent(), "Gold refinement recipe must be loaded");
 		ItemStack output = recipe.orElseThrow().value().assemble(input);

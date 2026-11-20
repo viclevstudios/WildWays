@@ -98,6 +98,11 @@ public class SpearGameTests {
 		ItemStack volcanite = this.upgrade(helper, amethyst, ProgressionItems.REFINEMENT_VOLCANITE, ItemStack.EMPTY, ModItems.VOLCANITE_SPEAR);
 		ItemStack netherite = this.upgrade(helper, volcanite, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
 			new ItemStack(Items.NETHERITE_INGOT), Items.NETHERITE_SPEAR);
+		var netheriteRange = netherite.get(DataComponents.ATTACK_RANGE);
+		var defaultRange = new ItemStack(Items.NETHERITE_SPEAR).get(DataComponents.ATTACK_RANGE);
+		this.assertClose(helper, netheriteRange.maxReach() - defaultRange.maxReach(), 0.25,
+			"Volcanite must carry its attack reach into Netherite spears");
+		this.assertClose(helper, netheriteRange.minReach(), defaultRange.minReach(), "Netherite must keep its close-range blind spot");
 		for (ItemStack upgraded : List.of(volcanite, netherite)) {
 			helper.assertTrue(upgraded.getHoverName().getString().equals("Trailfinder")
 				&& EnchantmentHelper.getItemEnchantmentLevel(unbreaking, upgraded) == 2,

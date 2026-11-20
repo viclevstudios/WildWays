@@ -48,8 +48,9 @@ public final class ProgressionMaterials {
 	public static final double AMETHYST_SPEED_PER_PIECE = 0.0025;
 	public static final double AMETHYST_CLIMB_SPEED_MULTIPLIER = 1.25;
 	public static final float QUARTZ_HERITAGE_DURABILITY_MULTIPLIER = 1.25F;
-	public static final double GOLD_HERITAGE_ARMOR_TOUGHNESS = 1.0;
-	public static final double GOLD_HERITAGE_ATTACK_DAMAGE = 0.5;
+	public static final double ARMOR_TOUGHNESS_PENALTY = 0.5;
+	public static final double ATTACK_DAMAGE_PENALTY = 0.10;
+	public static final float MINING_SPEED_PENALTY = 0.5F;
 	public static final double VOLCANITE_RANGE_PER_PIECE = 0.25;
 
 	public static final TagKey<Item> REPAIRS_QUARTZ = itemTag("repairs_quartz_equipment");
@@ -70,21 +71,21 @@ public final class ProgressionMaterials {
 	public static final ResourceKey<EquipmentAsset> AMETHYST_ASSET = asset("amethyst");
 	public static final ResourceKey<EquipmentAsset> VOLCANITE_ASSET = asset("volcanite");
 
-	public static final ArmorMaterial QUARTZ_ARMOR = armor(QUARTZ_ARMOR_DURABILITY, 10, REPAIRS_QUARTZ, QUARTZ_ASSET, 2, 5, 6, 2);
-	public static final ArmorMaterial AMETHYST_ARMOR = armor(AMETHYST_ARMOR_DURABILITY, 14, REPAIRS_AMETHYST, AMETHYST_ASSET, 2, 5, 6, 2);
-	public static final ArmorMaterial VOLCANITE_ARMOR = armor(VOLCANITE_ARMOR_DURABILITY, 12, REPAIRS_VOLCANITE, VOLCANITE_ASSET, 2, 5, 7, 2);
+	public static final ArmorMaterial QUARTZ_ARMOR = armor(QUARTZ_ARMOR_DURABILITY, 10, REPAIRS_QUARTZ, QUARTZ_ASSET, 0.0F, 2, 5, 6, 2);
+	public static final ArmorMaterial AMETHYST_ARMOR = armor(AMETHYST_ARMOR_DURABILITY, 14, REPAIRS_AMETHYST, AMETHYST_ASSET, 0.0F, 2, 5, 6, 2);
+	public static final ArmorMaterial VOLCANITE_ARMOR = armor(VOLCANITE_ARMOR_DURABILITY, 12, REPAIRS_VOLCANITE, VOLCANITE_ASSET, 1.0F, 2, 6, 8, 2);
 
 	private ProgressionMaterials() {
 	}
 
 	private static ArmorMaterial armor(int durability, int enchantability, TagKey<Item> repairs, ResourceKey<EquipmentAsset> asset,
-			int boots, int leggings, int chestplate, int helmet) {
+			float toughness, int boots, int leggings, int chestplate, int helmet) {
 		return new ArmorMaterial(durability, Map.of(
 			ArmorType.BOOTS, boots,
 			ArmorType.LEGGINGS, leggings,
 			ArmorType.CHESTPLATE, chestplate,
 			ArmorType.HELMET, helmet
-		), enchantability, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, repairs, asset);
+		), enchantability, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON, toughness, 0.0F, repairs, asset);
 	}
 
 	private static TagKey<Item> itemTag(String path) {

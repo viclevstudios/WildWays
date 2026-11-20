@@ -46,7 +46,6 @@
 		"AmethystToolSpeedMixin",
 		"AmethystHeritageMixin",
 		"AmethystHeritageAttributesMixin",
-		"VolcaniteToolRangeMixin",
 		"CopperToolStatsMixin",
 		"LivingEntityVisibilityMixin",
 		"EnderEyeItemMixin",
