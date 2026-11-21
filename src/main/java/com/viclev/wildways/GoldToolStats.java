@@ -59,7 +59,7 @@ public final class GoldToolStats {
 			damage = ProgressionMaterials.SHOVEL_ATTACK_DAMAGE;
 			speed = ProgressionMaterials.SHOVEL_ATTACK_SPEED;
 		} else {
-			damage = ProgressionMaterials.HOE_ATTACK_DAMAGE;
+			damage = -ProgressionMaterials.GOLD_ATTACK_DAMAGE_BONUS;
 			speed = ProgressionMaterials.HOE_ATTACK_SPEED;
 		}
 		return ItemAttributeModifiers.builder()

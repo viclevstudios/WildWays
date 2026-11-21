@@ -1,5 +1,6 @@
 package com.viclev.wildways;
 
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -30,7 +31,7 @@ public final class ProgressionItems {
 	public static final Item QUARTZ_PICKAXE = pickaxe("quartz_pickaxe", ProgressionMaterials.QUARTZ_TOOL);
 	public static final Item QUARTZ_AXE = axe("quartz_axe", ProgressionMaterials.QUARTZ_TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED);
 	public static final Item QUARTZ_SHOVEL = shovel("quartz_shovel", ProgressionMaterials.QUARTZ_TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED);
-	public static final Item QUARTZ_HOE = hoe("quartz_hoe", ProgressionMaterials.QUARTZ_TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED);
+	public static final Item QUARTZ_HOE = hoe("quartz_hoe", ProgressionMaterials.QUARTZ_TOOL, ProgressionMaterials.HOE_ATTACK_SPEED);
 	public static final Item QUARTZ_HELMET = armor("quartz_helmet", ProgressionMaterials.QUARTZ_ARMOR, ArmorType.HELMET, false, false);
 	public static final Item QUARTZ_CHESTPLATE = armor("quartz_chestplate", ProgressionMaterials.QUARTZ_ARMOR, ArmorType.CHESTPLATE, false, false);
 	public static final Item QUARTZ_LEGGINGS = armor("quartz_leggings", ProgressionMaterials.QUARTZ_ARMOR, ArmorType.LEGGINGS, false, false);
@@ -41,7 +42,7 @@ public final class ProgressionItems {
 	public static final Item AMETHYST_PICKAXE = pickaxe("amethyst_pickaxe", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.PICKAXE_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
 	public static final Item AMETHYST_AXE = axe("amethyst_axe", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.AXE_ATTACK_DAMAGE, ProgressionMaterials.AXE_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
 	public static final Item AMETHYST_SHOVEL = shovel("amethyst_shovel", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.SHOVEL_ATTACK_DAMAGE, ProgressionMaterials.SHOVEL_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
-	public static final Item AMETHYST_HOE = hoe("amethyst_hoe", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.HOE_ATTACK_DAMAGE, ProgressionMaterials.HOE_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
+	public static final Item AMETHYST_HOE = hoe("amethyst_hoe", ProgressionMaterials.AMETHYST_TOOL, ProgressionMaterials.HOE_ATTACK_SPEED + ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS);
 	public static final Item AMETHYST_HELMET = armor("amethyst_helmet", ProgressionMaterials.AMETHYST_ARMOR, ArmorType.HELMET, true, false);
 	public static final Item AMETHYST_CHESTPLATE = armor("amethyst_chestplate", ProgressionMaterials.AMETHYST_ARMOR, ArmorType.CHESTPLATE, true, false);
 	public static final Item AMETHYST_LEGGINGS = armor("amethyst_leggings", ProgressionMaterials.AMETHYST_ARMOR, ArmorType.LEGGINGS, true, false);
@@ -75,6 +76,15 @@ public final class ProgressionItems {
 	}
 
 	public static void initialize() {
+		DefaultItemComponentEvents.MODIFY.register(context -> context.modify(
+			List.of(Items.STONE_AXE, Items.COPPER_AXE, Items.IRON_AXE), (components, item) -> {
+				// The player's base damage contributes the first point of the attack.
+				double modifier = item == Items.STONE_AXE ? 6.0 : item == Items.COPPER_AXE ? 6.5 : 7.0;
+				var attributes = components.build().getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+				components.set(DataComponents.ATTRIBUTE_MODIFIERS, attributes.withModifierAdded(Attributes.ATTACK_DAMAGE,
+					new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, modifier, AttributeModifier.Operation.ADD_VALUE),
+					EquipmentSlotGroup.MAINHAND));
+			}));
 		CreativeInventory.initialize();
 	}
 
@@ -178,8 +188,8 @@ public final class ProgressionItems {
 		return register(name, Item::new, new Item.Properties().shovel(material, damage, speed));
 	}
 
-	private static Item hoe(String name, ToolMaterial material, float damage, float speed) {
-		return register(name, Item::new, new Item.Properties().hoe(material, damage, speed));
+	private static Item hoe(String name, ToolMaterial material, float speed) {
+		return register(name, Item::new, new Item.Properties().hoe(material, -material.attackDamageBonus(), speed));
 	}
 
 	private static Item armor(String name, ArmorMaterial material, ArmorType type, boolean amethyst, boolean volcanite) {

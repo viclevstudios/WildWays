@@ -1,5 +1,7 @@
 package com.viclev.wildways.mixin;
 
+import com.viclev.wildways.ProgressionItems;
+import com.viclev.wildways.ProgressionMaterials;
 import com.viclev.wildways.Wildways;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.function.TriConsumer;
@@ -24,8 +27,16 @@ import java.util.function.BiConsumer;
 @Mixin(ItemStack.class)
 public abstract class CopperToolStatsMixin {
 	@Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
-	private void wildways$goldSpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
-		if (isCopperTool()) cir.setReturnValue(12.0F);
+	private void wildways$adjustMiningSpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
+		float speed = cir.getReturnValue();
+		if (speed == ToolMaterial.COPPER.speed() && isCopperTool()) {
+			cir.setReturnValue(ToolMaterial.GOLD.speed());
+		} else if (speed > 1.0F) {
+			int penalties = ProgressionItems.strengthPenalties((ItemStack) (Object) this);
+			if (penalties > 0) {
+				cir.setReturnValue(Math.max(1.0F, speed - penalties * ProgressionMaterials.MINING_SPEED_PENALTY));
+			}
+		}
 	}
 
 	@Inject(method = "getMaxDamage", at = @At("RETURN"), cancellable = true)

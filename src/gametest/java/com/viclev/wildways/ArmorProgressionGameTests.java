@@ -36,8 +36,8 @@ public class ArmorProgressionGameTests {
 			wearer.setItemSlot(EquipmentSlot.FEET, new ItemStack(ModItems.VOLCANITE_BOOTS));
 		});
 		helper.runAfterDelay(6, () -> {
-			helper.assertTrue(wearer.getArmorValue() == 18 && wearer.getAttributeValue(Attributes.ARMOR_TOUGHNESS) == 2,
-				"Volcanite must equip with 18 armor and 2 toughness");
+			helper.assertTrue(wearer.getArmorValue() == 19 && wearer.getAttributeValue(Attributes.ARMOR_TOUGHNESS) == 2,
+				"Volcanite must equip with 19 armor and 2 toughness");
 			helper.succeed();
 		});
 	}

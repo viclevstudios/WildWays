@@ -4,12 +4,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,6 +23,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingRecipeInput;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 /** Guards against reintroducing separate gold items instead of updating vanilla equipment. */
@@ -45,24 +52,134 @@ public class GoldToolGameTests {
 		this.assertToolStats(helper, this.upgrade(helper, goldVolcanite, upgrade, ingot, netherite), 8.5F, 5.4, true);
 		ItemStack upgraded = this.upgrade(helper, amethystVolcanite, upgrade, ingot, netherite);
 		this.assertToolStats(helper, upgraded, 8, 4.8, true);
-		helper.assertTrue(upgraded.getDestroySpeed(Blocks.DIRT.defaultBlockState()) == 1.5F,
-			"The mining penalty must leave Amethyst's ineffective-block bonus intact");
+		this.assertAmethystMining(helper, amethyst, 6);
+		this.assertAmethystMining(helper, upgraded, 8);
+		helper.succeed();
+	}
+
+	private void assertAmethystMining(GameTestHelper helper, ItemStack stack, float effectiveSpeed) {
+		var player = helper.makeMockPlayer(GameType.SURVIVAL);
+		player.setItemSlot(EquipmentSlot.MAINHAND, stack);
+		player.setOnGround(true);
+		var dirt = Blocks.DIRT.defaultBlockState();
+		var stone = Blocks.STONE.defaultBlockState();
+		helper.assertTrue(player.getDestroySpeed(dirt) == 1.5F && player.getDestroySpeed(stone) == effectiveSpeed,
+			"Amethyst must give 1.5 on ineffective blocks and keep its tool speed on effective blocks");
+
+		var efficiency = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.EFFICIENCY);
+		stack.enchant(efficiency, 5);
+		var miningEfficiency = player.getAttribute(Attributes.MINING_EFFICIENCY);
+		stack.forEachModifier(EquipmentSlot.MAINHAND, (attribute, modifier) -> {
+			if (attribute.equals(Attributes.MINING_EFFICIENCY)) miningEfficiency.addTransientModifier(modifier);
+		});
+		helper.assertTrue(player.getDestroySpeed(stone) == effectiveSpeed + 26 && player.getDestroySpeed(dirt) == 1.5F,
+			"Efficiency V must speed up effective blocks without amplifying the Amethyst bonus");
+	}
+
+	@GameTest
+	public void axesHaveTheirBalancedDamageAcrossUpgradeRoutes(GameTestHelper helper) {
+		this.assertAttackDamage(helper, new ItemStack(Items.STONE_AXE), 7);
+		this.assertAttackDamage(helper, new ItemStack(Items.COPPER_AXE), 7.5);
+		this.assertAttackDamage(helper, new ItemStack(Items.IRON_AXE), 8);
+		this.assertAttackDamage(helper, new ItemStack(Items.DIAMOND_AXE), 8.5);
+		ItemStack goldDiamond = this.upgrade(helper, new ItemStack(Items.GOLDEN_AXE), ProgressionItems.REFINEMENT_DIAMOND, Items.DIAMOND_AXE);
+		this.assertAttackDamage(helper, goldDiamond, 9);
+		ItemStack volcanite = this.upgrade(helper, new ItemStack(ProgressionItems.QUARTZ_AXE), ProgressionItems.REFINEMENT_VOLCANITE, ModItems.VOLCANITE_AXE);
+		ItemStack goldVolcanite = this.upgrade(helper, new ItemStack(Items.GOLDEN_AXE), ProgressionItems.REFINEMENT_VOLCANITE, ModItems.VOLCANITE_AXE);
+		this.assertAttackDamage(helper, volcanite, 8);
+		this.assertAttackDamage(helper, goldVolcanite, 8.5);
+		this.assertAttackDamage(helper, this.upgrade(helper, volcanite, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
+			new ItemStack(Items.NETHERITE_INGOT), Items.NETHERITE_AXE), 8.5);
+		this.assertAttackDamage(helper, this.upgrade(helper, goldVolcanite, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
+			new ItemStack(Items.NETHERITE_INGOT), Items.NETHERITE_AXE), 9);
+		helper.succeed();
+	}
+
+	@GameTest
+	public void swordsHaveTheirBalancedDamageAcrossUpgradeRoutes(GameTestHelper helper) {
+		this.assertAttackDamage(helper, new ItemStack(Items.DIAMOND_SWORD), 6.5);
+		ItemStack goldDiamond = this.upgrade(helper, new ItemStack(Items.GOLDEN_SWORD), ProgressionItems.REFINEMENT_DIAMOND, Items.DIAMOND_SWORD);
+		this.assertAttackDamage(helper, goldDiamond, 7);
+		ItemStack volcanite = this.upgrade(helper, new ItemStack(ProgressionItems.AMETHYST_SWORD), ProgressionItems.REFINEMENT_VOLCANITE, ModItems.VOLCANITE_SWORD);
+		ItemStack goldVolcanite = this.upgrade(helper, new ItemStack(Items.GOLDEN_SWORD), ProgressionItems.REFINEMENT_VOLCANITE, ModItems.VOLCANITE_SWORD);
+		this.assertAttackDamage(helper, volcanite, 6);
+		this.assertAttackDamage(helper, goldVolcanite, 6.5);
+		this.assertAttackDamage(helper, this.upgrade(helper, volcanite, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
+			new ItemStack(Items.NETHERITE_INGOT), Items.NETHERITE_SWORD), 6.5);
+		this.assertAttackDamage(helper, this.upgrade(helper, goldVolcanite, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
+			new ItemStack(Items.NETHERITE_INGOT), Items.NETHERITE_SWORD), 7.2);
 		helper.succeed();
 	}
 
 	private void assertToolStats(GameTestHelper helper, ItemStack stack, float speed, double attack, boolean volcaniteReach) {
-		var damage = new AttributeInstance(Attributes.ATTACK_DAMAGE, instance -> {});
-		damage.setBaseValue(1);
-		var reach = new AttributeInstance(Attributes.BLOCK_INTERACTION_RANGE, instance -> {});
-		reach.setBaseValue(4.5);
-		stack.forEachModifier(EquipmentSlot.MAINHAND, (attribute, modifier) -> {
-			if (attribute.equals(Attributes.ATTACK_DAMAGE)) damage.addTransientModifier(modifier);
-			if (attribute.equals(Attributes.BLOCK_INTERACTION_RANGE)) reach.addTransientModifier(modifier);
-		});
 		helper.assertTrue(stack.getDestroySpeed(Blocks.STONE.defaultBlockState()) == speed,
 			"Effective mining speed must reflect the upgrade route");
-		helper.assertTrue(Math.abs(damage.getValue() - attack) < 0.00001, "Attack damage must reflect the upgrade route");
-		helper.assertTrue(reach.getValue() == (volcaniteReach ? 4.75 : 4.5), "Main-hand reach must reflect the upgrade route");
+		this.assertAttackDamage(helper, stack, attack);
+		helper.assertTrue(this.attributeValue(stack, Attributes.BLOCK_INTERACTION_RANGE, 4.5) == (volcaniteReach ? 4.75 : 4.5),
+			"Main-hand reach must reflect the upgrade route");
+	}
+
+	private void assertAttackDamage(GameTestHelper helper, ItemStack stack, double expected) {
+		double damage = this.attributeValue(stack, Attributes.ATTACK_DAMAGE, 1);
+		helper.assertTrue(Math.abs(damage - expected) < 0.00001, stack.getItem() + " attack damage was " + damage + ", expected " + expected);
+	}
+
+	private double attributeValue(ItemStack stack, Holder<Attribute> expected, double baseValue) {
+		var value = new AttributeInstance(expected, instance -> {});
+		value.setBaseValue(baseValue);
+		stack.forEachModifier(EquipmentSlot.MAINHAND, (attribute, modifier) -> {
+			if (attribute.equals(expected)) value.addTransientModifier(modifier);
+		});
+		return value.getValue();
+	}
+
+	@GameTest
+	public void middleTierPickaxesKeepIronHarvestLevel(GameTestHelper helper) {
+		for (Item item : List.of(ProgressionItems.QUARTZ_PICKAXE, ProgressionItems.AMETHYST_PICKAXE, Items.GOLDEN_PICKAXE)) {
+			ItemStack pickaxe = new ItemStack(item);
+			helper.assertTrue(pickaxe.isCorrectToolForDrops(Blocks.DIAMOND_ORE.defaultBlockState())
+				&& pickaxe.isCorrectToolForDrops(ModBlocks.VOLCANITE_ORE.defaultBlockState())
+				&& !pickaxe.isCorrectToolForDrops(Blocks.OBSIDIAN.defaultBlockState()),
+				item + " must harvest iron-tier ores and require a higher-tier tool for obsidian");
+		}
+		helper.succeed();
+	}
+
+	@GameTest
+	public void hoesDealOneDamageAcrossTiersAndHeritage(GameTestHelper helper) {
+		for (Item item : List.of(Items.WOODEN_HOE, Items.STONE_HOE, Items.COPPER_HOE, Items.IRON_HOE,
+			ProgressionItems.QUARTZ_HOE, ProgressionItems.AMETHYST_HOE, Items.GOLDEN_HOE,
+			Items.DIAMOND_HOE, ModItems.VOLCANITE_HOE, Items.NETHERITE_HOE)) {
+			this.assertAttackDamage(helper, new ItemStack(item), 1);
+		}
+		ItemStack volcanite = this.upgrade(helper, new ItemStack(ProgressionItems.AMETHYST_HOE),
+			ProgressionItems.REFINEMENT_VOLCANITE, ModItems.VOLCANITE_HOE);
+		this.assertAttackDamage(helper, volcanite, 1);
+		this.assertAttackDamage(helper, this.upgrade(helper, volcanite, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
+			new ItemStack(Items.NETHERITE_INGOT), Items.NETHERITE_HOE), 1);
+		helper.succeed();
+	}
+
+	@GameTest
+	public void copperUsesVanillaGoldSpeedForEffectiveBlocks(GameTestHelper helper) {
+		this.assertCopperMiningSpeed(helper, Items.COPPER_PICKAXE, Blocks.STONE, Blocks.DIRT);
+		this.assertCopperMiningSpeed(helper, Items.COPPER_AXE, Blocks.OAK_LOG, Blocks.STONE);
+		this.assertCopperMiningSpeed(helper, Items.COPPER_SHOVEL, Blocks.DIRT, Blocks.OAK_LOG);
+		this.assertCopperMiningSpeed(helper, Items.COPPER_HOE, Blocks.HAY_BLOCK, Blocks.DIRT);
+		var copperSword = new ItemStack(Items.COPPER_SWORD);
+		var goldSword = new ItemStack(Items.GOLDEN_SWORD);
+		for (Block block : List.of(Blocks.COBWEB, Blocks.BAMBOO, Blocks.STONE)) {
+			helper.assertTrue(copperSword.getDestroySpeed(block.defaultBlockState()) == goldSword.getDestroySpeed(block.defaultBlockState()),
+				"Copper swords must use Gold sword mining rules for " + block);
+		}
+		helper.succeed();
+	}
+
+	private void assertCopperMiningSpeed(GameTestHelper helper, Item item, Block effective, Block ineffective) {
+		var stack = new ItemStack(item);
+		helper.assertTrue(stack.getDestroySpeed(effective.defaultBlockState()) == ToolMaterial.GOLD.speed()
+			&& stack.getDestroySpeed(ineffective.defaultBlockState()) == 1,
+			item + " must get Vanilla Gold speed on its effective blocks only");
 	}
 
 	@GameTest

@@ -6,12 +6,14 @@ import com.viclev.wildways.ProgressionMaterials;
 import com.viclev.wildways.Wildways;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.Equippable;
 import org.apache.commons.lang3.function.TriConsumer;
@@ -45,8 +47,9 @@ public abstract class AmethystHeritageAttributesMixin {
 			int penalties = ProgressionItems.strengthPenalties(stack);
 			if (ProgressionItems.hasAmethystHeritage(stack)) consumer.accept(Attributes.ATTACK_SPEED, new AttributeModifier(Wildways.id("amethyst_heritage_attack_speed"),
 				ProgressionMaterials.AMETHYST_ATTACK_SPEED_BONUS, AttributeModifier.Operation.ADD_VALUE));
-			if (penalties > 0) consumer.accept(Attributes.ATTACK_DAMAGE, new AttributeModifier(Wildways.id("equipment_attack_damage_penalty"),
-				-penalties * ProgressionMaterials.ATTACK_DAMAGE_PENALTY, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+			if (penalties > 0 && !stack.is(ItemTags.HOES)) {
+				consumer.accept(Attributes.ATTACK_DAMAGE, wildways$attackDamagePenalty(stack, penalties));
+			}
 			if (ProgressionItems.hasVolcaniteHeritage(stack)
 				|| ModItems.VOLCANITE_TOOLS.contains(stack.getItem())) {
 				consumer.accept(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(Wildways.id("volcanite_tool_block_range"),
@@ -65,5 +68,20 @@ public abstract class AmethystHeritageAttributesMixin {
 				new AttributeModifier(Wildways.id("volcanite_block_range_" + suffix),
 					ProgressionMaterials.VOLCANITE_RANGE_PER_PIECE, AttributeModifier.Operation.ADD_VALUE));
 		}
+	}
+
+	@Unique
+	private static AttributeModifier wildways$attackDamagePenalty(ItemStack stack, int penalties) {
+		double penalty = penalties * ProgressionMaterials.ATTACK_DAMAGE_PENALTY;
+		AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
+		if (stack.is(Items.DIAMOND_SWORD) || stack.is(Items.DIAMOND_AXE)
+			|| stack.is(ModItems.VOLCANITE_SWORD) || stack.is(ModItems.VOLCANITE_AXE)) {
+			penalty = 0.5;
+			operation = AttributeModifier.Operation.ADD_VALUE;
+		} else if (penalties == 2 && (stack.is(Items.NETHERITE_SWORD) || stack.is(Items.NETHERITE_AXE))) {
+			penalty = 1.5;
+			operation = AttributeModifier.Operation.ADD_VALUE;
+		}
+		return new AttributeModifier(Wildways.id("equipment_attack_damage_penalty"), -penalty, operation);
 	}
 }

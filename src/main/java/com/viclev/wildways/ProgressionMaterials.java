@@ -30,6 +30,7 @@ public final class ProgressionMaterials {
 	public static final float AMETHYST_ATTACK_DAMAGE_BONUS = 2.0F;
 	public static final float GOLD_ATTACK_DAMAGE_BONUS = 2.5F;
 	public static final float VOLCANITE_ATTACK_DAMAGE_BONUS = 2.7F;
+	public static final float VOLCANITE_WEAPON_DAMAGE_OFFSET = -0.2F;
 	public static final int QUARTZ_ENCHANTABILITY = 14;
 	public static final int AMETHYST_ENCHANTABILITY = 16;
 	public static final int GOLD_ENCHANTABILITY = 20;
@@ -42,7 +43,6 @@ public final class ProgressionMaterials {
 	public static final float AXE_ATTACK_SPEED = -3.0F;
 	public static final float SHOVEL_ATTACK_DAMAGE = 1.5F;
 	public static final float SHOVEL_ATTACK_SPEED = -3.0F;
-	public static final float HOE_ATTACK_DAMAGE = -3.0F;
 	public static final float HOE_ATTACK_SPEED = 0.0F;
 	public static final float AMETHYST_ATTACK_SPEED_BONUS = 0.2F;
 	public static final double AMETHYST_SPEED_PER_PIECE = 0.0025;
@@ -73,7 +73,7 @@ public final class ProgressionMaterials {
 
 	public static final ArmorMaterial QUARTZ_ARMOR = armor(QUARTZ_ARMOR_DURABILITY, 10, REPAIRS_QUARTZ, QUARTZ_ASSET, 0.0F, 2, 5, 6, 2);
 	public static final ArmorMaterial AMETHYST_ARMOR = armor(AMETHYST_ARMOR_DURABILITY, 14, REPAIRS_AMETHYST, AMETHYST_ASSET, 0.0F, 2, 5, 6, 2);
-	public static final ArmorMaterial VOLCANITE_ARMOR = armor(VOLCANITE_ARMOR_DURABILITY, 12, REPAIRS_VOLCANITE, VOLCANITE_ASSET, 1.0F, 2, 6, 8, 2);
+	public static final ArmorMaterial VOLCANITE_ARMOR = armor(VOLCANITE_ARMOR_DURABILITY, 12, REPAIRS_VOLCANITE, VOLCANITE_ASSET, 1.0F, 3, 6, 8, 2);
 
 	private ProgressionMaterials() {
 	}
